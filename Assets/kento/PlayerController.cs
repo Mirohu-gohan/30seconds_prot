@@ -3,24 +3,26 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    [Header("移動設定")]
-    [SerializeField] private float speed = 3.0f;                //通常スピード
+    [Header("-----移動設定-----")]
+    [SerializeField,Header("通常スピード")] private float speed = 3.0f;                //通常スピード
     private Vector2 inputVer;　　　　　　　              //入力値
-
+    
     private float curentSpeed;                           //
-    [Header("ダッシュ設定")]
-    [SerializeField] private float dash_speed = 5.0f;           //ダッシュスピード
+    [Header("-----ダッシュ設定-----")]
+    [SerializeField,Header("ダッシュスピード")] private float dash_speed = 5.0f;           //ダッシュスピード
 
-    [Header("ブリンク設定")]
-    [SerializeField] private float brinkForce = 15.0f;   //ブリンクパワー
-    [SerializeField] private float brinkDuration = 0.5f; //ブリンク状態の持続時間
-    [SerializeField] private float brinkCooldown = 1.0f; //ブリンククールダウン時間
-    [SerializeField] private float knockbackForce = 5.0f;//ノックバック力
+    [Header("-----ブリンク設定-----")]
+    [SerializeField,Header("パワー")] private float brinkForce = 15.0f;
+    [SerializeField,Header("状態の持続時間")] private float brinkDuration = 0.5f;
+    [SerializeField,Header("クールダウン時間")] private float brinkCooldown = 1.0f; 
+    [SerializeField,Header("ノックバック力")] private float knockbackForce = 5.0f;
     private bool isBrinkling = false;                    //ブリンクフラグ
     private float lastBrinkTime = 0f;                    //最後のブリンク時間
 
     private Rigidbody rb;
-       
+
+
+
     public void OnMove(InputAction.CallbackContext context)
     {
         inputVer = context.ReadValue<Vector2>();

@@ -5,8 +5,8 @@ public class PlayerBrink : MonoBehaviour
 {
     //-----押している時間でパワーが増す
     [Header("ブリンク設定")]
-    [SerializeField] private float brinkForce = 15.0f;   //ブリンクパワー
-    [SerializeField] private float brinkDuration = 0.5f; //ブリンク状態の持続時間
+    [SerializeField,Header("パワー")] private float brinkForce = 15.0f;  
+    [SerializeField,Header("状態の持続時間")] private float brinkDuration = 0.5f;
     [SerializeField] private float brinkCooldown = 1.0f; //ブリンククールダウン時間
     [SerializeField] private float knockbackForce = 5.0f;//ノックバック力
     private bool isBrinkling = false;                    //ブリンクフラグ

@@ -1,16 +1,9 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerController : MonoBehaviour
+public class PlayerBrink : MonoBehaviour
 {
-    [Header("移動設定")]
-    [SerializeField] private float speed = 3.0f;                //通常スピード
-    private Vector2 inputVer;　　　　　　　              //入力値
-
-    private float curentSpeed;                           //
-    [Header("ダッシュ設定")]
-    [SerializeField] private float dash_speed = 5.0f;           //ダッシュスピード
-
+    //-----押している時間でパワーが増す
     [Header("ブリンク設定")]
     [SerializeField] private float brinkForce = 15.0f;   //ブリンクパワー
     [SerializeField] private float brinkDuration = 0.5f; //ブリンク状態の持続時間
@@ -18,30 +11,23 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float knockbackForce = 5.0f;//ノックバック力
     private bool isBrinkling = false;                    //ブリンクフラグ
     private float lastBrinkTime = 0f;                    //最後のブリンク時間
+ 
+    private bool isStrt = false;                         //押されている
+    private float t;                                     //タイマー
 
     private Rigidbody rb;
-       
-    public void OnMove(InputAction.CallbackContext context)
-    {
-        inputVer = context.ReadValue<Vector2>();
-    }
-
-    public void OnDash(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-        {
-            curentSpeed = speed * dash_speed; 
-        }
-        if (context.canceled)
-        {
-            curentSpeed = speed;
-        }
-    }
 
     public void OnBrink(InputAction.CallbackContext context)
     {
-        if (context.performed && !isBrinkling && Time.time > lastBrinkTime + brinkCooldown)
+        if (context.performed )
         {
+           isStrt = true;
+            
+
+        }
+        if(context.canceled && !isBrinkling && Time.time > lastBrinkTime + brinkCooldown)
+        {
+            isStrt = false;
             Brink();
         }
     }
@@ -49,23 +35,18 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        curentSpeed = speed;
+       
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
-        Move();
-    }
-
-    void Move()
-    {
-        Vector3 move = new Vector3(inputVer.x, 0f, inputVer.y) * curentSpeed * Time.deltaTime;
-        rb.MovePosition(rb.position + move);
-
-        if (move != Vector3.zero)
+        if(isStrt)
         {
-            Quaternion rot = Quaternion.LookRotation(move, Vector3.up);
-            transform.rotation = rot;
+            t += Time.deltaTime;
+        }
+        else if (!isStrt)
+        {
+            t = 0f;
         }
     }
 
@@ -74,7 +55,7 @@ public class PlayerController : MonoBehaviour
         isBrinkling = true;
         lastBrinkTime = Time.time;
         // キャラクターが向いている方向に力を加える
-        rb.AddForce(transform.forward * brinkForce, ForceMode.Impulse);
+        rb.AddForce(transform.forward * brinkForce * t, ForceMode.Impulse);
 
         // 一定時間後にタックル状態を解除する
         Invoke("EndBrink", brinkDuration);

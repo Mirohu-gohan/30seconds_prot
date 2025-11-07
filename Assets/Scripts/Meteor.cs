@@ -16,8 +16,12 @@ public class Meteor : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        // ‚à‚µÚG‚µ‚½ƒIƒuƒWƒFƒNƒg‚ª‘¼‚Ì‚à‚Ì‚Å‚ ‚ê‚Î
-        Destroy(collision.gameObject); // ÚG‚µ‚½ƒIƒuƒWƒFƒNƒg‚ðÁ‹Ž
-        Destroy(gameObject); // Ž©•ªŽ©g‚àÁ‹Ž
+        if (collision.gameObject.CompareTag("Stage"))
+        {
+            // ã‚‚ã—æŽ¥è§¦ã—ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒä»–ã®ã‚‚ã®ã§ã‚ã‚Œã°
+            Destroy(collision.gameObject); // æŽ¥è§¦ã—ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’æ¶ˆåŽ»
+            Destroy(gameObject); // è‡ªåˆ†è‡ªèº«ã‚‚æ¶ˆåŽ»
+        }
+        
     }
 }

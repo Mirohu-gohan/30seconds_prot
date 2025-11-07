@@ -120,7 +120,7 @@ GameObject:
   - component: {fileID: 8688211808619708}
   - component: {fileID: 6397663188705279735}
   m_Layer: 0
-  m_Name: Particle System
+  m_Name: "\u8ECC\u8DE1"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5969,6 +5969,7 @@ GameObject:
   - component: {fileID: 528001724070733597}
   - component: {fileID: 3817383729090696198}
   - component: {fileID: 3364920940167490624}
+  - component: {fileID: 4012818073243533417}
   m_Layer: 0
   m_Name: Meteor
   m_TagString: Untagged
@@ -6053,7 +6054,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d677c2fa374ebfa4b8b8bc0bec625079, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Smoke: {fileID: 0}
+  Smoke: {fileID: 857878921307099958, guid: fe0af6f12be37f54ba30606b820e4ebc, type: 3}
+--- !u!114 &4012818073243533417
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7877162132287374932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15268f96ab66f1540a448b589403c55d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lifetime: 3
 --- !u!1 &8826425052629461001
 GameObject:
   m_ObjectHideFlags: 0

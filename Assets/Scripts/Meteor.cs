@@ -26,7 +26,10 @@ public class Meteor : MonoBehaviour
 
             Vector3 contactPoint = collision.contacts[0].point;
 
-            Instantiate(Smoke, contactPoint, Quaternion.identity);
+            if (Smoke != null)
+            {
+                Instantiate(Smoke, contactPoint, Quaternion.identity);
+            }
         }
         
     }

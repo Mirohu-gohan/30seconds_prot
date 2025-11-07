@@ -1,11 +1,12 @@
 using UnityEngine;
 using System.Collections;
 
-public class RandomSpawnerLoop : MonoBehaviour
+public class ObjectSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject prefab;
     [SerializeField] private Vector3 areaSize = new Vector3(10f, 0f, 10f);
-    [SerializeField] private float spawnInterval = 2f; // 何秒ごとに生成
+    [SerializeField] private float spawnInterval = 2f;
+    [SerializeField] private Vector2 scaleRange = new Vector2(0.5f, 2f);
 
     private void Start()
     {
@@ -17,10 +18,22 @@ public class RandomSpawnerLoop : MonoBehaviour
         while (true)
         {
             Vector3 randomPos = GetRandomPosition();
-            Instantiate(prefab, randomPos, Quaternion.identity);
+            GameObject obj = Instantiate(prefab, randomPos, Quaternion.identity);
+
+            // ランダムスケール
+            float randomScale = Random.Range(scaleRange.x, scaleRange.y);
+            obj.transform.localScale = new Vector3(randomScale, randomScale, randomScale);
+
+            // SphereCollider のサイズもスケールに合わせる
+            SphereCollider sphere = obj.GetComponent<SphereCollider>();
+            if (sphere != null)
+            {
+                float originalRadius = 0.860137f; // prefab の半径が 0.5 の場合
+                sphere.radius = originalRadius * randomScale;
+            }
+
             yield return new WaitForSeconds(spawnInterval);
         }
-
     }
 
     private Vector3 GetRandomPosition()

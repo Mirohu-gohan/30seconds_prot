@@ -333,6 +333,7 @@ MonoBehaviour:
   prefab: {fileID: 7877162132287374932, guid: f2e71bd91a91c5d48ac33c42c3405e15, type: 3}
   areaSize: {x: 20, y: 0, z: 20}
   spawnInterval: 1
+  scaleRange: {x: 1, y: 3}
 --- !u!4 &1347778290
 Transform:
   m_ObjectHideFlags: 0
@@ -463,7 +464,7 @@ Transform:
   m_GameObject: {fileID: 1418301367}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -4, y: 15.02, z: 5.15}
+  m_LocalPosition: {x: -7.7, y: 0, z: 7.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

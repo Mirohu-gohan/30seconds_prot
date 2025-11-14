@@ -398,12 +398,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 448230611}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c13f39b792217de49be3c6a310ea873b, type: 3}
+  m_Script: {fileID: 11500000, guid: 6aa65e59035b194419a7dc031927398d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
-  dash_speed: 2
-  tackleForce: 15
+  speed: 5
+  dash_speed: 6
+  tackleForce: 10
   tackleDuration: 0.5
   tackleCooldown: 1
   knockbackForce: 5

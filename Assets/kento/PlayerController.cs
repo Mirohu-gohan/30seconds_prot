@@ -23,8 +23,9 @@ public class PlayerController : MonoBehaviour
     private float lastTackleTime = 0f; // 最後のブリンク時間
 
     //----------
-    private float timer = 0;
+    private float t = 0;
     private bool isStart = false;
+    [SerializeField] private float chageMax = 5.0f;
 
 
 
@@ -51,7 +52,7 @@ public class PlayerController : MonoBehaviour
         {
             isStart = true;
         }
-        if (context.canceled)
+        if (context.canceled && !isTackling && Time.time > lastTackleTime * tackleCooldown)
         {
             isStart = false;
             Brink();
@@ -72,11 +73,14 @@ public class PlayerController : MonoBehaviour
 
         if (isStart)
         {
-            timer += Time.deltaTime;
+            if (t < chageMax)
+            {
+                t += Time.deltaTime;
+            }
         }
         else if(!isStart)
         {
-            timer = 0f;
+            t = 0f;
         }
     }
 
@@ -100,7 +104,7 @@ public class PlayerController : MonoBehaviour
         lastTackleTime = Time.time;
 
         // キャラクターが向いている方向に力を加える
-        rb.AddForce(transform.forward * tackleForce * timer, ForceMode.Impulse);
+        rb.AddForce(transform.forward * tackleForce * t, ForceMode.Impulse);
 
         // 一定時間後にタックル状態を解除する
         Invoke("EndTackle", tackleDuration);

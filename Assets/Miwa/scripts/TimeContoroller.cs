@@ -10,7 +10,7 @@ public class TImeController : MonoBehaviour
     private float time = 60.0f; // 時間制限
 
     public bool isTimeUp = false;
-    public bool isGameStarted = false; // ★追加: ゲーム開始フラグ
+    public bool isGameStarted = false; // ★このフラグはGameManagerからの制御で維持★
 
     public GameObject timeUpPanel;
 
@@ -28,7 +28,7 @@ public class TImeController : MonoBehaviour
 
     void Update()
     {
-        if (isTimeUp || !isGameStarted) // ★修正: 開始していない場合は処理を抜ける
+        if (isTimeUp || !isGameStarted) // GameManagerからの指示があるまで停止
         {
             return;
         }
@@ -54,7 +54,7 @@ public class TImeController : MonoBehaviour
     // GameManagerや時間切れでゲームを終了させる
     public void TimeUp(string winnerName = null)
     {
-        if (isTimeUp) return; // 多重実行防止
+        if (isTimeUp) return;
 
         isTimeUp = true;
 
@@ -71,7 +71,6 @@ public class TImeController : MonoBehaviour
             Timetext.text = "ゲーム終了！";
         }
 
-        // ゲームポーズ
         Time.timeScale = 0f;
 
         if (timeUpPanel != null)
@@ -80,7 +79,6 @@ public class TImeController : MonoBehaviour
         }
     }
 
-    // リセットボタンに割り当てる
     public void ResetGame()
     {
         Time.timeScale = 1f;

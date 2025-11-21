@@ -1,6 +1,7 @@
 using System.Diagnostics.Contracts;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
@@ -26,6 +27,11 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public bool isStrt = false;
     private float t = 0f;
     public float chargeMax = 5.0f;
+
+    [SerializeField] private Text IDtext;
+    private int playerID;
+    private PlayerInput playerInput;
+    
 
     public void OnMove(InputAction.CallbackContext context)
     {
@@ -59,7 +65,14 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        //GetComponent<Renderer>().material.color = new Color(Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f));
+        playerInput = GetComponent<PlayerInput>();
+        if (playerInput != null)
+        {
+            playerID = playerInput.playerIndex;
+        }
+
+        IDtext.text += $"Player{playerID + 1}\n";
+
         rb = GetComponent<Rigidbody>();
     }
 

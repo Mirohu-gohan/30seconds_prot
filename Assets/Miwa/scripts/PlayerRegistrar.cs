@@ -8,7 +8,7 @@ public class PlayerRegistrar : MonoBehaviour
     void Start()
     {
         // ƒV[ƒ““à‚ÌGameManager‚ğŒ©‚Â‚¯‚é
-        GameManager gm = Object.FindFirstObjectByType<GameManager>();
+        GameManager_M gm = Object.FindFirstObjectByType<GameManager_M>();
 
         if (gm != null)
         {

@@ -9,6 +9,8 @@ public class MainGameManger : MonoBehaviour
     [SerializeField] private GameObject playerPrefab = default; //Player
 
     [SerializeField] private Transform[] pos = default;         //生成位置
+
+    private Shader shader;
  
     void Start()
     {
@@ -30,6 +32,7 @@ public class MainGameManger : MonoBehaviour
                 playerIndex: i,
                 pairWithDevice: devices[i]
              );
+
             //生成後この位置にセット
             obj.transform.position = pos[i].position;
             obj.transform.rotation = pos[i].rotation;

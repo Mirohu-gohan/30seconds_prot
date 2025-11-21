@@ -1306,7 +1306,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a066dc3bca91add4a8372991b4b35aac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 3736281241373610117, guid: ff6f0e6431c32be49bf7a9284799a571, type: 3}
+  playerPrefab: {fileID: 3736281241373610117, guid: 9ce5ec57db60e92418631bb97b12fa43, type: 3}
   pos:
   - {fileID: 1092058510}
   - {fileID: 1512492562}
@@ -1719,6 +1719,10 @@ PrefabInstance:
       propertyPath: prefab
       value: 
       objectReference: {fileID: 4049848038291858225, guid: c3e58a5e401444641bf0c2d454947745, type: 3}
+    - target: {fileID: 1772771688016775720, guid: e66787d700696b24b9600224cfce643e, type: 3}
+      propertyPath: spawnInterval
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 1772771688016775720, guid: e66787d700696b24b9600224cfce643e, type: 3}
       propertyPath: moveDirection.x
       value: 0

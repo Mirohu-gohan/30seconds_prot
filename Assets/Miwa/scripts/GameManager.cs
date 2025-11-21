@@ -1,31 +1,26 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI; // UI (Text) を使うために追加
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     [Header("UI設定")]
-    [Tooltip("残り時間を表示するText UI (TimeControllerから利用)")]
     public Text timerTextUI;
 
     [Header("境界設定")]
-    [Tooltip("このY座標を下回るとプレイヤーを破壊します。")]
     [SerializeField]
     private float deathYCoordinate = -10.0f;
 
     [Header("参照")]
-    // TimeControllerは直接参照する（手動でInspectorで設定推奨）
     public TImeController timeController;
 
-    // 現在アクティブなプレイヤーオブジェクトを格納するリスト
-    private List<GameObject> activePlayers = new List<GameObject>();
+    private List<GameObject> activePlayers = new List<GameObject>(); // 監視リスト
     private bool gameOver = false;
-    private bool isGameStarted = false; // 参加フェーズがなくなり、すぐにゲームを開始するフラグ
+    private bool isGameStarted = false;
 
     void Awake()
     {
-        // TimeControllerはInspectorで設定するか、自動で検索
         if (timeController == null)
         {
             timeController = Object.FindFirstObjectByType<TImeController>();
@@ -34,41 +29,45 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        // 参加受付がないため、ここでゲームをすぐに開始
         StartGameLogic();
+    }
+
+    void StartGameLogic()
+    {
+        // プレイヤーはスポーン時に自動でリストに登録されるため、ここではリストチェックやスキャンは行わない。
+
+        isGameStarted = true;
 
         // TimeControllerの時間をスタート
         if (timeController != null)
         {
             timeController.StartGame();
         }
+        Debug.Log("ゲーム開始！プレイヤーの参加を待っています。");
     }
 
-    void StartGameLogic()
+    // ★★★ 追加: プレイヤーがスポーン時に自分を登録するためのメソッド ★★★
+    /// <summary>
+    /// 新しくスポーンされたプレイヤーを監視リストに追加する
+    /// </summary>
+    public void RegisterPlayer(GameObject newPlayer)
     {
-        // シーンに存在するプレイヤーを登録
-        RefreshPlayerList();
-
-        if (activePlayers.Count == 0)
+        if (newPlayer != null && !activePlayers.Contains(newPlayer))
         {
-            Debug.LogError("シーンに 'Player' タグのオブジェクトが見つかりません。ゲームを開始できません。");
-            return;
+            activePlayers.Add(newPlayer);
+            Debug.Log("プレイヤー登録完了。現在監視プレイヤー数: " + activePlayers.Count);
         }
-
-        isGameStarted = true;
-        Debug.Log("ゲーム開始！監視対象プレイヤー数: " + activePlayers.Count);
     }
 
+    // Update()、CheckYBoundary()、HandleWin() は基本的に変更なし。
     void Update()
     {
         if (!isGameStarted || gameOver) return;
 
-        // ゲームロジック
         CheckYBoundary();
         CheckWinCondition();
     }
 
-    // Y座標の境界チェックと破壊
     void CheckYBoundary()
     {
         for (int i = activePlayers.Count - 1; i >= 0; i--)
@@ -91,29 +90,28 @@ public class GameManager : MonoBehaviour
     void DestroyPlayer(GameObject playerToDestroy, int indexInList)
     {
         Debug.Log(playerToDestroy.name + " がY座標境界を下回り、破壊されました。");
-
         Destroy(playerToDestroy);
         activePlayers.RemoveAt(indexInList);
-
-        // マルチプレイの制御がないため、ここでは何もする必要がありません。
-        // CheckWinConditionがすぐに呼ばれます。
     }
 
     void CheckWinCondition()
     {
         // プレイヤーが一人以下になったらゲーム終了
-        if (activePlayers.Count <= 1)
+        if (activePlayers.Count <= 1 && activePlayers.Count > 0) // 1人残って勝利
         {
             gameOver = true;
-            string winnerName = (activePlayers.Count == 1) ? activePlayers[0].name : "None (全員敗退)";
-
+            string winnerName = activePlayers[0].name;
             HandleWin(winnerName);
+        }
+        else if (activePlayers.Count == 0 && isGameStarted) // 全員敗退
+        {
+            gameOver = true;
+            HandleWin("None (全員敗退)");
         }
     }
 
     void HandleWin(string winnerName)
     {
-        // TimeControllerを通じてゲームをポーズし、UIに結果を表示
         if (timeController != null)
         {
             timeController.TimeUp(winnerName);
@@ -124,14 +122,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // シーンに存在するすべてのプレイヤー（'Player'タグ）をリストに格納
-    void RefreshPlayerList()
-    {
-        activePlayers.Clear();
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-        foreach (GameObject player in players)
-        {
-            activePlayers.Add(player);
-        }
-    }
+    // RefreshPlayerList() は完全に削除（動的スポーンのため不要）
+    // void RefreshPlayerList() { ... }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI; // UI (Text) を使うために追加
 
-public class GameManager : MonoBehaviour
+public class GameManager_M : MonoBehaviour
 {
     [Header("UI設定")]
     [Tooltip("残り時間を表示するText UI (TimeControllerから利用)")]

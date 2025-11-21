@@ -616,7 +616,7 @@ MonoBehaviour:
       m_Action: Join
       m_Flags: 0
     m_Flags: 0
-  playerPrefab: {fileID: 1392673603374428599, guid: 638216d9aeda0bb4d87adb9113f4c72d, type: 3}
+  playerPrefab: {fileID: 3736281241373610117, guid: ff6f0e6431c32be49bf7a9284799a571, type: 3}
   maxPlayers: 4
   device1text: {fileID: 1505149091}
   device2text: {fileID: 842079463}

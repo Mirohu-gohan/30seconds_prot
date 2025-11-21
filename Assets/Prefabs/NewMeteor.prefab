@@ -122,6 +122,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Meteor_eff_withMesh
       objectReference: {fileID: 0}
+    - target: {fileID: 1732225356681725925, guid: b071f107590f4024db515f5f18864c10, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 5888339827877014891, guid: b071f107590f4024db515f5f18864c10, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

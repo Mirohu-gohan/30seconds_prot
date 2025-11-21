@@ -2,68 +2,86 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-
 public class TImeController : MonoBehaviour
 {
     public Text Timetext;
 
-    [SerializeField] 
-    private float time = 60.0f; //時間制限
+    [SerializeField]
+    private float time = 60.0f; // 時間制限
 
     public bool isTimeUp = false;
-    
-    //時間制限時に表示するパネル
+    public bool isGameStarted = false; // ★このフラグはGameManagerからの制御で維持★
+
     public GameObject timeUpPanel;
 
 
-     void Start()
+    void Start()
     {
         Time.timeScale = 1f;
         isTimeUp = false;
-        if(timeUpPanel != null )
+        isGameStarted = false; // 初期状態では停止
+        if (timeUpPanel != null)
         {
-            timeUpPanel.SetActive(false);//パネル非表示
+            timeUpPanel.SetActive(false);
         }
     }
 
     void Update()
     {
-      if(isTimeUp)
+        if (isTimeUp || !isGameStarted) // GameManagerからの指示があるまで停止
         {
             return;
         }
-      if(time>0)
+
+        if (time > 0)
         {
-            time -=Time.deltaTime;
-            Timetext.text =time.ToString("F1");
+            time -= Time.deltaTime;
+            Timetext.text = time.ToString("F1");
         }
-      else
+        else
         {
             time = 0;
-            TimeUp();
+            TimeUp(); // 時間切れによる終了
         }
     }
-    void TimeUp()
+
+    // GameManagerから呼ばれ、ゲームをスタートさせる
+    public void StartGame()
     {
+        isGameStarted = true;
+    }
+
+    // GameManagerや時間切れでゲームを終了させる
+    public void TimeUp(string winnerName = null)
+    {
+        if (isTimeUp) return;
+
         isTimeUp = true;
-        Timetext.text = "崩壊！！！";
-        //ゲームポーズ
+
+        if (!string.IsNullOrEmpty(winnerName) && winnerName != "None (全員敗退)")
+        {
+            Timetext.text = winnerName + " の勝利！";
+        }
+        else if (time <= 0)
+        {
+            Timetext.text = "崩壊！！！";
+        }
+        else
+        {
+            Timetext.text = "ゲーム終了！";
+        }
+
         Time.timeScale = 0f;
 
-        //パネルの表示
         if (timeUpPanel != null)
         {
-            timeUpPanel .SetActive(true);
+            timeUpPanel.SetActive(true);
         }
-
-
     }
+
     public void ResetGame()
     {
-        //時間のリセット
         Time.timeScale = 1f;
-        //シーンのロード
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
-
 }

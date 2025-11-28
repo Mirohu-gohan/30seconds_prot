@@ -81,7 +81,14 @@ public class TImeController : MonoBehaviour
 
     public void ResetGame()
     {
-        Time.timeScale = 1f;
+        Time.timeScale = 5f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+
+    public void LoadTitleScene(string SceneName)
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneName);
     }
 }

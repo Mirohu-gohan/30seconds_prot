@@ -9,7 +9,7 @@ public class PowerMeter : MonoBehaviour
     private float meterSpeed = 1.0f;
     private Coroutine meter;
 
-    [SerializeField] private float fillSpeed = 1.0f;
+    [SerializeField] private float MaxChargeTime = 1.5f;
 
     private PlayerController pc;
 
@@ -22,13 +22,14 @@ public class PowerMeter : MonoBehaviour
 
     private void Update()
     {
-        if(pc.isStrt)
+        float speed = 1f / MaxChargeTime;
+        if (pc.isStrt)
         {
-            MeterImage.fillAmount += fillSpeed * Time.deltaTime;
+            MeterImage.fillAmount += speed * Time.deltaTime;
         }
-        else if(!pc.isStrt) 
+        else if (!pc.isStrt)
         {
-            MeterImage.fillAmount -= fillSpeed * Time.deltaTime;
+            MeterImage.fillAmount -= speed * Time.deltaTime;
         }
 
         // 0〜1 の範囲に制限

@@ -7,11 +7,10 @@ using UnityEngine.UIElements;
 public class MainGameManger : MonoBehaviour
 {
     [SerializeField] private GameObject playerPrefab = default; //Player
-
+    [SerializeField] private GameObject botPrefab = default;    //Bot
     [SerializeField] private Transform[] pos = default;         //生成位置
 
-    private Shader shader;
-    [SerializeField] private GameObject joinbj;
+   
 
     void Start()
     {
@@ -25,22 +24,25 @@ public class MainGameManger : MonoBehaviour
         //人数分Playerの生成,PlayerID
         for (int i = 0; i < count; i++)
         {
-            
+            if (i < count && devices[i] != null)
+            {
+                // 指定デバイスで PlayerInput を持つプレイヤーを生成
+                var obj = PlayerInput.Instantiate(
+                    prefab: playerPrefab,
+                    playerIndex: i,
+                    pairWithDevice: devices[i]
+                 );
+                //生成後この位置にセット
+                obj.transform.position = pos[i].position;
+                obj.transform.rotation = pos[i].rotation;
 
-            // 指定デバイスで PlayerInput を持つプレイヤーを生成
-            var obj = PlayerInput.Instantiate(
-                prefab: playerPrefab,
-                playerIndex: i,
-                pairWithDevice: devices[i]
-             );
-
-            //生成後この位置にセット
-            obj.transform.position = pos[i].position;
-            obj.transform.rotation = pos[i].rotation;
-
-            //id表示
+            }
+            else
+            {
+                Instantiate(botPrefab, pos[i].position, pos[i].rotation);
+            }
         }
-        joinbj = GameObject.Find("joinedManager");
+        
 
     }
 

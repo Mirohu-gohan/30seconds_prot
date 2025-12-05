@@ -90,7 +90,6 @@ GameObject:
   - component: {fileID: 5128585452599055210}
   - component: {fileID: 737944133071507005}
   - component: {fileID: 6912385729442025190}
-  - component: {fileID: 8549819006647720345}
   - component: {fileID: 4832575302415769368}
   - component: {fileID: 7223838587103868395}
   - component: {fileID: 2795932701591639972}
@@ -155,19 +154,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MeterImage: {fileID: 4728771281042430425}
   fillSpeed: 1
---- !u!114 &8549819006647720345
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3736281241373610117}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c376e0b7b78f1f4480d6163a0588166, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerID: {fileID: 5247130905034209812}
 --- !u!114 &4832575302415769368
 MonoBehaviour:
   m_ObjectHideFlags: 0

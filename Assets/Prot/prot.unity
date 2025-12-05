@@ -1142,7 +1142,6 @@ MonoBehaviour:
   isTimeUp: 0
   isGameStarted: 0
   timeUpPanel: {fileID: 198276233}
-  winnerNameText: {fileID: 1321868049}
 --- !u!4 &310675198
 Transform:
   m_ObjectHideFlags: 0
@@ -2181,7 +2180,7 @@ Transform:
   m_GameObject: {fileID: 1092058509}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7, y: 1.3, z: -3.97}
+  m_LocalPosition: {x: -7, y: 3.07, z: 17.99}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2212,7 +2211,7 @@ Transform:
   m_GameObject: {fileID: 1153352479}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.12, y: 0.94, z: 7.46}
+  m_LocalPosition: {x: 7.12, y: 3.07, z: 15.77}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3304,7 +3303,7 @@ Transform:
   m_GameObject: {fileID: 1512492561}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.21, y: 0.99, z: 9.45}
+  m_LocalPosition: {x: -17.65, y: 3.07, z: 9.45}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3699,7 +3698,7 @@ Transform:
   m_GameObject: {fileID: 1756519971}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.31, y: 1.56, z: -4.75}
+  m_LocalPosition: {x: 6.31, y: 3.07, z: -14.87}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

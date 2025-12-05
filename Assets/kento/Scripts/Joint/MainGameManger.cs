@@ -11,7 +11,8 @@ public class MainGameManger : MonoBehaviour
     [SerializeField] private Transform[] pos = default;         //生成位置
 
     private Shader shader;
- 
+    [SerializeField] private GameObject joinbj;
+
     void Start()
     {
         //インスタンスがない場合はreturn
@@ -39,8 +40,8 @@ public class MainGameManger : MonoBehaviour
 
             //id表示
         }
+        joinbj = GameObject.Find("joinedManager");
 
-       
     }
 
     // Update is called once per frame

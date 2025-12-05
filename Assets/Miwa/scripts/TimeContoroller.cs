@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+
 public class TImeController : MonoBehaviour
 {
     public Text Timetext;
@@ -16,6 +17,8 @@ public class TImeController : MonoBehaviour
 
     public Text winnerNameText;
 
+    [SerializeField] private GameObject joinbj;
+
 
     void Start()
     {
@@ -26,6 +29,8 @@ public class TImeController : MonoBehaviour
         {
             timeUpPanel.SetActive(false);
         }
+
+        joinbj = GameObject.Find("JoinedManager");
     }
 
     void Update()
@@ -104,5 +109,6 @@ public class TImeController : MonoBehaviour
         }
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneName);
+        Destroy(joinbj);
     }
 }

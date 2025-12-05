@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Materials.meta
 guid: f3e20c1861f65984bb9c09ccb7c69d14
+========
+guid: d2792fba2c00f78419bc58a185491354
+>>>>>>>> kento:Assets/Scripts.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

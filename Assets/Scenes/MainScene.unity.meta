@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/Scenes/MainScene.unity.meta
 guid: 89980259a54d9e34087195b6f8307691
+=======
+guid: da1c0f515c530a34f97a8afe713ee399
+>>>>>>> kento:Assets/NetcodeForEntitiesSetup/Scenes/Gameplay.unity.meta
 DefaultImporter:
   externalObjects: {}
   userData: 

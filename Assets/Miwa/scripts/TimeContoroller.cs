@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+
 public class TImeController : MonoBehaviour
 {
     public Text Timetext;
@@ -14,6 +15,10 @@ public class TImeController : MonoBehaviour
 
     public GameObject timeUpPanel;
 
+    public Text winnerNameText;
+
+    [SerializeField] private GameObject joinbj;
+
 
     void Start()
     {
@@ -24,6 +29,8 @@ public class TImeController : MonoBehaviour
         {
             timeUpPanel.SetActive(false);
         }
+
+        joinbj = GameObject.Find("JoinedManager");
     }
 
     void Update()
@@ -57,20 +64,25 @@ public class TImeController : MonoBehaviour
         if (isTimeUp) return;
 
         isTimeUp = true;
+       
+        string winnerInfoText = "";
 
         if (!string.IsNullOrEmpty(winnerName) && winnerName != "None (全員敗退)")
         {
-            Timetext.text = winnerName + " の勝利！";
+            
+           winnerInfoText = winnerName + " の勝利！";
         }
         else if (time <= 0)
         {
-            Timetext.text = "崩壊！！！";
-        }
-        else
-        {
-            Timetext.text = "ゲーム終了！";
+            
+            winnerInfoText = "制限時間オーバー";
         }
 
+       
+        if (winnerNameText != null)
+        {
+            winnerNameText.text = winnerInfoText;
+        }
         Time.timeScale = 0f;
 
         if (timeUpPanel != null)
@@ -81,7 +93,22 @@ public class TImeController : MonoBehaviour
 
     public void ResetGame()
     {
-        Time.timeScale = 1f;
+        if(timeUpPanel !=null)
+        {
+            timeUpPanel.SetActive(false);
+        }
+        Time.timeScale = 5f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void LoadTitleScene(string SceneName)
+    {
+        if(timeUpPanel !=null)
+        {
+            timeUpPanel.SetActive(false);
+        }
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneName);
+        Destroy(joinbj);
     }
 }

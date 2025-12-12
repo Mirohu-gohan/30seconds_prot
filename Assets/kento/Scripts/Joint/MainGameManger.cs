@@ -9,7 +9,10 @@ public class MainGameManger : MonoBehaviour
     [SerializeField] private GameObject playerPrefab = default; //Player
 
     [SerializeField] private Transform[] pos = default;         //生成位置
- 
+
+    private Shader shader;
+    [SerializeField] private GameObject joinbj;
+
     void Start()
     {
         //インスタンスがない場合はreturn
@@ -30,14 +33,15 @@ public class MainGameManger : MonoBehaviour
                 playerIndex: i,
                 pairWithDevice: devices[i]
              );
+
             //生成後この位置にセット
             obj.transform.position = pos[i].position;
             obj.transform.rotation = pos[i].rotation;
 
             //id表示
         }
+        joinbj = GameObject.Find("joinedManager");
 
-       
     }
 
     // Update is called once per frame

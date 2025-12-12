@@ -9,7 +9,6 @@ using UnityEngine.UI;
 public class PlayerJoinedManager : MonoBehaviour
 {
     [SerializeField] private InputAction joinAction = default;  //参加するときの入力
-    [SerializeField] private GameObject playerPrefab = default; //プレイヤー
     [SerializeField] private int maxPlayers = 4;　　　　　　　　//参加上限
     //----------
     [SerializeField] private Text device1text;                  //1デバイス名Text

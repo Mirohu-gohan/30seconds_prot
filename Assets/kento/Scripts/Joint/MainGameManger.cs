@@ -3,16 +3,22 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
+using System.Collections;
 
 public class MainGameManger : MonoBehaviour
 {
     [SerializeField] private GameObject playerPrefab = default; //Player
     [SerializeField] private GameObject botPrefab = default;    //Bot
     [SerializeField] private Transform[] pos = default;         //生成位置
+    [SerializeField] private GameObject timeUpPanel;
 
-   
+    IEnumerator Start()
+    {
+        yield return null; // 1フレーム待つ
+        timeUpPanel.gameObject.SetActive(false);
+    }
 
-    void Start()
+    void Awake()
     {
         //インスタンスがない場合はreturn
         if(PlayerDataHolder.Instance == null) { return; }

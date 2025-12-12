@@ -864,7 +864,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &198276234
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1143,6 +1143,7 @@ MonoBehaviour:
   isGameStarted: 0
   timeUpPanel: {fileID: 198276233}
   winnerNameText: {fileID: 1321868049}
+  joinbj: {fileID: 0}
 --- !u!4 &310675198
 Transform:
   m_ObjectHideFlags: 0
@@ -1466,12 +1467,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a066dc3bca91add4a8372991b4b35aac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 3736281241373610117, guid: 9ce5ec57db60e92418631bb97b12fa43, type: 3}
+  playerPrefab: {fileID: 3736281241373610117, guid: ff6f0e6431c32be49bf7a9284799a571, type: 3}
+  botPrefab: {fileID: 0}
   pos:
   - {fileID: 1092058510}
   - {fileID: 1512492562}
   - {fileID: 1153352480}
   - {fileID: 1756519972}
+  timeUpPanel: {fileID: 198276233}
 --- !u!114 &547826639
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1874,6 +1877,10 @@ PrefabInstance:
     - target: {fileID: 1111861546198766915, guid: e66787d700696b24b9600224cfce643e, type: 3}
       propertyPath: m_Name
       value: Spawner
+      objectReference: {fileID: 0}
+    - target: {fileID: 1111861546198766915, guid: e66787d700696b24b9600224cfce643e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1772771688016775720, guid: e66787d700696b24b9600224cfce643e, type: 3}
       propertyPath: prefab
@@ -2810,7 +2817,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -21.86}
-  m_SizeDelta: {x: 169.4, y: 60.3}
+  m_SizeDelta: {x: 169.4, y: 60.26}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &1447676291
 PrefabInstance:
@@ -3063,10 +3070,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3

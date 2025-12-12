@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 
 public class TImeController : MonoBehaviour
@@ -20,18 +21,25 @@ public class TImeController : MonoBehaviour
     [SerializeField] private GameObject joinbj;
 
 
-    void Start()
+
+
+     void Start()
     {
         Time.timeScale = 1f;
         isTimeUp = false;
         isGameStarted = false; // ‰Šúó‘Ô‚Å‚Í’â~
-        if (timeUpPanel != null)
-        {
-            timeUpPanel.SetActive(false);
-        }
-
         joinbj = GameObject.Find("JoinedManager");
     }
+    /* void Start()
+    {
+        panel();
+        Time.timeScale = 1f;
+        isTimeUp = false;
+        isGameStarted = false; // ‰Šúó‘Ô‚Å‚Í’â~
+        joinbj = GameObject.Find("JoinedManager");
+    }*/
+
+
 
     void Update()
     {

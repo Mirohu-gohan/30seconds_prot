@@ -22,8 +22,9 @@ public class PlayerController : MonoBehaviour
 
     [Header("パンチ設定")]
 
-    [SerializeField] private BoxCollider box;
-    [SerializeField] private float Power = 10.0f;
+    [SerializeField] private GameObject box;
+    private BoxCollider boxCollider;
+    //[SerializeField] private float Power = 10.0f;
     [SerializeField] private float WeakKnockbackForce = 0.5f; //弱パンチノックバック
     [SerializeField] private float StrongKnockbackForce = 5.0f;//強パンチノックバック
     private float curentknockbackForce = 0f;//現在のノックバック力
@@ -65,6 +66,7 @@ public class PlayerController : MonoBehaviour
     {
         if (context.performed)
         {
+            box.SetActive(true);
             isfinish = false;
             isPrese = true;
             isStrt = true;
@@ -98,7 +100,10 @@ public class PlayerController : MonoBehaviour
 
         rb = GetComponent<Rigidbody>();
 
-        box.enabled = false;
+        box.SetActive(false);
+        boxCollider = box.GetComponent<BoxCollider>();
+
+        boxCollider.enabled = false;
     }
 
     // Update is called once per frame
@@ -165,7 +170,8 @@ public class PlayerController : MonoBehaviour
         if (isfinish) { return; }
         isTackling = true;
 
-        box.enabled = true;
+       
+        boxCollider.enabled = true;
 
         Invoke("EndTackle", HitDuration);
 
@@ -180,7 +186,8 @@ public class PlayerController : MonoBehaviour
         {
             isfinish = true;
         }
-        box.enabled = false;
+        box.SetActive(false);
+        boxCollider.enabled = false;
         isMax = false;
     }
 

@@ -29,7 +29,7 @@ public class PowerMeter : MonoBehaviour
         }
         else if (!pc.isStrt)
         {
-            MeterImage.fillAmount -= speed * Time.deltaTime;
+            MeterImage.fillAmount = 0;
         }
 
         // 0〜1 の範囲に制限

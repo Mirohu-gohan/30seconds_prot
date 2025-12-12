@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6455337439247655984}
   - component: {fileID: 91584108509653660}
   m_Layer: 0
-  m_Name: NewMeteor
+  m_Name: NewMeteor_ver2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

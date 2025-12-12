@@ -7,6 +7,7 @@ TagManager:
   - Stage
   - Bound
   - Ball
+  - Meteor
   layers:
   - Default
   - TransparentFX

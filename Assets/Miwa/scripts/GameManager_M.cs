@@ -1,29 +1,44 @@
 using UnityEngine;
 using System.Collections.Generic;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
+// IGameModeインターフェースと各モードクラスが事前に定義されている必要があります！
 
 public class GameManager_M : MonoBehaviour
 {
+    // ★ ステートパターンに必要な変数を追加
+    private IGameMode _currentMode;
+    public enum Mode { None, TimeLimit, Survival, Score, SuddenDeath, GameOver }
+    public Mode CurrentModeState { get; private set; } = Mode.None;
+
+    // ★ Singletonとして機能させる
+    public static GameManager_M Instance { get; private set; }
+
     [Header("UI設定")]
+    // UIの参照はGameManagerに持たせ、各モードクラスに渡す形にする
     public Text timerTextUI;
 
     [Header("境界設定")]
-    [SerializeField]
-    private float deathYCoordinate = -10.0f;
+    // 境界チェックは生存系モードのUpdateで呼び出す
+    [SerializeField] private float deathYCoordinate = -10.0f;
 
-    [Header("参照")]
-    public TImeController timeController;
+    // ★ TImeControllerへの直接参照は削除する（TimeControllerの役割はモードクラスが引き継ぐため）
 
-    private List<GameObject> activePlayers = new List<GameObject>(); // 監視リスト
-    private bool gameOver = false;
+    private List<GameObject> activePlayers = new List<GameObject>();
+    // private bool gameOver = false; // 終了判定はCurrentModeStateで管理する
     private bool isGameStarted = false;
 
     void Awake()
     {
-        if (timeController == null)
+        if (Instance == null)
         {
-            timeController = Object.FindFirstObjectByType<TImeController>();
+            Instance = this;
+            // DontDestroyOnLoad(gameObject); // シーンをまたぐ場合
+        }
+        else
+        {
+            Destroy(gameObject);
         }
     }
 
@@ -34,22 +49,35 @@ public class GameManager_M : MonoBehaviour
 
     void StartGameLogic()
     {
-        // プレイヤーはスポーン時に自動でリストに登録されるため、ここではリストチェックやスキャンは行わない。
-
         isGameStarted = true;
-
-        // TimeControllerの時間をスタート
-        if (timeController != null)
-        {
-            timeController.StartGame();
-        }
-        Debug.Log("ゲーム開始！プレイヤーの参加を待っています。");
+        // ★初期モードを切り替え（例: サバイバルモードから開始）
+        ChangeMode(new SurvivalMode(timerTextUI, 180f)); // 3分サバイバルで開始
+        Debug.Log("ゲーム開始！");
     }
 
-    // ★★★ 追加: プレイヤーがスポーン時に自分を登録するためのメソッド ★★★
-    /// <summary>
-    /// 新しくスポーンされたプレイヤーを監視リストに追加する
-    /// </summary>
+    void Update()
+    {
+        // ★現在のモードのUpdateを呼び出す
+        _currentMode?.OnUpdate();
+    }
+
+    // --- モード管理（ステートパターン） ---
+    public void ChangeMode(IGameMode newMode)
+    {
+        _currentMode?.OnExit();
+        _currentMode = newMode;
+        _currentMode.OnEnter();
+
+        // Enumの更新ロジックはGameManagerに残す
+        if (newMode is SurvivalMode) CurrentModeState = Mode.Survival;
+        else if (newMode is SuddenDeathMode) CurrentModeState = Mode.SuddenDeath;
+        else if (newMode is GameOverMode) CurrentModeState = Mode.GameOver;
+        // ... 他のモードも追加 ...
+
+        Debug.Log($"モード変更: {CurrentModeState}");
+    }
+
+    // --- プレイヤー管理（コアロジック） ---
     public void RegisterPlayer(GameObject newPlayer)
     {
         if (newPlayer != null && !activePlayers.Contains(newPlayer))
@@ -59,69 +87,65 @@ public class GameManager_M : MonoBehaviour
         }
     }
 
-    // Update()、CheckYBoundary()、HandleWin() は基本的に変更なし。
-    void Update()
+    // Y境界チェックはモードによって必要/不要が変わるため、外部から呼び出す形に修正
+    public void CheckAndDestroyBoundary(GameObject player, int indexInList)
     {
-        if (!isGameStarted || gameOver) return;
-
-        CheckYBoundary();
-        CheckWinCondition();
+        if (player.transform.position.y < deathYCoordinate)
+        {
+            DestroyPlayer(player, indexInList);
+        }
     }
 
-    void CheckYBoundary()
+    private void DestroyPlayer(GameObject playerToDestroy, int indexInList)
+    {
+        Debug.Log(playerToDestroy.name + " がY座標境界を下回り、破壊されました。");
+        Destroy(playerToDestroy);
+        // リストからの削除は、PlayerEliminated()を呼び出す前に別メソッドとして処理するのが安全
+        activePlayers.RemoveAt(indexInList);
+
+        // ★プレイヤーが減ったことを現在のモードに通知
+        OnPlayerEliminated();
+    }
+
+    // プレイヤー排除時の通知メソッド (CheckBoundary/PlayerHealthから呼ばれる)
+    public void OnPlayerEliminated()
+    {
+        // プレイヤーが減ったことを現在のモードに通知し、勝利判定を任せる
+        if (_currentMode is SurvivalMode survivalMode)
+        {
+            survivalMode.CheckWinCondition(activePlayers.Count);
+        }
+        // ... ScoreModeやTimeLimitModeの場合は処理しないか、別の判定を行う ...
+    }
+
+    // Y境界チェックロジックをGameManagerに残し、モード側で呼び出す形にする
+    public void RunBoundaryCheck()
     {
         for (int i = activePlayers.Count - 1; i >= 0; i--)
         {
             GameObject player = activePlayers[i];
 
-            if (player == null)
+            if (player == null) // オブジェクトが外部で破壊された場合
             {
                 activePlayers.RemoveAt(i);
                 continue;
             }
 
-            if (player.transform.position.y < deathYCoordinate)
-            {
-                DestroyPlayer(player, i);
-            }
+            CheckAndDestroyBoundary(player, i);
         }
     }
 
-    void DestroyPlayer(GameObject playerToDestroy, int indexInList)
+    // ★★★ TimeExpiredForSurvival() はそのままGameManagerに残し、
+    // SurvivalModeから呼び出させることで、サドンデス判定を一元化する。 ★★★
+    public void TimeExpiredForSurvival()
     {
-        Debug.Log(playerToDestroy.name + " がY座標境界を下回り、破壊されました。");
-        Destroy(playerToDestroy);
-        activePlayers.RemoveAt(indexInList);
-    }
-
-    void CheckWinCondition()
-    {
-        // プレイヤーが一人以下になったらゲーム終了
-        if (activePlayers.Count <= 1 && activePlayers.Count > 0) // 1人残って勝利
+        if (activePlayers.Count >= 2)
         {
-            gameOver = true;
-            string winnerName = activePlayers[0].name;
-            HandleWin(winnerName);
-        }
-        else if (activePlayers.Count == 0 && isGameStarted) // 全員敗退
-        {
-            gameOver = true;
-            HandleWin("None (全員敗退)");
-        }
-    }
-
-    void HandleWin(string winnerName)
-    {
-        if (timeController != null)
-        {
-            timeController.TimeUp(winnerName);
+            ChangeMode(new SuddenDeathMode());
         }
         else
         {
-            Time.timeScale = 0f;
+            ChangeMode(new GameOverMode());
         }
     }
-
-    // RefreshPlayerList() は完全に削除（動的スポーンのため不要）
-    // void RefreshPlayerList() { ... }
 }

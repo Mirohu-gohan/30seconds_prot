@@ -96,7 +96,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d677c2fa374ebfa4b8b8bc0bec625079, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Smoke: {fileID: 857878921307099958, guid: fe0af6f12be37f54ba30606b820e4ebc, type: 3}
+  Smoke: {fileID: 7756603251397503625, guid: 8bfed1cff43597548973c637cd08efcf, type: 3}
   waitTime: 2
   shrinkDuration: 1
   particlesToRemove:

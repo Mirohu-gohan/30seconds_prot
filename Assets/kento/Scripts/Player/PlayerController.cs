@@ -50,6 +50,8 @@ public class PlayerController : MonoBehaviour
     private int playerID; //PlayerID
     private PlayerInput playerInput; //PlayerInput
 
+    private Animator animator;
+
     private void Awake()
     {
         speed2 = speed * ChargeMoveSpeedRate;
@@ -70,13 +72,24 @@ public class PlayerController : MonoBehaviour
             isfinish = false;
             isPrese = true;
             isStrt = true;
+
+            animator.SetBool("Charge",true);
         }
         if (context.canceled)
         {
+            animator.SetBool("Charge", false);
             isPrese = false;
             if (isStrt)
             {
                 Invoke("Panti", wait);
+                if (isMax)
+                {
+                    animator.SetBool("AtackKyou", true);
+                }
+                else if (!isMax)
+                {
+                    animator.SetBool("AtackJaku", true);
+                }
             }
 
             isStrt = false;
@@ -102,6 +115,7 @@ public class PlayerController : MonoBehaviour
 
         box.SetActive(false);
         boxCollider = box.GetComponent<BoxCollider>();
+        animator = GetComponentInChildren<Animator>();
 
         boxCollider.enabled = false;
     }
@@ -110,6 +124,12 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
             Move();
+        if(!isfinish)
+        {
+            float mag = inputVer.magnitude;
+            animator.SetFloat("speed", mag);
+        }
+        
 
         if (isStrt)
         {
@@ -185,10 +205,13 @@ public class PlayerController : MonoBehaviour
         if (isMax)
         {
             isfinish = true;
+            
         }
         box.SetActive(false);
         boxCollider.enabled = false;
         isMax = false;
+        animator.SetBool("AtackKyou", false);
+        animator.SetBool("AtackJaku", false);
     }
 
     private void OnTriggerEnter(Collider other)

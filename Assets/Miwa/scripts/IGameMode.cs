@@ -2,14 +2,10 @@ using UnityEngine;
 
 public class IGameMode : MonoBehaviour
 {
-    public interface Igamemode
+    public interface IGamemode
     {
-        //モード開始時の初期の設定
-        void OnEnter();
-        //モード実行中の毎フレーム処理
-        void OnUpdate();
-        //モード終了時のクリーンアップ
-        void OnExit();
-
+        void OnEnter();  // モード開始時の初期設定
+        void OnUpdate(); // モード実行中の毎フレーム処理
+        void OnExit();   // モード終了時のクリーンアップ
     }
 }

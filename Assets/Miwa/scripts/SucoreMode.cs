@@ -1,19 +1,17 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class ScoreMode : IGameMode
 {
-    // スコア目標
-    private int goalScore = 1000;
-    // 時間制限
-    private float timeLimit = 300f; // 5分制限
-
+    private float timeLimit = 300f;
+    private int goalScore = 10;
     private float currentTime;
     private Text timerText;
 
-    // スコアは静的変数で管理し、外部から加算できるようにする
-    public static int CurrentScore { get; private set; }
+    public static Dictionary<GameObject, int> PlayerScores { get; private set; } = new Dictionary<GameObject, int>();
+    public static GameObject LastAttacker { get; private set; } // 落下させたプレイヤーの攻撃者
 
     public ScoreMode(Text uiText)
     {
@@ -23,45 +21,50 @@ public class ScoreMode : IGameMode
     public void OnEnter()
     {
         currentTime = timeLimit;
-        CurrentScore = 0;
+        PlayerScores.Clear();
+        // ★ GameManagerのactivePlayersリストからスコアを初期化するのが理想 ★
+
         Time.timeScale = 1f;
-        Debug.Log($"Score Mode: 目標 {goalScore}点、制限時間 {timeLimit}秒で開始");
-        // ScoreMode専用UI（スコアボード）の有効化
+        Debug.Log("Score Mode: 開始");
     }
 
     public void OnUpdate()
     {
+        // 落下判定は有効
         GameManager_M.Instance.RunBoundaryCheck();
 
-        // 1. 時間制限チェック
-        currentTime -= Time.deltaTime;
-        var span = new TimeSpan(0, 0, (int)Mathf.Max(0, currentTime));
-        timerText.text = span.ToString(@"mm\:ss");
+        // ... (時間管理とUI更新ロジックは省略) ...
 
         if (currentTime <= 0)
         {
-            Debug.Log("Score Mode: 時間切れでゲーム終了");
             GameManager_M.Instance.ChangeMode(new GameOverMode());
             return;
         }
 
-        // 2. スコア目標チェック
-        if (CurrentScore >= goalScore)
+        // スコア目標チェック (省略 - 最高得点者判定ロジックが必要)
+    }
+
+    public void OnExit() { /* ... */ }
+
+    // --- スコア処理メソッド ---
+
+    // ★ 相手の攻撃による場外落下時に呼ばれる（攻撃者に+1点）
+    public static void AddScoreForKnockout(GameObject attacker)
+    {
+        if (PlayerScores.ContainsKey(attacker))
         {
-            Debug.Log("Score Mode: スコア目標達成でゲーム終了");
-            GameManager_M.Instance.ChangeMode(new GameOverMode());
+            PlayerScores[attacker] += 1;
+            Debug.Log($"【Knockout】{attacker.name}: +1点. 現在スコア: {PlayerScores[attacker]}");
         }
     }
 
-    public void OnExit()
+    // ★ 自滅・地形破壊による落下時に呼ばれる（自身に-1点）
+    public static void SubtractScoreForSelfDestruct(GameObject self)
     {
-        // ...
-    }
-
-    // 外部からスコアを加算するためのメソッド（例: 敵を倒した時などに呼び出す）
-    public static void AddScore(int amount)
-    {
-        CurrentScore += amount;
-        Debug.Log($"Score Updated: {CurrentScore}");
+        if (PlayerScores.ContainsKey(self))
+        {
+            PlayerScores[self] -= 1;
+            Debug.Log($"【自滅】{self.name}: -1点. 現在スコア: {PlayerScores[self]}");
+        }
     }
 }

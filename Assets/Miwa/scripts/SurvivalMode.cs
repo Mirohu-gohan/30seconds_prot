@@ -1,34 +1,35 @@
 using UnityEngine;
+using System;
 using UnityEngine.UI;
 
 public class SurvivalMode : IGameMode
 {
-    // TimeControllerの代わりに、モード内で時間を管理
-    private float timeLimit;
+    private float roundTimeLimit = 20f;
     private float currentTime;
     private Text timerText;
 
-    public SurvivalMode(Text uiText, float limit)
+    public SurvivalMode(Text uiText)
     {
         timerText = uiText;
-        timeLimit = limit;
     }
 
     public void OnEnter()
     {
-        currentTime = timeLimit;
-        // ... UIやアセットのロード ...
+        currentTime = roundTimeLimit;
         Time.timeScale = 1f;
+        Debug.Log("Survival Mode: 開始 (ラウンド制、落下無効)");
+        // 落下による排除は行わないため、PlayerHealthにその旨を伝達する設定があればここでON
     }
 
     public void OnUpdate()
     {
-        // Y境界チェックをGameManagerに要求
-        GameManager_M.Instance.RunBoundaryCheck();
+        // 落下による排除はしないため、RunBoundaryCheck()は呼び出さない
 
-        // 時間の管理
+        // 人数チェックは常に行う (CheckWinConditionForMode()はOnPlayerEliminatedから呼ばれる)
+
         currentTime -= Time.deltaTime;
-        // UI更新ロジック (TimeSpan使用) ...
+
+        // UI更新ロジック (省略) ...
 
         if (currentTime <= 0)
         {
@@ -37,23 +38,5 @@ public class SurvivalMode : IGameMode
         }
     }
 
-    // プレイヤーが減った時にGameManagerから呼ばれる判定メソッド
-    public void CheckWinCondition(int currentCount)
-    {
-        // 1人残って勝利
-        if (currentCount == 1)
-        {
-            GameManager_M.Instance.ChangeMode(new GameOverMode());
-        }
-        // 全員敗退
-        else if (currentCount == 0)
-        {
-            GameManager_M.Instance.ChangeMode(new GameOverMode());
-        }
-    }
-
-    public void OnExit()
-    {
-        // ...
-    }
+    public void OnExit() { /* ... */ }
 }

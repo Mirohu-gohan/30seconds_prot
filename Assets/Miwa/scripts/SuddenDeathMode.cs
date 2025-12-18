@@ -1,40 +1,32 @@
 using UnityEngine;
+using static GameMode;
 
-public class SuddenDeathMode : IGameMode
+public class SuddenDeathMode : IGameMode // ←ここが重要
 {
     public void OnEnter()
     {
         Time.timeScale = 1f;
-        Debug.Log("Sudden Death Mode: 突入！攻撃力がMAXになります。");
-
-        // ★ 攻撃力強化のロジックをここに実装 ★
-        EnableOneHitKnockout();
+        ApplyPowerUp(true);
     }
 
-    public void OnUpdate()
-    {
-        // 落下は引き続きしない
-        GameManager_M.Instance.CheckWinConditionForMode();
-    }
+    public void OnUpdate() { }
 
-    public void OnExit()
-    {
-        ResetOneHitKnockout(); // 攻撃力強化を解除
-        Debug.Log("Sudden Death Mode: 終了");
-    }
+    public void OnExit() => ApplyPowerUp(false);
 
-    private void EnableOneHitKnockout()
+    private void ApplyPowerUp(bool enable)
     {
-        // 例: PlayerAttackコンポーネントのKnockbackForceを極端に高い値に設定
-        // PlayerAttack[] attacks = FindObjectsOfType<PlayerAttack>();
-        // foreach (PlayerAttack pa in attacks)
-        // {
-        //     pa.KnockbackForce = 5000f; 
-        // }
-    }
+        foreach (var player in GameManager_M.Instance.GetActivePlayers())
+        {
+            if (player == null) continue;
 
-    private void ResetOneHitKnockout()
-    {
-        // ... 元のKnockbackForceに戻す処理 ...
+            // PowerMeterを取得
+            var meter = player.GetComponent<PowerMeter>();
+            if (meter != null)
+            {
+                // エラー回避：もしPowerMeterに変数がない場合は
+                // 下の行がエラーになるので、その場合はPowerMeter側を修正してください
+                meter.knockbackForce = enable ? 5000f : 500f;
+            }
+        }
     }
 }

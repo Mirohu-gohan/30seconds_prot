@@ -1,11 +1,11 @@
 using UnityEngine;
-
-public class IGameMode : MonoBehaviour
+public class GameMode : MonoBehaviour
 {
-    public interface IGamemode
+
+    public interface IGameMode
     {
-        void OnEnter();  // モード開始時の初期設定
-        void OnUpdate(); // モード実行中の毎フレーム処理
-        void OnExit();   // モード終了時のクリーンアップ
+        void OnEnter();
+        void OnUpdate();
+        void OnExit();
     }
 }

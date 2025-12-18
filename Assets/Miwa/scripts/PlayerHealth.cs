@@ -2,57 +2,45 @@ using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
 {
-    // 仮のHP
+    [Header("ステータス")]
     public float currentHealth = 100f;
 
     void Start()
     {
-        // スポーン時に必ずGameManagerに登録
-        GameManager_M.Instance.RegisterPlayer(gameObject);
+        if (GameManager_M.Instance != null)
+        {
+            GameManager_M.Instance.RegisterPlayer(gameObject);
+        }
     }
 
-    // 外部（SuddenDeathModeなど）からダメージを受け付ける
+    // 外部（サドンデスでのダメージなど）からHPを減らす時に呼ぶ
     public void TakeDamage(float damage)
     {
         currentHealth -= damage;
+
         if (currentHealth <= 0)
         {
-            Die(true); // HPによる死亡
+            Die();
         }
     }
 
-    // 場外に落下したときにGameManagerから呼ばれるメソッド
+    // 落下した時にGameManagerのRunBoundaryCheckから呼ばれる
     public void OnFallOut()
     {
-        if (GameManager_M.Instance.CurrentModeState == GameManager_M.Mode.Score)
-        {
-            // ScoreModeの場合、自滅/Knockout判定を行う
-
-            // 誰かから攻撃を受けた直後ならKnockoutと判定
-            // (LastAttackerの判定ロジックが別途必要)
-
-            // 例: 攻撃者がいれば加算し、いなければ減算
-            // if (ScoreMode.LastAttacker != null)
-            // {
-            //     ScoreMode.AddScoreForKnockout(ScoreMode.LastAttacker);
-            // }
-            // else
-            // {
-            ScoreMode.SubtractScoreForSelfDestruct(gameObject);
-            // }
-        }
-
-        // 最終的にオブジェクトを破壊し、人数を減らす
-        Die(false);
+        // 落下 = 即脱落として処理します
+        Die();
     }
 
-    private void Die(bool forcedElimination)
+    // 死亡・脱落処理の共通化
+    private void Die()
     {
         if (GameManager_M.Instance != null)
         {
+            // GameManagerに「一人が脱落した」ことを通知して勝敗判定を行わせる
             GameManager_M.Instance.OnPlayerEliminated();
         }
 
+        // 自身を消滅させる
         Destroy(gameObject);
     }
 }

@@ -1,127 +1,165 @@
 using UnityEngine;
 using System.Collections.Generic;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
+using static GameMode;
 
 public class GameManager_M : MonoBehaviour
 {
+    public static GameManager_M Instance { get; private set; }
+
+    // --- 静的変数（リロード後も保持される） ---
+    private static bool _isSuddenDeathNext = false;
+    private static List<int> _qualifiedIndices = new List<int>(); // 参加資格のあるインデックス
+
     [Header("UI設定")]
     public Text timerTextUI;
+    public GameObject resultCanvas;
 
-    [Header("境界設定")]
-    [SerializeField]
-    private float deathYCoordinate = -10.0f;
+    [Header("ゲーム設定")]
+    public float survivalTimeLimit = 20.0f;
+    public float deathYCoordinate = -10.0f;
 
-    [Header("参照")]
-    public TImeController timeController;
+    public enum Mode { Survival, SuddenDeath, GameOver }
+    public Mode CurrentModeState;
 
-    private List<GameObject> activePlayers = new List<GameObject>(); // 監視リスト
-    private bool gameOver = false;
-    private bool isGameStarted = false;
+    private IGameMode _currentMode;
+    private List<GameObject> activePlayers = new List<GameObject>();
 
     void Awake()
     {
-        if (timeController == null)
-        {
-            timeController = Object.FindFirstObjectByType<TImeController>();
-        }
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
     }
 
     void Start()
     {
-        StartGameLogic();
-    }
+        Time.timeScale = 1f;
+        if (resultCanvas != null) resultCanvas.SetActive(false);
 
-    void StartGameLogic()
-    {
-        // プレイヤーはスポーン時に自動でリストに登録されるため、ここではリストチェックやスキャンは行わない。
-
-        isGameStarted = true;
-
-        // TimeControllerの時間をスタート
-        if (timeController != null)
+        // サドンデス開始の判定
+        if (_isSuddenDeathNext)
         {
-            timeController.StartGame();
-        }
-        Debug.Log("ゲーム開始！プレイヤーの参加を待っています。");
-    }
-
-    // ★★★ 追加: プレイヤーがスポーン時に自分を登録するためのメソッド ★★★
-    /// <summary>
-    /// 新しくスポーンされたプレイヤーを監視リストに追加する
-    /// </summary>
-    public void RegisterPlayer(GameObject newPlayer)
-    {
-        if (newPlayer != null && !activePlayers.Contains(newPlayer))
-        {
-            activePlayers.Add(newPlayer);
-            Debug.Log("プレイヤー登録完了。現在監視プレイヤー数: " + activePlayers.Count);
-        }
-    }
-
-    // Update()、CheckYBoundary()、HandleWin() は基本的に変更なし。
-    void Update()
-    {
-        if (!isGameStarted || gameOver) return;
-
-        CheckYBoundary();
-        CheckWinCondition();
-    }
-
-    void CheckYBoundary()
-    {
-        for (int i = activePlayers.Count - 1; i >= 0; i--)
-        {
-            GameObject player = activePlayers[i];
-
-            if (player == null)
-            {
-                activePlayers.RemoveAt(i);
-                continue;
-            }
-
-            if (player.transform.position.y < deathYCoordinate)
-            {
-                DestroyPlayer(player, i);
-            }
-        }
-    }
-
-    void DestroyPlayer(GameObject playerToDestroy, int indexInList)
-    {
-        Debug.Log(playerToDestroy.name + " がY座標境界を下回り、破壊されました。");
-        Destroy(playerToDestroy);
-        activePlayers.RemoveAt(indexInList);
-    }
-
-    void CheckWinCondition()
-    {
-        // プレイヤーが一人以下になったらゲーム終了
-        if (activePlayers.Count <= 1 && activePlayers.Count > 0) // 1人残って勝利
-        {
-            gameOver = true;
-            string winnerName = activePlayers[0].name;
-            HandleWin(winnerName);
-        }
-        else if (activePlayers.Count == 0 && isGameStarted) // 全員敗退
-        {
-            gameOver = true;
-            HandleWin("None (全員敗退)");
-        }
-    }
-
-    void HandleWin(string winnerName)
-    {
-        if (timeController != null)
-        {
-            timeController.TimeUp(winnerName);
+            ChangeMode(new SuddenDeathMode());
+            _isSuddenDeathNext = false;
         }
         else
         {
-            Time.timeScale = 0f;
+            _qualifiedIndices.Clear();
+            ChangeMode(new SurvivalMode(timerTextUI, survivalTimeLimit));
         }
     }
 
-    // RefreshPlayerList() は完全に削除（動的スポーンのため不要）
-    // void RefreshPlayerList() { ... }
+    void Update()
+    {
+        if (_currentMode != null) _currentMode.OnUpdate();
+        CheckPlayersFalling();
+    }
+
+    public void RegisterPlayer(GameObject p, int index)
+    {
+        // サドンデスモード中、参加リストに自分のインデックスがなければ即座に削除
+        if (CurrentModeState == Mode.SuddenDeath && !_qualifiedIndices.Contains(index))
+        {
+            Debug.Log($"プレイヤー {index} は参加資格がないため削除します");
+            Destroy(p);
+            return;
+        }
+
+        if (!activePlayers.Contains(p)) activePlayers.Add(p);
+    }
+
+    public void OnPlayerEliminated(GameObject eliminatedPlayer)
+    {
+        // リストから即座に削除（Destroy完了を待たない）
+        if (activePlayers.Contains(eliminatedPlayer))
+        {
+            activePlayers.Remove(eliminatedPlayer);
+        }
+
+        // 念のため null になった要素も掃除
+        activePlayers.RemoveAll(p => p == null);
+
+        Debug.Log("残り人数: " + activePlayers.Count);
+
+        // 生き残りが1人になったらゲームオーバー
+        if (activePlayers.Count == 1)
+        {
+            string winnerName = activePlayers[0].name;
+            // GameOverMode に勝者の名前を渡して切り替え
+            ChangeMode(new GameOver(winnerName));
+        }
+        // 同時落下で 0 人になった場合（サドンデス中など）
+        else if (activePlayers.Count == 0)
+        {
+            ChangeMode(new GameOver("DRAW"));
+        }
+    }
+
+    // 2. 落下チェック部分も修正
+    private void CheckPlayersFalling()
+    {
+        if (CurrentModeState == Mode.GameOver) return;
+
+        for (int i = activePlayers.Count - 1; i >= 0; i--)
+        {
+            GameObject player = activePlayers[i];
+            if (player != null && player.transform.position.y < deathYCoordinate)
+            {
+                // 脱落を通知してから破壊する
+                OnPlayerEliminated(player);
+                Destroy(player);
+            }
+        }
+    }
+
+    public void TimeExpiredForSurvival()
+    {
+        activePlayers.RemoveAll(p => p == null);
+        if (activePlayers.Count >= 2)
+        {
+            // 生き残っている人たちのインデックスを保存
+            List<int> survivors = new List<int>();
+            foreach (var p in activePlayers)
+            {
+                var health = p.GetComponent<PlayerHealth>();
+                if (health != null) survivors.Add(health.playerIndex);
+            }
+            TriggerSuddenDeath(survivors);
+        }
+        else
+        {
+            ChangeMode(new GameOverMode());
+        }
+    }
+
+    private void TriggerSuddenDeath(List<int> qualifiers)
+    {
+        _isSuddenDeathNext = true;
+        _qualifiedIndices = new List<int>(qualifiers);
+        RestartGame();
+    }
+
+    public void ChangeMode(IGameMode newMode)
+    {
+        if (_currentMode != null) _currentMode.OnExit();
+        _currentMode = newMode;
+        if (_currentMode != null) _currentMode.OnEnter();
+
+        if (newMode is SurvivalMode) CurrentModeState = Mode.Survival;
+        else if (newMode is SuddenDeathMode) CurrentModeState = Mode.SuddenDeath;
+        else if (newMode is GameOverMode) CurrentModeState = Mode.GameOver;
+    }
+
+    public List<GameObject> GetActivePlayers() { activePlayers.RemoveAll(p => p == null); return activePlayers; }
+
+    public void ShowResultUI(string name)
+    {
+        if (resultCanvas != null) resultCanvas.SetActive(true);
+        // ...ボタン選択処理など
+    }
+
+    public void RestartGame() => SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    public void BackToJoinScene(string s) => SceneManager.LoadScene(s);
 }

@@ -1,7 +1,7 @@
 using UnityEngine;
 using static GameMode;
 
-public class GameOverMode : IGameMode // ©•K‚¸u: IGameModev‚ğ‚Â‚¯‚é
+public class GameOverMode : IGameMode
 {
     public void OnEnter()
     {

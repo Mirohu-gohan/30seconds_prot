@@ -1,29 +1,29 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerHealth : MonoBehaviour
 {
+    public int playerIndex; 
+
     void Start()
     {
-        // 1. ゲーム開始時、自分を GameManager に登録する
+        // PlayerInputコンポーネントからインデックスを取得（もしあれば）
+        var input = GetComponent<PlayerInput>();
+        if (input != null) playerIndex = input.playerIndex;
+
+        // インデックスを添えてGameManagerに登録
         if (GameManager_M.Instance != null)
         {
-            GameManager_M.Instance.RegisterPlayer(gameObject);
-            Debug.Log(gameObject.name + " を登録しました");
+            GameManager_M.Instance.RegisterPlayer(gameObject, playerIndex);
         }
     }
-
-    // 落下した時に GameManager から呼ばれる
     public void OnFallOut()
     {
-        Debug.Log(gameObject.name + " が落下しました！");
-
-        // 2. GameManager に「自分が脱落した」ことを伝える
+        // 自分自身を引数に入れて呼ぶ
         if (GameManager_M.Instance != null)
         {
-            GameManager_M.Instance.OnPlayerEliminated();
+            GameManager_M.Instance.OnPlayerEliminated(gameObject);
         }
-
-        // 3. 自分を消去する
         Destroy(gameObject);
     }
 }

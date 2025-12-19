@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Meteor : MonoBehaviour
+public class Meteor_ver2 : MonoBehaviour
 {
     public GameObject Smoke;
 
@@ -20,15 +20,13 @@ public class Meteor : MonoBehaviour
 
     void Update()
     {
+
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Stage"))
         {
-            // 接触したオブジェクトを消去
-            Destroy(collision.gameObject);
-
             // 煙エフェクトを生成
             Vector3 contactPoint = collision.contacts[0].point;
             if (Smoke != null)

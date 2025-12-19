@@ -4920,6 +4920,7 @@ GameObject:
   - component: {fileID: 8715490703360267247}
   - component: {fileID: 8468695593273049502}
   - component: {fileID: 452152350030870630}
+  - component: {fileID: 2015386275013158282}
   m_Layer: 0
   m_Name: Impact
   m_TagString: Untagged
@@ -9745,6 +9746,19 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &2015386275013158282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7756603251397503625}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15268f96ab66f1540a448b589403c55d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lifetime: 5
 --- !u!1 &7816301357945901196
 GameObject:
   m_ObjectHideFlags: 0

@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 91584108509653660}
   m_Layer: 0
   m_Name: NewMeteor
-  m_TagString: Untagged
+  m_TagString: Meteor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -122,10 +122,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f180212f0f78cf244a1d2da09d2ce080, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Smoke: {fileID: 0}
+  Smoke: {fileID: 7756603251397503625, guid: 8bfed1cff43597548973c637cd08efcf, type: 3}
   waitTime: 2
   shrinkDuration: 1
-  particlesToRemove: []
+  particlesToRemove:
+  - {fileID: 8468695593273049502, guid: 8bfed1cff43597548973c637cd08efcf, type: 3}
+  - {fileID: 290063089855108959}
+  - {fileID: 4602624932961153685}
+  - {fileID: 1143919869731198206}
+  - {fileID: 4956517565113213347}
+  - {fileID: 2043358426936803809}
+  - {fileID: 7480023949057862507}
+  - {fileID: 2214413364555944175}
 --- !u!114 &91584108509653660
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -280,6 +288,11 @@ PrefabInstance:
 --- !u!198 &290063089855108959 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 8763542848167345994, guid: b071f107590f4024db515f5f18864c10, type: 3}
+  m_PrefabInstance: {fileID: 9050222173799180309}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &1143919869731198206 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 8248584689032314091, guid: b071f107590f4024db515f5f18864c10, type: 3}
   m_PrefabInstance: {fileID: 9050222173799180309}
   m_PrefabAsset: {fileID: 0}
 --- !u!198 &2043358426936803809 stripped

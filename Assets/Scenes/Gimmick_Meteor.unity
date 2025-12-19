@@ -1042,6 +1042,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6455337439247655984, guid: c3e58a5e401444641bf0c2d454947745, type: 3}
+      propertyPath: particlesToRemove.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6455337439247655984, guid: c3e58a5e401444641bf0c2d454947745, type: 3}
+      propertyPath: 'particlesToRemove.Array.data[1]'
+      value: 
+      objectReference: {fileID: 8468695593273049502, guid: 8bfed1cff43597548973c637cd08efcf, type: 3}
     - target: {fileID: 8838828563487596820, guid: c3e58a5e401444641bf0c2d454947745, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

@@ -1172,8 +1172,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timerTextUI: {fileID: 1064052069}
+  resultCanvas: {fileID: 0}
+  survivalTimeLimit: 20
   deathYCoordinate: -10
-  timeController: {fileID: 310675197}
+  CurrentModeState: 0
+  suddenDeathKnockbackMultiplier: 2
+  currentKnockbackMultiplier: 1
 --- !u!1 &356226211
 GameObject:
   m_ObjectHideFlags: 0
@@ -1885,7 +1889,11 @@ PrefabInstance:
     - target: {fileID: 1772771688016775720, guid: e66787d700696b24b9600224cfce643e, type: 3}
       propertyPath: prefab
       value: 
-      objectReference: {fileID: 4049848038291858225, guid: c3e58a5e401444641bf0c2d454947745, type: 3}
+      objectReference: {fileID: 4049848038291858225, guid: 3e70f513b78eef6448d917028ce81396, type: 3}
+    - target: {fileID: 1772771688016775720, guid: e66787d700696b24b9600224cfce643e, type: 3}
+      propertyPath: moveSpeed
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 1772771688016775720, guid: e66787d700696b24b9600224cfce643e, type: 3}
       propertyPath: spawnInterval
       value: 0.5
@@ -1945,8 +1953,41 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1111861546198766915, guid: e66787d700696b24b9600224cfce643e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 979339121}
   m_SourcePrefab: {fileID: 100100000, guid: e66787d700696b24b9600224cfce643e, type: 3}
+--- !u!1 &979339120 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1111861546198766915, guid: e66787d700696b24b9600224cfce643e, type: 3}
+  m_PrefabInstance: {fileID: 979339119}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &979339121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 979339120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecb4bd97994c6f649b53e35c90a7a189, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObjectSpawner: {fileID: 979339122}
+  delayTime: 3
+--- !u!114 &979339122 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1772771688016775720, guid: e66787d700696b24b9600224cfce643e, type: 3}
+  m_PrefabInstance: {fileID: 979339119}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 979339120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10fae22e9435e7542ab729ec5bf5eb1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1064052066
 GameObject:
   m_ObjectHideFlags: 0

@@ -1116,7 +1116,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 310675198}
-  - component: {fileID: 310675197}
   - component: {fileID: 310675199}
   m_Layer: 0
   m_Name: Timebox
@@ -1125,23 +1124,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &310675197
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 310675196}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ab0a648e3af55c4c9c151a86b745de9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Timetext: {fileID: 1064052069}
-  time: 20
-  isTimeUp: 0
-  isGameStarted: 0
-  timeUpPanel: {fileID: 198276233}
 --- !u!4 &310675198
 Transform:
   m_ObjectHideFlags: 0
@@ -1170,8 +1152,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timerTextUI: {fileID: 1064052069}
+  resultCanvas: {fileID: 198276233}
+  survivalTimeLimit: 20
   deathYCoordinate: -10
-  timeController: {fileID: 310675197}
+  CurrentModeState: 0
 --- !u!1 &356226211
 GameObject:
   m_ObjectHideFlags: 0
@@ -1471,6 +1455,7 @@ MonoBehaviour:
   - {fileID: 1512492562}
   - {fileID: 1153352480}
   - {fileID: 1756519972}
+  joinbj: {fileID: 0}
 --- !u!114 &547826639
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2741,7 +2726,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 310675197}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: TImeController, Assembly-CSharp
         m_MethodName: ResetGame
         m_Mode: 1
@@ -4096,7 +4081,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 310675197}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: TImeController, Assembly-CSharp
         m_MethodName: LoadTitleScene
         m_Mode: 5

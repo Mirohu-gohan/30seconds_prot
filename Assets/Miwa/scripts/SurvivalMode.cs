@@ -4,23 +4,22 @@ using static GameMode;
 
 public class SurvivalMode : IGameMode
 {
-    private float currentTime = 20f;
+    private float currentTime;
     private Text timerText;
 
-    public SurvivalMode(Text uiText) => timerText = uiText;
-
-    public void OnEnter()
+    public SurvivalMode(Text uiText, float timeLimit)
     {
-        Time.timeScale = 1f;
-        Debug.Log("Survival Mode: 20秒ラウンド開始");
+        timerText = uiText;
+        currentTime = timeLimit;
     }
+
+    public void OnEnter() { }
 
     public void OnUpdate()
     {
         currentTime -= Time.deltaTime;
-
         if (timerText != null)
-            timerText.text = Mathf.Max(0, currentTime).ToString("F2");
+            timerText.text = Mathf.Max(0, currentTime).ToString("F1");
 
         if (currentTime <= 0)
             GameManager_M.Instance.TimeExpiredForSurvival();

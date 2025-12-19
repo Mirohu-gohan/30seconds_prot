@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using static GameMode;
 
 public class TimeLimitMode : IGameMode
 {
@@ -26,7 +27,7 @@ public class TimeLimitMode : IGameMode
     public void OnUpdate()
     {
         // Y境界チェック（TimeLimitModeでもプレイヤーが落ちたらカウント対象外とする場合）
-        GameManager_M.Instance.RunBoundaryCheck();
+        //GameManager_M.Instance.RunBoundaryCheck();
 
         // 時間の管理
         currentTime -= Time.deltaTime;

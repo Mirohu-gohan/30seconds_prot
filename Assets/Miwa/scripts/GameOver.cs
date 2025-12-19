@@ -7,7 +7,7 @@ public class GameOver : IGameMode // Å©Ç±Ç±Ç™èdóv
     public void OnEnter()
     {
         Time.timeScale = 0f;
-        GameManager_M.Instance.ShowResultUI();
+        GameManager_M.Instance.ShowResultUI("None");
     }
 
     public void OnUpdate() { }

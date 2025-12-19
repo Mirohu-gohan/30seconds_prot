@@ -2,45 +2,28 @@ using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
 {
-    [Header("ステータス")]
-    public float currentHealth = 100f;
-
     void Start()
     {
+        // 1. ゲーム開始時、自分を GameManager に登録する
         if (GameManager_M.Instance != null)
         {
             GameManager_M.Instance.RegisterPlayer(gameObject);
+            Debug.Log(gameObject.name + " を登録しました");
         }
     }
 
-    // 外部（サドンデスでのダメージなど）からHPを減らす時に呼ぶ
-    public void TakeDamage(float damage)
-    {
-        currentHealth -= damage;
-
-        if (currentHealth <= 0)
-        {
-            Die();
-        }
-    }
-
-    // 落下した時にGameManagerのRunBoundaryCheckから呼ばれる
+    // 落下した時に GameManager から呼ばれる
     public void OnFallOut()
     {
-        // 落下 = 即脱落として処理します
-        Die();
-    }
+        Debug.Log(gameObject.name + " が落下しました！");
 
-    // 死亡・脱落処理の共通化
-    private void Die()
-    {
+        // 2. GameManager に「自分が脱落した」ことを伝える
         if (GameManager_M.Instance != null)
         {
-            // GameManagerに「一人が脱落した」ことを通知して勝敗判定を行わせる
             GameManager_M.Instance.OnPlayerEliminated();
         }
 
-        // 自身を消滅させる
+        // 3. 自分を消去する
         Destroy(gameObject);
     }
 }

@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 using static GameMode;
 
+
 public class GameManager_M : MonoBehaviour
 {
     public static GameManager_M Instance { get; private set; }
@@ -26,6 +27,9 @@ public class GameManager_M : MonoBehaviour
 
     private IGameMode _currentMode;
     private List<GameObject> activePlayers = new List<GameObject>();
+
+    public float suddenDeathKnockbackMultiplier = 2.0f; // サドンデス時の強化倍率
+    public float currentKnockbackMultiplier = 1.0f;    // 現在の倍率（通常は1.0）
 
     void Awake()
     {
@@ -156,8 +160,18 @@ public class GameManager_M : MonoBehaviour
 
     public void ShowResultUI(string name)
     {
-        if (resultCanvas != null) resultCanvas.SetActive(true);
-        // ...ボタン選択処理など
+        if (resultCanvas != null)
+        {
+            resultCanvas.SetActive(true);
+
+            // 最初のボタン（リトライボタンなど）を強制的に選択状態にする
+            Button b = resultCanvas.GetComponentInChildren<Button>();
+            if (b != null)
+            {
+                b.Select(); // これでキーボードやコントローラーで押せるようになる
+                EventSystem.current.SetSelectedGameObject(b.gameObject);
+            }
+        }
     }
 
     public void RestartGame() => SceneManager.LoadScene(SceneManager.GetActiveScene().name);

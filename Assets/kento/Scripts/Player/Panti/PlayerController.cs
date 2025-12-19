@@ -27,7 +27,8 @@ public class PlayerController : MonoBehaviour
     //[SerializeField] private float Power = 10.0f;
     [SerializeField] private float WeakKnockbackForce = 0.5f; //弱パンチノックバック
     [SerializeField] private float StrongKnockbackForce = 5.0f;//強パンチノックバック
-    private float curentknockbackForce = 0f;//現在のノックバック力
+    [HideInInspector]
+    public float curentknockbackForce = 0f;//現在のノックバック力
     //private float tackleCooldown = 1.0f;//タックルのクールダウン時間
     [SerializeField] private float HitDuration = 0.2f; //攻撃判定の持続時間
     [SerializeField] private float wait = 0.25f;
@@ -226,6 +227,7 @@ public class PlayerController : MonoBehaviour
             knockBackDir.y = 0.0f; // 垂直ノックバックを付けたくない場合
             Debug.Log(curentknockbackForce);
             enemyrb.AddForce(knockBackDir.normalized * curentknockbackForce, ForceMode.Impulse);
+            
         }
     }
 }

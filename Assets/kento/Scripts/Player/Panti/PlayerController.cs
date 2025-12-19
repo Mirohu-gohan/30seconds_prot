@@ -22,8 +22,8 @@ public class PlayerController : MonoBehaviour
 
     [Header("パンチ設定")]
 
-    [SerializeField] private GameObject box;
-    private BoxCollider boxCollider;
+    [SerializeField] private BoxCollider box;
+    //private BoxCollider boxCollider;
     //[SerializeField] private float Power = 10.0f;
     [SerializeField] private float WeakKnockbackForce = 0.5f; //弱パンチノックバック
     [SerializeField] private float StrongKnockbackForce = 5.0f;//強パンチノックバック
@@ -68,7 +68,7 @@ public class PlayerController : MonoBehaviour
     {
         if (context.performed)
         {
-            box.SetActive(true);
+            //box.SetActive(true);
             isfinish = false;
             isPrese = true;
             isStrt = true;
@@ -82,14 +82,6 @@ public class PlayerController : MonoBehaviour
             if (isStrt)
             {
                 Invoke("Panti", wait);
-                if (isMax)
-                {
-                    animator.SetBool("AtackKyou", true);
-                }
-                else if (!isMax)
-                {
-                    animator.SetBool("AtackJaku", true);
-                }
             }
 
             isStrt = false;
@@ -113,11 +105,11 @@ public class PlayerController : MonoBehaviour
 
         rb = GetComponent<Rigidbody>();
 
-        box.SetActive(false);
-        boxCollider = box.GetComponent<BoxCollider>();
+        //box.SetActive(false);
+        //boxCollider = box.GetComponent<BoxCollider>();
         animator = GetComponentInChildren<Animator>();
 
-        boxCollider.enabled = false;
+        box.enabled = false;
     }
 
     // Update is called once per frame
@@ -191,7 +183,7 @@ public class PlayerController : MonoBehaviour
         isTackling = true;
 
        
-        boxCollider.enabled = true;
+        box.enabled = true;
 
         Invoke("EndTackle", HitDuration);
 
@@ -207,8 +199,8 @@ public class PlayerController : MonoBehaviour
             isfinish = true;
             
         }
-        box.SetActive(false);
-        boxCollider.enabled = false;
+        //box.SetActive(false);
+        box.enabled = false;
         isMax = false;
         animator.SetBool("AtackKyou", false);
         animator.SetBool("AtackJaku", false);
@@ -221,10 +213,12 @@ public class PlayerController : MonoBehaviour
         {
             if (isMax)
             {
+                animator.SetBool("AtackKyou", true);
                 curentknockbackForce = StrongKnockbackForce;
             }
             else
             {
+                animator.SetBool("AtackJaku", true);
                 curentknockbackForce = WeakKnockbackForce;
             }
 

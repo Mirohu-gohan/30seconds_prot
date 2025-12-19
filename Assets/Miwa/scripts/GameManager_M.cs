@@ -156,8 +156,18 @@ public class GameManager_M : MonoBehaviour
 
     public void ShowResultUI(string name)
     {
-        if (resultCanvas != null) resultCanvas.SetActive(true);
-        // ...ボタン選択処理など
+        if (resultCanvas != null)
+        {
+            resultCanvas.SetActive(true);
+
+            // 最初のボタン（リトライボタンなど）を強制的に選択状態にする
+            Button b = resultCanvas.GetComponentInChildren<Button>();
+            if (b != null)
+            {
+                b.Select(); // これでキーボードやコントローラーで押せるようになる
+                EventSystem.current.SetSelectedGameObject(b.gameObject);
+            }
+        }
     }
 
     public void RestartGame() => SceneManager.LoadScene(SceneManager.GetActiveScene().name);

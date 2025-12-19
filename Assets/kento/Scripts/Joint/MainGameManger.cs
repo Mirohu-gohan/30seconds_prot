@@ -1,4 +1,5 @@
 //using Unity.Services.Authentication;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -13,6 +14,8 @@ public class MainGameManger : MonoBehaviour
     private Shader shader;
     [SerializeField] private GameObject joinbj;
 
+    [SerializeField] private string[] c;
+
     void Start()
     {
         //インスタンスがない場合はreturn
@@ -21,9 +24,21 @@ public class MainGameManger : MonoBehaviour
         //インスタンスで保持しているデバイス情報と人数を取得
         var devices = PlayerDataHolder.Instance.GetDevices();
         int count   = PlayerDataHolder.Instance.GetPlayerCount();
+        c = new string[devices.Count()];
+        for (int i = 0; i < devices.Count(); i++)
+        {
+            if (devices[i] != null)
+            {
+                c[i] = $"[{i}]{devices[i].displayName} ({devices[i].layout})";
+            }
+            else
+            {
+                c[i] = $"[{i}] None";
+            }
+        }
 
-        //人数分Playerの生成,PlayerID
-        for (int i = 0; i < count; i++)
+            //人数分Playerの生成,PlayerID
+            for (int i = 0; i < count; i++)
         {
             
 

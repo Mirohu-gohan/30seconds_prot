@@ -1,22 +1,24 @@
 //using Unity.Services.Authentication;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
+using System.Collections;
 
 public class MainGameManger : MonoBehaviour
 {
     [SerializeField] private GameObject playerPrefab = default; //Player
-
+    [SerializeField] private GameObject botPrefab = default;    //Bot
     [SerializeField] private Transform[] pos = default;         //生成位置
+    [SerializeField] private GameObject timeUpPanel;
 
-    private Shader shader;
-    [SerializeField] private GameObject joinbj;
+    IEnumerator Start()
+    {
+        yield return null; // 1フレーム待つ
+        timeUpPanel.gameObject.SetActive(false);
+    }
 
-    [SerializeField] private string[] c;
-
-    void Start()
+    void Awake()
     {
         //インスタンスがない場合はreturn
         if(PlayerDataHolder.Instance == null) { return; }
@@ -24,38 +26,29 @@ public class MainGameManger : MonoBehaviour
         //インスタンスで保持しているデバイス情報と人数を取得
         var devices = PlayerDataHolder.Instance.GetDevices();
         int count   = PlayerDataHolder.Instance.GetPlayerCount();
-        c = new string[devices.Count()];
-        for (int i = 0; i < devices.Count(); i++)
+
+        //人数分Playerの生成,PlayerID
+        for (int i = 0; i < count; i++)
         {
-            if (devices[i] != null)
+            if (i < count && devices[i] != null)
             {
-                c[i] = $"[{i}]{devices[i].displayName} ({devices[i].layout})";
+                // 指定デバイスで PlayerInput を持つプレイヤーを生成
+                var obj = PlayerInput.Instantiate(
+                    prefab: playerPrefab,
+                    playerIndex: i,
+                    pairWithDevice: devices[i]
+                 );
+                //生成後この位置にセット
+                obj.transform.position = pos[i].position;
+                obj.transform.rotation = pos[i].rotation;
+
             }
             else
             {
-                c[i] = $"[{i}] None";
+                Instantiate(botPrefab, pos[i].position, pos[i].rotation);
             }
         }
-
-            //人数分Playerの生成,PlayerID
-            for (int i = 0; i < count; i++)
-        {
-            
-
-            // 指定デバイスで PlayerInput を持つプレイヤーを生成
-            var obj = PlayerInput.Instantiate(
-                prefab: playerPrefab,
-                playerIndex: i,
-                pairWithDevice: devices[i]
-             );
-
-            //生成後この位置にセット
-            obj.transform.position = pos[i].position;
-            obj.transform.rotation = pos[i].rotation;
-
-            //id表示
-        }
-        joinbj = GameObject.Find("joinedManager");
+        
 
     }
 

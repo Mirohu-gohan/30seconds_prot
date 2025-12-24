@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Collections;
+
 
 public class TImeController : MonoBehaviour
 {
@@ -14,17 +16,30 @@ public class TImeController : MonoBehaviour
 
     public GameObject timeUpPanel;
 
+    public Text winnerNameText;
 
-    void Start()
+    [SerializeField] private GameObject joinbj;
+
+
+
+
+     void Start()
     {
         Time.timeScale = 1f;
         isTimeUp = false;
         isGameStarted = false; // 初期状態では停止
-        if (timeUpPanel != null)
-        {
-            timeUpPanel.SetActive(false);
-        }
+        joinbj = GameObject.Find("JoinedManager");
     }
+    /* void Start()
+    {
+        panel();
+        Time.timeScale = 1f;
+        isTimeUp = false;
+        isGameStarted = false; // 初期状態では停止
+        joinbj = GameObject.Find("JoinedManager");
+    }*/
+
+
 
     void Update()
     {
@@ -57,20 +72,25 @@ public class TImeController : MonoBehaviour
         if (isTimeUp) return;
 
         isTimeUp = true;
+       
+        string winnerInfoText = "";
 
         if (!string.IsNullOrEmpty(winnerName) && winnerName != "None (全員敗退)")
         {
-            Timetext.text = winnerName + " の勝利！";
+            
+           winnerInfoText = winnerName + " の勝利！";
         }
         else if (time <= 0)
         {
-            Timetext.text = "崩壊！！！";
-        }
-        else
-        {
-            Timetext.text = "ゲーム終了！";
+            
+            winnerInfoText = "制限時間オーバー";
         }
 
+       
+        if (winnerNameText != null)
+        {
+            winnerNameText.text = winnerInfoText;
+        }
         Time.timeScale = 0f;
 
         if (timeUpPanel != null)
@@ -81,14 +101,22 @@ public class TImeController : MonoBehaviour
 
     public void ResetGame()
     {
+        if(timeUpPanel !=null)
+        {
+            timeUpPanel.SetActive(false);
+        }
         Time.timeScale = 5f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-
     public void LoadTitleScene(string SceneName)
     {
+        if(timeUpPanel !=null)
+        {
+            timeUpPanel.SetActive(false);
+        }
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneName);
+        Destroy(joinbj);
     }
 }

@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 using static GameMode;
 
+
 public class GameManager_M : MonoBehaviour
 {
     public static GameManager_M Instance { get; private set; }
@@ -26,6 +27,11 @@ public class GameManager_M : MonoBehaviour
 
     private IGameMode _currentMode;
     private List<GameObject> activePlayers = new List<GameObject>();
+
+    public float suddenDeathKnockbackMultiplier = 2.0f; // サドンデス時の強化倍率
+    public float currentKnockbackMultiplier = 1.0f;    // 現在の倍率（通常は1.0）
+
+    private GameObject join;
 
     void Awake()
     {
@@ -49,6 +55,7 @@ public class GameManager_M : MonoBehaviour
             _qualifiedIndices.Clear();
             ChangeMode(new SurvivalMode(timerTextUI, survivalTimeLimit));
         }
+        join = GameObject.Find("JoinedManager");
     }
 
     void Update()
@@ -171,5 +178,9 @@ public class GameManager_M : MonoBehaviour
     }
 
     public void RestartGame() => SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    public void BackToJoinScene(string s) => SceneManager.LoadScene(s);
+    public void BackToJoinScene(string s)
+    {
+        Destroy(join);
+        SceneManager.LoadScene(s);
+    }
 }

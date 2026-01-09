@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 3
   tags:
   - Stage
+  - Bound
+  - Ball
+  - Meteor
   layers:
   - Default
   - TransparentFX

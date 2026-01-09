@@ -11,25 +11,28 @@ public class PlayerHitController : MonoBehaviour
         playerCon1 = GetComponent<PlayerController1>();
     }
 
-    public void ChackHit()
+   /* public void ChackHit()
     {
         isHit = true;
         Debug.Log("Hit‚µ‚Ü‚µ‚½");
-    }
+    }*/
 
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
+            // –³“G’†‚È‚ç‰½‚à‚µ‚È‚¢
+            if (playerCon1.isInvincible) return;
+
             if (!playerCon1.isTackled)
             {
-                PlayerHitController playerHitCon = collision.gameObject.GetComponent<PlayerHitController>();
+                PlayerHitController playerHitCon =
+                    collision.gameObject.GetComponent<PlayerHitController>();
 
-                if (playerHitCon != null)
+                /*if (playerHitCon != null)
                 {
                     playerHitCon.ChackHit();
-                    Debug.Log(collision.gameObject.name);
-                }
+                }*/
             }
         }
 

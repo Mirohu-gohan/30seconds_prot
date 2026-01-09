@@ -25,16 +25,19 @@ public class PlayerController1 : MonoBehaviour
     [Header("ブリンク設定")]
 
     [SerializeField] private float tackleForce;    //ブリンク力
-    //[SerializeField] private float tackleDuration = 0.5f;//持続時間
-    [SerializeField] private float tackleDuration = 5.0f;
+    [SerializeField] private float tackleDuration = 0.5f;//持続時間
+    //[SerializeField] private float tackleDuration = 5.0f;
     [SerializeField] private float tackleCooldown = 1.0f;//クールダウン時間
     [SerializeField] private float WeakKnockbackForce = 2.5f; //弱ブリンクノックバック
     [SerializeField] private float StrongKnockbackForce = 5.0f;//強ブリンクノックバック
 
-    private Vector3 tackleStartPos;
+    //private Vector3 tackleStartPos;
 
     private float curentknockbackForce = 0f;//現在のノックバック力
 
+    [Header("無敵設定")]
+    [SerializeField] private float invincibleTime = 1.0f;
+    public bool isInvincible = false;
 
     [SerializeField] private float StrongRecoveryTime = 1.0f; //硬直時間
     private float curentRecoveryTime;
@@ -127,16 +130,6 @@ public class PlayerController1 : MonoBehaviour
 
         float mag = inputVer.magnitude;
 
-        if (isTackling)
-        {
-            float dist = Vector3.Distance(tackleStartPos, transform.position);
-            if (dist >= tackleDuration)
-            {
-                EndTackle();
-            }
-        }
-
-
         if (isStrt)
         {
             if (t < chargeMax)
@@ -180,16 +173,21 @@ public class PlayerController1 : MonoBehaviour
             curentSpeed = speed;
             curentRotSpeed = rotSpeed;
         }
-        Vector3 move = new Vector3(inputVer.x, 0f, inputVer.y) * curentSpeed * Time.deltaTime;
-        //transform.position += move;
-        rb.MovePosition(rb.position + move);
-
-
-        if (move != Vector3.zero)
+        
+        if (!isTackling)
         {
-            Quaternion Rot = Quaternion.LookRotation(move, Vector3.up);
-            //transform.rotation = Quaternion.Slerp(transform.rotation,Rot,curentRotSpeed * Time.deltaTime);
-            rb.MoveRotation(Quaternion.Slerp(rb.rotation, Rot, curentRotSpeed * Time.fixedDeltaTime));
+            Vector3 move = new Vector3(inputVer.x, 0f, inputVer.y) * curentSpeed * Time.deltaTime;
+            //transform.position += move;
+            rb.MovePosition(rb.position + move);
+
+
+
+            if (move != Vector3.zero)
+            {
+                Quaternion Rot = Quaternion.LookRotation(move, Vector3.up);
+                //transform.rotation = Quaternion.Slerp(transform.rotation,Rot,curentRotSpeed * Time.deltaTime);
+                rb.MoveRotation(Quaternion.Slerp(rb.rotation, Rot, curentRotSpeed * Time.fixedDeltaTime));
+            }
         }
     }
 
@@ -199,18 +197,20 @@ public class PlayerController1 : MonoBehaviour
         isTackling = true;
         lastTackleTime = Time.time;
 
-        tackleStartPos = transform.position;
+        //tackleStartPos = transform.position;
 
         rb.linearVelocity = Vector3.zero;
         rb.AddForce(transform.forward * tackleForce, ForceMode.Impulse);
 
-        //Invoke("EndTackle", tackleDuration);
+        Invoke("EndTackle", tackleDuration);
+        
     }
 
 
 
     void EndTackle()
     {
+        Debug.Log("Stop");
         isTackling = false;
         rb.linearVelocity = Vector3.zero;
 
@@ -223,6 +223,19 @@ public class PlayerController1 : MonoBehaviour
         isMax = false;
     }
 
+    public void StartInvincible()
+    {
+        if (isInvincible) return;
+
+        isInvincible = true;
+        Invoke(nameof(EndInvincible), invincibleTime);
+    }
+
+    private void EndInvincible()
+    {
+        isInvincible = false;
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player"))
@@ -232,7 +245,14 @@ public class PlayerController1 : MonoBehaviour
                 EndTackle();
 
                 Rigidbody enemyrb = collision.gameObject.GetComponent<Rigidbody>();
-                if (enemyrb != null && isTackling)
+                PlayerController1 enemyCon = collision.gameObject.GetComponent<PlayerController1>();
+
+                if (enemyCon != null && enemyCon.isInvincible)
+                {
+                    return;
+                }
+
+                if (enemyrb != null /*&& isTackling*/)
                 {
                     if (isMax)
                     {
@@ -245,11 +265,19 @@ public class PlayerController1 : MonoBehaviour
 
                     Vector3 knockBackDir = collision.transform.position - transform.position;
                     knockBackDir.y = 0f;
-                    Debug.Log(curentknockbackForce);
+                    //Debug.Log(curentknockbackForce);
                     enemyrb.AddForce(knockBackDir.normalized * curentknockbackForce, ForceMode.Impulse);
+
+                    if (enemyCon != null)
+                    {
+                        enemyCon.StartInvincible();
+                    }
                 }
             }
-        }
 
+            
+           
+        }
+        //Debug.Log(collision.gameObject.name);
     }
 }

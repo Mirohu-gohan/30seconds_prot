@@ -110,7 +110,6 @@ GameObject:
   - component: {fileID: 4832575302415769368}
   - component: {fileID: 7223838587103868395}
   - component: {fileID: 2795932701591639972}
-  - component: {fileID: 4708831905542014484}
   m_Layer: 0
   m_Name: Player 5
   m_TagString: Player
@@ -153,11 +152,13 @@ MonoBehaviour:
   ChargeMoveSpeedRate: 0.3
   rotSpeed: 10
   ChargeRotateSpeedRate: 0.7
-  tackleForce: 15
+  tackleForce: 20
   tackleDuration: 0.5
   tackleCooldown: 1
   WeakKnockbackForce: 2.5
   StrongKnockbackForce: 5
+  invincibleTime: 1
+  isInvincible: 0
   StrongRecoveryTime: 1
   isTackled: 0
   isStrt: 0
@@ -277,10 +278,6 @@ MonoBehaviour:
     m_ActionName: 'Player/Sprint[/Keyboard/leftShift]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 045b4d35-4c18-4d7d-8892-96a8f187af28
-    m_ActionName: 'Player/Chack[/Mouse/leftButton]'
-  - m_PersistentCalls:
-      m_Calls: []
     m_ActionId: c95b2375-e6d9-4b88-9c4c-c5e76515df4b
     m_ActionName: 'UI/Navigate[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]'
   - m_PersistentCalls:
@@ -372,18 +369,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &4708831905542014484
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3736281241373610117}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a76539a967aeb104f889928e46c97a7d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4491457673454321863
 GameObject:
   m_ObjectHideFlags: 0
@@ -675,6 +660,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5128585452599055210}
     m_Modifications:
+    - target: {fileID: 1962808441788183975, guid: 9818526d617f515488ac183c4d0156fc, type: 3}
+      propertyPath: matreial1
+      value: 
+      objectReference: {fileID: 2100000, guid: 566f771dabc13a4458dfc53339dc02fe, type: 2}
+    - target: {fileID: 1962808441788183975, guid: 9818526d617f515488ac183c4d0156fc, type: 3}
+      propertyPath: matreial2
+      value: 
+      objectReference: {fileID: 2100000, guid: 69e5836d7155ea94e91669fc0ad184af, type: 2}
+    - target: {fileID: 1962808441788183975, guid: 9818526d617f515488ac183c4d0156fc, type: 3}
+      propertyPath: matreial3
+      value: 
+      objectReference: {fileID: 2100000, guid: 106d32b8a0842784f9e9fcad0ff0fc7a, type: 2}
+    - target: {fileID: 1962808441788183975, guid: 9818526d617f515488ac183c4d0156fc, type: 3}
+      propertyPath: matreial4
+      value: 
+      objectReference: {fileID: 2100000, guid: 1080844f1eeaa8243ab2e0245b322121, type: 2}
     - target: {fileID: 4161137457553843964, guid: 9818526d617f515488ac183c4d0156fc, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

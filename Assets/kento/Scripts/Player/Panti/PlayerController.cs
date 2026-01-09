@@ -6,46 +6,46 @@ using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
-    [Header("ˆÚ“®İ’è")]
+    [Header("ç§»å‹•è¨­å®š")]
 
-    [SerializeField] private float speed = 5.0f; //ˆÚ“®ƒXƒs[ƒh
-    [SerializeField] private float ChargeMoveSpeedRate = 0.3f; //ƒ`ƒƒ[ƒWEd’¼’†‚Ì‘¬“x”{—¦
-    private float speed2 = 0; //ƒ`ƒƒ[ƒW’†‚ÌƒXƒs[ƒh
-    private float curentSpeed = 0;  //Œ»İ‚ÌƒXƒs[ƒh
-    [SerializeField] private float rotSpeed = 10.0f; //ù‰ñƒXƒs[ƒh
-    [SerializeField] private float ChargeRotateSpeedRate = 0.7f; //ƒ`ƒƒ[ƒWEd’¼’†‚Ìù‰ñ”{—¦
-    private float rotSpeed2 = 0;@//ƒ`ƒƒ[ƒW’†ù‰ñƒXƒs[ƒh
-    private float curentRotSpeed = 0;//Œ»İ‚Ìù‰ñƒXƒs[ƒh
+    [SerializeField] private float speed = 5.0f; //ç§»å‹•ã‚¹ãƒ”ãƒ¼ãƒ‰
+    [SerializeField] private float ChargeMoveSpeedRate = 0.3f; //ãƒãƒ£ãƒ¼ã‚¸ãƒ»ç¡¬ç›´ä¸­ã®é€Ÿåº¦å€ç‡
+    private float speed2 = 0; //ãƒãƒ£ãƒ¼ã‚¸ä¸­ã®ã‚¹ãƒ”ãƒ¼ãƒ‰
+    private float curentSpeed = 0;  //ç¾åœ¨ã®ã‚¹ãƒ”ãƒ¼ãƒ‰
+    [SerializeField] private float rotSpeed = 10.0f; //æ—‹å›ã‚¹ãƒ”ãƒ¼ãƒ‰
+    [SerializeField] private float ChargeRotateSpeedRate = 0.7f; //ãƒãƒ£ãƒ¼ã‚¸ãƒ»ç¡¬ç›´ä¸­ã®æ—‹å›å€ç‡
+    private float rotSpeed2 = 0;ã€€//ãƒãƒ£ãƒ¼ã‚¸ä¸­æ—‹å›ã‚¹ãƒ”ãƒ¼ãƒ‰
+    private float curentRotSpeed = 0;//ç¾åœ¨ã®æ—‹å›ã‚¹ãƒ”ãƒ¼ãƒ‰
 
     private Vector2 inputVer;
 
 
-    [Header("ƒpƒ“ƒ`İ’è")]
+    [Header("ãƒ‘ãƒ³ãƒè¨­å®š")]
 
     [SerializeField] private BoxCollider box;
     //private BoxCollider boxCollider;
     //[SerializeField] private float Power = 10.0f;
-    [SerializeField] private float WeakKnockbackForce = 0.5f; //ãƒpƒ“ƒ`ƒmƒbƒNƒoƒbƒN
-    [SerializeField] private float StrongKnockbackForce = 5.0f;//‹­ƒpƒ“ƒ`ƒmƒbƒNƒoƒbƒN
+    [SerializeField] private float WeakKnockbackForce = 0.5f; //å¼±ãƒ‘ãƒ³ãƒãƒãƒƒã‚¯ãƒãƒƒã‚¯
+    [SerializeField] private float StrongKnockbackForce = 5.0f;//å¼·ãƒ‘ãƒ³ãƒãƒãƒƒã‚¯ãƒãƒƒã‚¯
     [HideInInspector]
-    public float curentknockbackForce = 0f;//Œ»İ‚ÌƒmƒbƒNƒoƒbƒN—Í
-    //private float tackleCooldown = 1.0f;//ƒ^ƒbƒNƒ‹‚ÌƒN[ƒ‹ƒ_ƒEƒ“ŠÔ
-    [SerializeField] private float HitDuration = 0.2f; //UŒ‚”»’è‚Ì‘±ŠÔ
+    public float curentknockbackForce = 0f;//ç¾åœ¨ã®ãƒãƒƒã‚¯ãƒãƒƒã‚¯åŠ›
+    //private float tackleCooldown = 1.0f;//ã‚¿ãƒƒã‚¯ãƒ«ã®ã‚¯ãƒ¼ãƒ«ãƒ€ã‚¦ãƒ³æ™‚é–“
+    [SerializeField] private float HitDuration = 0.2f; //æ”»æ’ƒåˆ¤å®šã®æŒç¶šæ™‚é–“
     [SerializeField] private float wait = 0.25f;
 
-    [SerializeField] private float StrongRecoveryTime = 1.0f; //d’¼ŠÔ
+    [SerializeField] private float StrongRecoveryTime = 1.0f; //ç¡¬ç›´æ™‚é–“
     private float curentRecoveryTime;
     private bool isfinish = false;
 
     private Rigidbody rb;
     private bool isTackling = false;
-    private float lastTackleTime = 0f; // ÅŒã‚Ìƒ^ƒbƒNƒ‹ŠÔ
+    private float lastTackleTime = 0f; // æœ€å¾Œã®ã‚¿ãƒƒã‚¯ãƒ«æ™‚é–“
 
-    private bool isPrese = false; //‰Ÿ‚³‚ê‚Ä‚¢‚é‚©ƒtƒ‰ƒO
-    [HideInInspector] public bool isStrt = false;//ƒ^ƒCƒ}ƒXƒ^[ƒgƒtƒ‰ƒO
-    private float t = 0f; //ƒ^ƒCƒ}[
-    public float chargeMax = 5.0f; //ƒ^ƒCƒ}[ãŒÀ
-    private bool isMax = false;//ƒ`ƒƒ[ƒW‚ªMax‚©‚Ìƒtƒ‰ƒO
+    public bool isPrese = false; //æŠ¼ã•ã‚Œã¦ã„ã‚‹ã‹ãƒ•ãƒ©ã‚°
+    [HideInInspector] public bool isStrt = false;//ã‚¿ã‚¤ãƒã‚¹ã‚¿ãƒ¼ãƒˆãƒ•ãƒ©ã‚°
+    private float t = 0f; //ã‚¿ã‚¤ãƒãƒ¼
+    public float chargeMax = 5.0f; //ã‚¿ã‚¤ãƒãƒ¼ä¸Šé™
+    private bool isMax = false;//ãƒãƒ£ãƒ¼ã‚¸ãŒMaxã‹ã®ãƒ•ãƒ©ã‚°
 
     [SerializeField] private Text IDtext; //PlayerIDText
     private int playerID; //PlayerID
@@ -194,7 +194,7 @@ public class PlayerController : MonoBehaviour
     {
         isTackling = false;
 
-        //‚±‚±‚Åd’¼ˆ—
+        //ã“ã“ã§ç¡¬ç›´å‡¦ç†
         if (isMax)
         {
             isfinish = true;
@@ -224,7 +224,7 @@ public class PlayerController : MonoBehaviour
             }
 
             Vector3 knockBackDir = other.transform.position - transform.position;
-            knockBackDir.y = 0.0f; // ‚’¼ƒmƒbƒNƒoƒbƒN‚ğ•t‚¯‚½‚­‚È‚¢ê‡
+            knockBackDir.y = 0.0f; // å‚ç›´ãƒãƒƒã‚¯ãƒãƒƒã‚¯ã‚’ä»˜ã‘ãŸããªã„å ´åˆ
             Debug.Log(curentknockbackForce);
             enemyrb.AddForce(knockBackDir.normalized * curentknockbackForce, ForceMode.Impulse);
             

@@ -152,11 +152,11 @@ MonoBehaviour:
   ChargeMoveSpeedRate: 0.3
   rotSpeed: 10
   ChargeRotateSpeedRate: 0.7
-  tackleForce: 15
-  tackleDuration: 0.5
+  tackleForce: 30
+  tackleDuration: 5
   tackleCooldown: 1
-  WeakKnockbackForce: 2.5
-  StrongKnockbackForce: 5
+  WeakKnockbackForce: 5
+  StrongKnockbackForce: 15
   StrongRecoveryTime: 1
   isStrt: 0
   chargeMax: 5
@@ -273,10 +273,6 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 641cd816-40e6-41b4-8c3d-04687c349290
     m_ActionName: 'Player/Sprint[/Keyboard/leftShift]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 045b4d35-4c18-4d7d-8892-96a8f187af28
-    m_ActionName: 'Player/Chack[/Mouse/leftButton]'
   - m_PersistentCalls:
       m_Calls: []
     m_ActionId: c95b2375-e6d9-4b88-9c4c-c5e76515df4b

@@ -74,9 +74,10 @@ public class PlayerController1 : MonoBehaviour
         if (context.performed)
         {
             isfinish = false;
-            isPrese = true;
+            
             if (!isTackling && Time.time > lastTackleTime + tackleCooldown)
             {
+                isPrese = true;
                 isStrt = true;
                 animator.SetBool("Charge", true);
             }
@@ -173,16 +174,20 @@ public class PlayerController1 : MonoBehaviour
             curentSpeed = speed;
             curentRotSpeed = rotSpeed;
         }
-        Vector3 move = new Vector3(inputVer.x, 0f, inputVer.y) * curentSpeed * Time.deltaTime;
-        //rb.MovePosition(rb.position + move);
-        transform.position += move;
-
-        if (move != Vector3.zero)
+        if (!isTackling)
         {
-            Quaternion Rot = Quaternion.LookRotation(move, Vector3.up);
-            transform.rotation = Quaternion.Slerp(transform.rotation,Rot,curentRotSpeed * Time.deltaTime);
-            //rb.MoveRotation(Quaternion.Slerp(rb.rotation, Rot, curentRotSpeed * Time.fixedDeltaTime));
+            Vector3 move = new Vector3(inputVer.x, 0f, inputVer.y) * curentSpeed * Time.deltaTime;
+            rb.MovePosition(rb.position + move);
+            //transform.position += move;
+
+            if (move != Vector3.zero)
+            {
+                Quaternion Rot = Quaternion.LookRotation(move, Vector3.up);
+                //transform.rotation = Quaternion.Slerp(transform.rotation, Rot, curentRotSpeed * Time.deltaTime);
+                rb.MoveRotation(Quaternion.Slerp(rb.rotation, Rot, curentRotSpeed * Time.fixedDeltaTime));
+            }
         }
+       
     }
 
     void Tackle()
@@ -217,22 +222,26 @@ public class PlayerController1 : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        Rigidbody enemyrb = collision.gameObject.GetComponent<Rigidbody>();
-        if (enemyrb != null)
+        if (isTackling)
         {
-            if (isMax)
+            Rigidbody enemyrb = collision.gameObject.GetComponent<Rigidbody>();
+            if (enemyrb != null)
             {
-                curentknockbackForce = StrongKnockbackForce;
-            }
-            else
-            {
-                curentknockbackForce = WeakKnockbackForce;
-            }
+                if (isMax)
+                {
+                    curentknockbackForce = StrongKnockbackForce;
+                }
+                else
+                {
+                    curentknockbackForce = WeakKnockbackForce;
+                }
 
-            Vector3 knockBackDir = collision.transform.position - transform.position;
-            knockBackDir.y = 0f;
-            Debug.Log(curentknockbackForce);
-            enemyrb.AddForce(knockBackDir.normalized * curentknockbackForce, ForceMode.Impulse);
+                Vector3 knockBackDir = collision.transform.position - transform.position;
+                knockBackDir.y = 0f;
+                Debug.Log(curentknockbackForce);
+                enemyrb.AddForce(knockBackDir.normalized * curentknockbackForce, ForceMode.Impulse);
+            }
         }
+      
     }
 }

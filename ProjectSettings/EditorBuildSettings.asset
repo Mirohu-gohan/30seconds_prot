@@ -11,9 +11,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Prot/Start.unity
     guid: dbd5560391796cf44a63d78edd1538f1
-  - enabled: 1
+  - enabled: 0
     path: Assets/Prot/prot.unity
     guid: f644dfcbfe27ff9439c1928912b70e94
+  - enabled: 1
+    path: "Assets/Prot/\u8A66\u904Ascene.unity"
+    guid: 80177d04934738e428f6a8ff6865aeec
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

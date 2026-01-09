@@ -90,7 +90,7 @@ public class PlayerJoinedManager : MonoBehaviour
     public void OnGameStarte()
     {
         PlayerDataHolder.Instance.SetDevices(joinedDevices,currentCount);
-        SceneManager.LoadScene("prot");
+        SceneManager.LoadScene("ŽŽ—Vscene");
     }
 
 }

@@ -116,7 +116,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8928703748620272591, guid: 60985f07b47e20b4a9a174625e254f89, type: 3}
       propertyPath: m_Name
-      value: Meteor_eff_withMesh
+      value: Meteor_w_Mesh
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

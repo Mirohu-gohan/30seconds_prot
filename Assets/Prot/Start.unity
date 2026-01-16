@@ -607,6 +607,14 @@ MonoBehaviour:
       m_Groups: 
       m_Action: Join
       m_Flags: 0
+    - m_Name: 
+      m_Id: ec84733c-627a-4856-b570-40272d3e06e8
+      m_Path: <Mouse>/clickCount
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Join
+      m_Flags: 0
     m_Flags: 0
   maxPlayers: 4
   device1text: {fileID: 1505149091}

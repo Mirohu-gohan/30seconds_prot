@@ -13,16 +13,28 @@ public class SurvivalMode : IGameMode
         currentTime = timeLimit;
     }
 
-    public void OnEnter() { }
+    public void OnEnter() 
+    {
+
+    }
 
     public void OnUpdate()
     {
+        // 1. 時間の計算（GameManagerのUpdateから呼ばれる）
         currentTime -= Time.deltaTime;
-        if (timerText != null)
-            timerText.text = Mathf.Max(0, currentTime).ToString("F1");
 
+        // 2. 秒数を画面に出す
+        if (timerText != null)
+        {
+            timerText.text = Mathf.Max(0, currentTime).ToString("F1");
+        }
+
+        // 3. 時間切れ判定
         if (currentTime <= 0)
+        {
+            // GameManagerに「時間切れだよ」と伝える
             GameManager_M.Instance.TimeExpiredForSurvival();
+        }
     }
 
     public void OnExit() { }

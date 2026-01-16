@@ -28,6 +28,7 @@ public class SuddenDeathPowerUp : MonoBehaviour
 
         // š‚±‚±‚Å”{—¦‚ğİ’èi10”{Ij
         float multiplier = 10.0f;
+        
 
         if (strongField != null)
         {

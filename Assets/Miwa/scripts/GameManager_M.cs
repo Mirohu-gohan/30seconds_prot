@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 using static GameMode;
+using System.Collections;
 
 
 public class GameManager_M : MonoBehaviour
@@ -33,6 +34,14 @@ public class GameManager_M : MonoBehaviour
 
     private GameObject join;
 
+    [Header("ラウンド表示用")]
+    public Text roundTextUI;
+    public static int CurrentRound =1;
+
+    [Header("リザルト表示用")]
+    public Text resultTextUI;
+
+
     void Awake()
     {
         if (Instance == null) Instance = this;
@@ -41,8 +50,14 @@ public class GameManager_M : MonoBehaviour
 
     void Start()
     {
-        Time.timeScale = 1f;
+        /*if (!_isSuddenDeathNext)
+        {
+            CurrentRound = 1;
+        }*/
+        Time.timeScale = 1.0f;
         if (resultCanvas != null) resultCanvas.SetActive(false);
+
+        UpdateRoundDisplay();
 
         // サドンデス開始の判定
         if (_isSuddenDeathNext)
@@ -58,10 +73,23 @@ public class GameManager_M : MonoBehaviour
         join = GameObject.Find("JoinedManager");
     }
 
-    void Update()
+    public void UpdateRoundDisplay()
     {
-        if (_currentMode != null) _currentMode.OnUpdate();
-        CheckPlayersFalling();
+        if (roundTextUI != null)
+        {
+            // サドンデス中なら「SUDDEN DEATH」、そうでなければ「Round X」
+            if (CurrentModeState == Mode.SuddenDeath)
+            {
+                roundTextUI.text = "SUDDEN DEATH";
+                roundTextUI.color = Color.red;
+            }
+            else
+            {
+                roundTextUI.text = "Round " + CurrentRound;
+                roundTextUI.color = Color.white;
+            }
+            roundTextUI.gameObject.SetActive(true);
+        }
     }
 
     public void RegisterPlayer(GameObject p, int index)
@@ -93,14 +121,16 @@ public class GameManager_M : MonoBehaviour
         // 生き残りが1人になったらゲームオーバー
         if (activePlayers.Count == 1)
         {
-            string winnerName = activePlayers[0].name;
+            NextRound();
+            //string winnerName = activePlayers[0].name;
             // GameOverMode に勝者の名前を渡して切り替え
-            ChangeMode(new GameOver(winnerName));
+            //ChangeMode(new GameOverMode(winnerName));
         }
         // 同時落下で 0 人になった場合（サドンデス中など）
         else if (activePlayers.Count == 0)
         {
-            ChangeMode(new GameOver("DRAW"));
+            NextRound();
+            //ChangeMode(new GameOverMode("DRAW"));
         }
     }
 
@@ -161,19 +191,31 @@ public class GameManager_M : MonoBehaviour
 
     public List<GameObject> GetActivePlayers() { activePlayers.RemoveAll(p => p == null); return activePlayers; }
 
-    public void ShowResultUI(string name)
+    public void ShowResultUI(string resultText)
     {
         if (resultCanvas != null)
         {
             resultCanvas.SetActive(true);
 
-            // 最初のボタン（リトライボタンなど）を強制的に選択状態にする
+            if (resultTextUI != null)
+            {
+                resultTextUI.text = resultText;
+            }
+
+            // ボタンの自動選択（コントローラー/キーボード操作用）
+            Button firstButton = resultCanvas.GetComponentInChildren<Button>();
+            if (firstButton != null)
+            {
+                firstButton.Select();
+                EventSystem.current.SetSelectedGameObject(firstButton.gameObject);
+            }
+            /*// 最初のボタン（リトライボタンなど）を強制的に選択状態にする
             Button b = resultCanvas.GetComponentInChildren<Button>();
             if (b != null)
             {
                 b.Select(); // これでキーボードやコントローラーで押せるようになる
                 EventSystem.current.SetSelectedGameObject(b.gameObject);
-            }
+            }*/
         }
     }
 
@@ -182,5 +224,94 @@ public class GameManager_M : MonoBehaviour
     {
         Destroy(join);
         SceneManager.LoadScene(s);
+    }
+
+
+    public void HideUI(float delay)
+    {
+        StartCoroutine (HideUIRoutine(delay));
+    }
+
+    private IEnumerator HideUIRoutine(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (roundTextUI != null)
+        {
+            roundTextUI.gameObject.SetActive(false);
+        }
+    }
+
+    //ラウンド制
+    public void NextRound(bool isTimeUp = false)
+    {
+        if (isTimeUp || GetActivePlayersCount() == 0)
+        {
+            // 今戦っているプレイヤー全員を「参加資格者」として保存する
+            List<int> survivors = new List<int>();
+            foreach (var p in GetActivePlayers())
+            {
+                var health = p.GetComponent<PlayerHealth>();
+                if (health != null) survivors.Add(health.playerIndex);
+            }
+            if (survivors.Count == 0) survivors = new List<int> { 0, 1, 2, 3 };
+            TriggerSuddenDeath(survivors);
+            return; 
+        }
+        if (CurrentRound < 3)
+        {
+            CurrentRound++;
+            RestartGame();
+        }
+        else
+        {
+            // 3ラウンド完走しても決着がつかなかった場合
+            CurrentRound = 1;
+            string winner = GetWinnerName();
+            // モードを「GameOver」に切り替えて、画面を止める
+            ChangeMode(new GameOverMode(winner));
+        }
+    }
+    /*if(CurrentRound <3)
+    {
+        ;
+        CurrentRound++;//ラウンドの加算
+        RestartGame();
+    }
+    else
+    {
+        CurrentRound = 1;
+        _isSuddenDeathNext=true;
+        RestartGame();
+    }*/
+    public void SetAllPlayersControl(bool enabled)
+    {
+        foreach (var player in GetActivePlayers())
+        {
+            if (player == null) continue;
+            var input = player.GetComponent<UnityEngine.InputSystem.PlayerInput>();
+            if (input != null) input.enabled = enabled;
+        }
+    }
+
+    // 生き残っている人数を数える（SurvivalModeから呼ぶ用）
+    public int GetActivePlayersCount()
+    {
+        int count = 0;
+        // activePlayers はプレイヤーが入っているリスト
+        foreach (var p in activePlayers)
+        {
+            if (p != null) count++;
+        }
+        return count;
+    }
+
+    // 勝者の名前を取得する
+    public string GetWinnerName()
+    {
+        foreach (var p in activePlayers)
+        {
+            if (p != null) return p.name; // 最初に見つけた生き残りを勝者とする
+        }
+        return "";
     }
 }

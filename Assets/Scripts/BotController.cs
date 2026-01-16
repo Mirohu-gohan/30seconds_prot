@@ -4,7 +4,7 @@ public class BotController : MonoBehaviour
 {
     [Header("移動設定")]
     [SerializeField] private float Speed = 3f;
-    [SerializeField] private float rotate = 120f;
+    //[SerializeField] private float rotate = 120f;
 
     [Header("行動詳細")]
     [SerializeField] private float minWaitTime = 1f;

@@ -4,6 +4,7 @@ using UnityEditor;
 using UnityEditor.Rendering;
 using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
+using UnityEngine.Android;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 //using static System.Net.Mime.MediaTypeNames;
@@ -64,6 +65,7 @@ public class PlayerController1 : MonoBehaviour
     [SerializeField] private Text IDtext;
 
     Reception reception;
+    private Animator anime;
 
     private void Awake()
     {
@@ -88,10 +90,13 @@ public class PlayerController1 : MonoBehaviour
             {
                 isStrt = true;
                 isPrese = true;
+
+                anime.SetBool("Charge", true);
             }
         }
         if (context.canceled)
         {
+            anime.SetBool("Charge", false);
             isPrese = false;
             if (isStrt && !isTackling && Time.time > lastTackleTime + tackleCooldown)
             {
@@ -117,13 +122,18 @@ public class PlayerController1 : MonoBehaviour
         IDtext.text += $"Player {playerID + 1}\n";
 
         rb = GetComponent<Rigidbody>();
+        anime = GetComponentInChildren<Animator>();
         reception = GetComponent<Reception>();
     }
 
     void FixedUpdate()
     {
-        float mag = inputVer.magnitude;
-
+        Move();
+        if (!isfinish)
+        {
+            float mag = inputVer.magnitude;
+            anime.SetFloat("speed",mag);
+        }
 
         if (isStrt)
         {
@@ -152,16 +162,9 @@ public class PlayerController1 : MonoBehaviour
                 curentRecoveryTime = StrongRecoveryTime;
             }
         }
-        if (isMax)
-        {
-            curentknockbackForce = StrongKnockbackForce;
-        }
-        else
-        {
-            curentknockbackForce = WeakKnockbackForce;
-        }
 
-        Move();
+       
+
     }
 
     void Move()
@@ -223,36 +226,11 @@ public class PlayerController1 : MonoBehaviour
         }
 
         isMax = false;
+        anime.SetBool("AtackKyou",false);
+        anime.SetBool("AtackJaku",false );
     }
 
-   /* private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("Player"))
-        {
-            Vector3 posDir = other.transform.position - this.transform.position;
-            float target_angle = Vector3.Angle(this.transform.forward, posDir);
-
-            var dist = Vector3.Distance(other.transform.position, transform.position);
-
-            if (target_angle > angle) { return; }
-
-            if (target_angle <= angle)
-            {
-                if (Physics.Raycast(this.transform.position + Vector3.up * 1f, posDir, out RaycastHit hit))
-                {
-                    if (hit.collider == other)
-                    {
-                        if (isTackling)
-                        {
-                            Reception p = other.gameObject.GetComponent<Reception>();
-                            if (p.isHit) { return; }
-                            p.KnockBack(transform.position, curentknockbackForce);
-                        }
-                    }
-                }
-            }
-        }
-    }*/
+   
     private void OnTriggerStay(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
@@ -272,6 +250,16 @@ public class PlayerController1 : MonoBehaviour
                     {
                         if (isTackling)
                         {
+                            if (isMax)
+                            {
+                                anime.SetBool("AtackKyou", true);
+                                curentknockbackForce = StrongKnockbackForce;
+                            }
+                            else
+                            {
+                                anime.SetBool("AtackJaku", true);
+                                curentknockbackForce = WeakKnockbackForce;
+                            }
                             Reception p = other.gameObject.GetComponent<Reception>();
                             if (p.isHit) { return; }
                             p.KnockBack(transform.position, curentknockbackForce);

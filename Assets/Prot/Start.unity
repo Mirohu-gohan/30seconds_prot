@@ -600,14 +600,6 @@ MonoBehaviour:
     m_Interactions: 
     m_SingletonActionBindings:
     - m_Name: 
-      m_Id: 96038f86-ac84-431f-9627-bfcac27facb5
-      m_Path: <Mouse>/rightButton
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Join
-      m_Flags: 0
-    - m_Name: 
       m_Id: d7d1959d-cfd8-4e1e-937b-117bf3171e1c
       m_Path: <Gamepad>/start
       m_Interactions: 

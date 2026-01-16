@@ -1,4 +1,6 @@
-﻿using System.Diagnostics.Contracts;
+﻿using System;
+using System.Diagnostics.Contracts;
+using UnityEditor;
 using UnityEditor.Rendering;
 using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
@@ -26,44 +28,41 @@ public class PlayerController1 : MonoBehaviour
 
     [SerializeField] private float tackleForce;    //ブリンク力
     [SerializeField] private float tackleDuration = 0.5f;//持続時間
-    //[SerializeField] private float tackleDuration = 5.0f;
     [SerializeField] private float tackleCooldown = 1.0f;//クールダウン時間
-    [SerializeField] private float WeakKnockbackForce = 2.5f; //弱ブリンクノックバック
-    [SerializeField] private float StrongKnockbackForce = 5.0f;//強ブリンクノックバック
 
-    //private Vector3 tackleStartPos;
-
-    private float curentknockbackForce = 0f;//現在のノックバック力
-
-    [Header("無敵設定")]
-    [SerializeField] private float invincibleTime = 1.0f;
-    public bool isInvincible = false;
-
+    //-----硬直-----
     [SerializeField] private float StrongRecoveryTime = 1.0f; //硬直時間
     private float curentRecoveryTime;
     private bool isfinish = false;
+
+    [Header("ノックバック,無敵設定")]
+    [SerializeField] private float WeakKnockbackForce = 2.5f; //弱ブリンクノックバック
+    [SerializeField] private float StrongKnockbackForce = 5.0f;//強ブリンクノックバック
+    private float curentknockbackForce = 0f;//現在のノックバック力
 
 
     private Rigidbody rb;
     private bool isTackling = false;
     private float lastTackleTime = 0f; // 最後のタックル時間
 
-    public bool isTackled = false;
 
-
-    private bool isPrese = false; //押されているかフラグ
-    [HideInInspector] public bool isStrt = false;//タイマスタートフラグ
-    private float t = 0f; //タイマー
-    public float chargeMax = 5.0f; //タイマー上限
+    private bool isPrese = false; //攻撃キー入力フラグ
+    [HideInInspector] public bool isStrt = false;//チャージ開始フラグ
+    private float t = 0f; //チャージ量
+    public float chargeMax = 5.0f; //チャージ上限
     private bool isMax = false;//チャージがMaxかのフラグ
 
+    [Header("当たり判定設定")]
+    [SerializeField] private SphereCollider searchArea;
+    [SerializeField] private float angle = 45f;
 
 
+    //-----PlayerID-----
     private int playerID;
     private PlayerInput playerInput;
     [SerializeField] private Text IDtext;
 
-    //private float y = -5.0f;
+    Reception reception;
 
 
 
@@ -85,7 +84,6 @@ public class PlayerController1 : MonoBehaviour
     {
         if (context.performed)
         {
-            isTackled = false;
             isfinish = false;
 
             if (!isTackling && Time.time > lastTackleTime + tackleCooldown)
@@ -100,7 +98,6 @@ public class PlayerController1 : MonoBehaviour
             if (isStrt && !isTackling && Time.time > lastTackleTime + tackleCooldown)
             {
                 Tackle();
-                isTackled = true;
             }
             isStrt = false;
         }
@@ -122,12 +119,11 @@ public class PlayerController1 : MonoBehaviour
         IDtext.text += $"Player {playerID + 1}\n";
 
         rb = GetComponent<Rigidbody>();
+        reception = GetComponent<Reception>();
     }
 
     void FixedUpdate()
     {
-        Move();
-
         float mag = inputVer.magnitude;
 
         if (isStrt)
@@ -157,12 +153,23 @@ public class PlayerController1 : MonoBehaviour
                 curentRecoveryTime = StrongRecoveryTime;
             }
         }
+        if (isMax)
+        {
+            curentknockbackForce = StrongKnockbackForce;
+        }
+        else
+        {
+            curentknockbackForce = WeakKnockbackForce;
+        }
 
+        Move();
     }
 
     void Move()
     {
         if (isfinish) { return; }
+        if (reception != null && reception.isKnockback) return;
+
         if (isPrese)
         {
             curentSpeed = speed2;
@@ -173,7 +180,7 @@ public class PlayerController1 : MonoBehaviour
             curentSpeed = speed;
             curentRotSpeed = rotSpeed;
         }
-        
+
         if (!isTackling)
         {
             Vector3 move = new Vector3(inputVer.x, 0f, inputVer.y) * curentSpeed * Time.deltaTime;
@@ -197,22 +204,18 @@ public class PlayerController1 : MonoBehaviour
         isTackling = true;
         lastTackleTime = Time.time;
 
-        //tackleStartPos = transform.position;
-
-        rb.linearVelocity = Vector3.zero;
         rb.AddForce(transform.forward * tackleForce, ForceMode.Impulse);
 
         Invoke("EndTackle", tackleDuration);
-        
+
     }
 
 
 
     void EndTackle()
     {
-        Debug.Log("Stop");
-        isTackling = false;
         rb.linearVelocity = Vector3.zero;
+        isTackling = false;
 
         //ここで硬直処理
         if (isMax)
@@ -222,62 +225,45 @@ public class PlayerController1 : MonoBehaviour
 
         isMax = false;
     }
-
-    public void StartInvincible()
+  
+    private void OnTriggerStay(Collider other)
     {
-        if (isInvincible) return;
-
-        isInvincible = true;
-        Invoke(nameof(EndInvincible), invincibleTime);
-    }
-
-    private void EndInvincible()
-    {
-        isInvincible = false;
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player"))
         {
-            if (isTackling)
+            Vector3 posDir = other.transform.position - this.transform.position;
+            float target_angle = Vector3.Angle(this.transform.forward, posDir);
+
+            var dist = Vector3.Distance(other.transform.position, transform.position);
+
+            if (target_angle > angle) { return; }
+
+            if (target_angle <= angle)
             {
-                EndTackle();
-
-                Rigidbody enemyrb = collision.gameObject.GetComponent<Rigidbody>();
-                PlayerController1 enemyCon = collision.gameObject.GetComponent<PlayerController1>();
-
-                if (enemyCon != null && enemyCon.isInvincible)
+                if (Physics.Raycast(this.transform.position + Vector3.up * 1f, posDir, out RaycastHit hit))
                 {
-                    return;
-                }
-
-                if (enemyrb != null /*&& isTackling*/)
-                {
-                    if (isMax)
+                    if (hit.collider == other)
                     {
-                        curentknockbackForce = StrongKnockbackForce;
-                    }
-                    else
-                    {
-                        curentknockbackForce = WeakKnockbackForce;
-                    }
-
-                    Vector3 knockBackDir = collision.transform.position - transform.position;
-                    knockBackDir.y = 0f;
-                    //Debug.Log(curentknockbackForce);
-                    enemyrb.AddForce(knockBackDir.normalized * curentknockbackForce, ForceMode.Impulse);
-
-                    if (enemyCon != null)
-                    {
-                        enemyCon.StartInvincible();
+                        if (isTackling)
+                        {
+                            Reception p = other.gameObject.GetComponent<Reception>();
+                            if (p.isHit) { return; }
+                            p.KnockBack(transform.position, curentknockbackForce);
+                        }
                     }
                 }
             }
-
-            
-           
         }
-        //Debug.Log(collision.gameObject.name);
     }
+
+#if UNITY_EDITOR
+    private void OnDrawGizmos()
+    {
+        var pos = transform.position;
+        pos.y = 1.0f;
+        Handles.color = Color.red;
+        Handles.DrawSolidArc(pos, Vector3.up, Quaternion.Euler(0.0f, -angle, 0f) * transform.forward, angle * 2, searchArea.radius);
+    }
+#endif
 }
+
+

@@ -57,15 +57,13 @@ public class PlayerController1 : MonoBehaviour
     [SerializeField] private float angle = 45f;
 
 
+
     //-----PlayerID-----
     private int playerID;
     private PlayerInput playerInput;
     [SerializeField] private Text IDtext;
 
     Reception reception;
-
-
-
 
     private void Awake()
     {
@@ -125,6 +123,7 @@ public class PlayerController1 : MonoBehaviour
     void FixedUpdate()
     {
         float mag = inputVer.magnitude;
+
 
         if (isStrt)
         {
@@ -225,8 +224,8 @@ public class PlayerController1 : MonoBehaviour
 
         isMax = false;
     }
-  
-    private void OnTriggerStay(Collider other)
+
+   /* private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
         {
@@ -253,6 +252,34 @@ public class PlayerController1 : MonoBehaviour
                 }
             }
         }
+    }*/
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            Vector3 posDir = other.transform.position - this.transform.position;
+            float target_angle = Vector3.Angle(this.transform.forward, posDir);
+
+            var dist = Vector3.Distance(other.transform.position, transform.position);
+
+            if (target_angle > angle) { return; }
+
+            if (target_angle <= angle)
+            {
+                if (Physics.Raycast(this.transform.position + Vector3.up * 1.2f, posDir, out RaycastHit hit))
+                {
+                    if (hit.collider == other)
+                    {
+                        if (isTackling)
+                        {
+                            Reception p = other.gameObject.GetComponent<Reception>();
+                            if (p.isHit) { return; }
+                            p.KnockBack(transform.position, curentknockbackForce);
+                        }
+                    }
+                }
+            }
+        }
     }
 
 #if UNITY_EDITOR
@@ -261,7 +288,7 @@ public class PlayerController1 : MonoBehaviour
         var pos = transform.position;
         pos.y = 1.0f;
         Handles.color = Color.red;
-        Handles.DrawSolidArc(pos, Vector3.up, Quaternion.Euler(0.0f, -angle, 0f) * transform.forward, angle * 2, searchArea.radius);
+        Handles.DrawSolidArc(pos, Vector3.up, Quaternion.Euler(0.0f, -angle, 0f) * transform.forward, angle * 2f, searchArea.radius);
     }
 #endif
 }

@@ -4,69 +4,63 @@ public class SoundManager : MonoBehaviour
 {
     public static SoundManager Instance { get; private set; }
 
-    [Header("オーディオソース（スピーカー）")]
-    public AudioSource bgmSource; // BGM用
-    public AudioSource seSource;  // SE用
+    [Header("オーディオソース")]
+    public AudioSource bgmSource; // BGM用(LoopONにするであります!)
+    public AudioSource seSource;  // SE用(LoopOFFにするであります!)
+    //とりあえずテキストに合わせて変数を作って奥であります！
+    [Header("■ 参加画面")]
+    public AudioClip titleBGM;       
+    public AudioClip playerJoinSE;   // 決定ボタンを押す14
+    public AudioClip gameStartBtnSE; // 決定15
 
-    [Header("登録したいSEリスト")]
-    public AudioClip meteorSE;    // 隕石の音
-    public AudioClip playerFallSE; // 落下音
-    //もしほかにも新規で登録したい場合はここに追記するであります！
+    [Header("■ ゲーム画面：BGM")]
+    public AudioClip normalBattleBGM; // Threat_of_Impulse
+    public AudioClip suddenDeathBGM;  // maou_bgm_neorock66
+
+    [Header("■ ゲーム画面：SE")]
+    public AudioClip gameStartGongSE; // 試合開始のゴング
+    public AudioClip gameEndGongSE;   // 試合終了のゴング
+    
+    [Header("■ アクションSE（攻撃・隕石など）")]
+    public AudioClip weakHitSE;       // 軽いパンチ１
+    public AudioClip chargeSE;        // energycharge_kantai2
+    public AudioClip dashStartSE;     // パンチの風切り音（スローモーション）1
+    public AudioClip dashHitSE;       // 必殺技ヒット
+    public AudioClip meteorFallSE;    // ゴゴゴ 激しい地鳴り音
+    public AudioClip meteorImpactSE;  // 岩にヒビが入る
+    public AudioClip groundBreakSE;   // 岩が真っ二つに割れる（地面が崩れる音）
+
+    [Header("■ リザルト画面")]
+    public AudioClip resultBGM;      // maou_game_jingle05
+    public AudioClip cursorMoveSE;   // 決定ボタンを押す49
+    public AudioClip decideSE;       // 決定13
 
     void Awake()
     {
-        // シングルトン化
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // シーン移動しても壊さないであります！
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
-            Destroy(gameObject); 
+            Destroy(gameObject);
         }
     }
 
-    // --- BGMを鳴らす機能 ---
+    // BGM再生ロジック
     public void PlayBGM(AudioClip clip)
     {
         if (clip == null) return;
-
-        // すでに同じ曲が流れていたら何もしないであります！
         if (bgmSource.clip == clip && bgmSource.isPlaying) return;
 
         bgmSource.clip = clip;
         bgmSource.Play();
     }
 
-    // --- SEを鳴らす基本機能 ---
+    //  SE再生 ロジック
     public void PlaySE(AudioClip clip)
     {
-        if (clip != null)
-        {
-            seSource.PlayOneShot(clip);
-        }
-    }
-
-    // --- 専用関数 ---
-    
-    //（今後、音量やピッチを変えたくなったらここだけいじればいいよー）
-    // 隕石の音
-    public void PlayMeteorSound()
-    {
-        if (meteorSE != null)
-        {
-            // 例としては少し音を大きくしたいなら第2引数に数値を入れるであります！
-            seSource.PlayOneShot(meteorSE, 1.2f); 
-        }
-    }
-
-    // 落下の音
-    public void PlayFallSound()
-    {
-        if (playerFallSE != null)
-        {
-            seSource.PlayOneShot(playerFallSE);
-        }
+        if (clip != null) seSource.PlayOneShot(clip);
     }
 }

@@ -13,9 +13,8 @@ public class GameManager_M : MonoBehaviour
     // --- 静的変数 ---
     private static bool _isSuddenDeathNext = false;
     private static List<int> _qualifiedIndices = new List<int>(); 
-
-    // ラウンド管理用
     public static int CurrentRound = 1;
+    public static int[] playerWins = new int[4];
 
     [Header("UI設定")]
     public Text timerTextUI;
@@ -30,8 +29,6 @@ public class GameManager_M : MonoBehaviour
     [Header("ゲーム設定")]
     public float survivalTimeLimit = 20.0f;
     public float deathYCoordinate = -10.0f;
-    [Header("サウンド設定")]
-    public AudioClip mapBGM;
 
     public enum Mode { Survival, SuddenDeath, GameOver }
     public Mode CurrentModeState;
@@ -53,16 +50,29 @@ public class GameManager_M : MonoBehaviour
     void Start()
     {
         Time.timeScale = 1.0f;
-
-        if (SoundManager.Instance != null)
-        {
-            SoundManager.Instance.PlayBGM(mapBGM);
-        }
         
         if (resultCanvas != null) resultCanvas.SetActive(false);
         if (timerTextUI != null) timerTextUI.gameObject.SetActive(true);
 
         UpdateRoundDisplay();
+
+　　　　//ここにBGM再生の処理を追加したよ～ん
+        if (SoundManager.Instance != null)
+        {
+            if (_isSuddenDeathNext)
+            {
+                // サドンデス用BGM
+                SoundManager.Instance.PlayBGM(SoundManager.Instance.suddenDeathBGM);
+            }
+            else
+            {
+                // 通常バトル用BGM
+                SoundManager.Instance.PlayBGM(SoundManager.Instance.normalBattleBGM);
+            }
+            
+            // 試合開始ゴング！
+            SoundManager.Instance.PlaySE(SoundManager.Instance.gameStartGongSE);
+        }
 
         if (_isSuddenDeathNext)
         {
@@ -76,6 +86,21 @@ public class GameManager_M : MonoBehaviour
         }
 
         join = GameObject.Find("JoinedManager");
+        StartCoroutine(InitializeUIWithDelay());
+    }
+    //現在の参加人数を取得してUIを作るロジックです
+    private IEnumerator InitializeUIWithDelay()
+    {
+        yield return null; 
+        
+        if (PlayerUIManager.Instance != null)
+        {
+            PlayerUIManager.Instance.InitializePlayerUI(GetActivePlayersCount());
+        }
+        for (int i = 0; i < playerWins.Length; i++)
+            {
+                PlayerUIManager.Instance.UpdatePlayerScore(i, playerWins[i]);
+            }
     }
 
     void Update()
@@ -91,12 +116,12 @@ public class GameManager_M : MonoBehaviour
             if (CurrentModeState == Mode.SuddenDeath)
             {
                 roundTextUI.text = "SUDDEN DEATH";
-                roundTextUI.color = Color.black;
+                roundTextUI.color = Color.red;
             }
             else
             {
                 roundTextUI.text = "Round " + CurrentRound;
-                // roundTextUI.color = Color.white;
+                // roundTextUI.color = Color.white; 
             }
             roundTextUI.gameObject.SetActive(true);
         }
@@ -110,6 +135,10 @@ public class GameManager_M : MonoBehaviour
             return;
         }
         if (!activePlayers.Contains(p)) activePlayers.Add(p);
+        if (PlayerUIManager.Instance != null)
+            {
+                PlayerUIManager.Instance.InitializePlayerUI(activePlayers.Count);
+            }
     }
 
     public void OnPlayerEliminated(GameObject eliminatedPlayer)
@@ -136,8 +165,15 @@ public class GameManager_M : MonoBehaviour
             {
                 if (SoundManager.Instance != null)
                 {
-                    SoundManager.Instance.PlayFallSound();
+                     SoundManager.Instance.PlaySE(SoundManager.Instance.groundBreakSE); 
                 }
+
+                var health = player.GetComponent<PlayerHealth>(); 
+                if (health != null && PlayerUIManager.Instance != null)
+                {
+                    PlayerUIManager.Instance.SetPlayerDead(health.playerIndex);
+                }
+
                 OnPlayerEliminated(player);
                 Destroy(player);
             }
@@ -151,6 +187,16 @@ public class GameManager_M : MonoBehaviour
 
     public void NextRound(bool isTimeUp = false)
     {
+
+        if (GetActivePlayersCount() == 1)
+        {
+            var winner = activePlayers[0]; 
+            var health = winner.GetComponent<PlayerHealth>();
+            if (health != null)
+            {
+                playerWins[health.playerIndex]++; 
+            }
+        }
         if (isTimeUp || GetActivePlayersCount() == 0)
         {
             List<int> survivors = new List<int>();
@@ -196,14 +242,11 @@ public class GameManager_M : MonoBehaviour
         else if (newMode is GameOverMode) CurrentModeState = Mode.GameOver;
     }
 
-　　// リザルトUIを表示するメソッドであります！
     public void ShowResultUI(string resultText)
     {
         if (resultCanvas != null)
         {
-            // ラウンド表示を消す
             if (roundTextUI != null) roundTextUI.gameObject.SetActive(false);
-
             resultCanvas.SetActive(true);
             if (resultTextUI != null) resultTextUI.text = resultText;
 
@@ -212,6 +255,12 @@ public class GameManager_M : MonoBehaviour
             {
                 firstButton.Select();
                 EventSystem.current.SetSelectedGameObject(firstButton.gameObject);
+            }
+
+            if (SoundManager.Instance != null)
+            {
+                SoundManager.Instance.PlaySE(SoundManager.Instance.gameEndGongSE);
+                SoundManager.Instance.PlayBGM(SoundManager.Instance.resultBGM);
             }
         }
     }
@@ -224,7 +273,6 @@ public class GameManager_M : MonoBehaviour
         SceneManager.LoadScene(s);
     }
 
-    // エラー防止のためにいったんnull実装
     public void HideUI(float delay) { }
     private IEnumerator HideUIRoutine(float delay) { yield break; }
 

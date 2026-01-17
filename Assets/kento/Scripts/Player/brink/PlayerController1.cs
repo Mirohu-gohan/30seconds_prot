@@ -52,6 +52,10 @@ public class PlayerController1 : MonoBehaviour
     public float chargeMax = 5.0f; //チャージ上限
     private bool isMax = false;//チャージがMaxかのフラグ
 
+    bool isAttack1 = false;
+    bool isAttack2 = false;
+
+
     [Header("当たり判定設定")]
     [SerializeField] private SphereCollider searchArea;
     [SerializeField] private float angle = 45f;
@@ -64,6 +68,7 @@ public class PlayerController1 : MonoBehaviour
     [SerializeField] private Text IDtext;
 
     Reception reception;
+    Animator animator;
 
     private void Awake()
     {
@@ -117,57 +122,57 @@ public class PlayerController1 : MonoBehaviour
         IDtext.text += $"Player {playerID + 1}\n";
 
         rb = GetComponent<Rigidbody>();
+        animator = GetComponentInChildren<Animator>();
         reception = GetComponent<Reception>();
     }
 
     void FixedUpdate()
     {
+        if (reception != null && !reception.isKnockback)
+        {
+            if (isStrt)
+            {
+                if (t < chargeMax)
+                {
+                    t += Time.deltaTime;
+                }
+                if (t >= chargeMax)
+                {
+                    isMax = true;
+                }
+            }
+            else if (!isStrt)
+            {
+                t = 0f;
+            }
+            if (isfinish)
+            {
+                if (curentRecoveryTime > 0)
+                {
+                    curentRecoveryTime -= Time.deltaTime;
+                }
+                if (curentRecoveryTime <= 0)
+                {
+                    isfinish = false;
+                    curentRecoveryTime = StrongRecoveryTime;
+                }
+            }
+            Move();
+        }
+
+       
+
         float mag = inputVer.magnitude;
-
-
-        if (isStrt)
-        {
-            if (t < chargeMax)
-            {
-                t += Time.deltaTime;
-            }
-            if (t >= chargeMax)
-            {
-                isMax = true;
-            }
-        }
-        else if (!isStrt)
-        {
-            t = 0f;
-        }
-        if (isfinish)
-        {
-            if (curentRecoveryTime > 0)
-            {
-                curentRecoveryTime -= Time.deltaTime;
-            }
-            if (curentRecoveryTime <= 0)
-            {
-                isfinish = false;
-                curentRecoveryTime = StrongRecoveryTime;
-            }
-        }
-        if (isMax)
-        {
-            curentknockbackForce = StrongKnockbackForce;
-        }
-        else
-        {
-            curentknockbackForce = WeakKnockbackForce;
-        }
-
-        Move();
+        animator.SetFloat("Speed", mag);
+        animator.SetBool("IsChage",isStrt);
+        animator.SetBool("IsAttack1",isAttack1);
+        animator.SetBool("IsAttack2",isAttack2);
     }
 
     void Move()
     {
         if (isfinish) { return; }
-        if (reception != null && reception.isKnockback) return;
+        //if (reception != null && reception.isKnockback) return;
 
         if (isPrese)
         {
@@ -200,9 +205,21 @@ public class PlayerController1 : MonoBehaviour
     void Tackle()
     {
         if (isfinish) { return; }
+        if (reception != null && reception.isKnockback) return;
         isTackling = true;
         lastTackleTime = Time.time;
 
+        if (isMax)
+        {
+            curentknockbackForce = StrongKnockbackForce;
+            isAttack2 = true;
+        }
+        else
+        {
+            curentknockbackForce = WeakKnockbackForce;
+            isAttack1 = true;
+        }
+       
         rb.AddForce(transform.forward * tackleForce, ForceMode.Impulse);
 
         Invoke("EndTackle", tackleDuration);
@@ -223,36 +240,10 @@ public class PlayerController1 : MonoBehaviour
         }
 
         isMax = false;
+        isAttack1 = false;
+        isAttack2 = false;
     }
 
-   /* private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("Player"))
-        {
-            Vector3 posDir = other.transform.position - this.transform.position;
-            float target_angle = Vector3.Angle(this.transform.forward, posDir);
-
-            var dist = Vector3.Distance(other.transform.position, transform.position);
-
-            if (target_angle > angle) { return; }
-
-            if (target_angle <= angle)
-            {
-                if (Physics.Raycast(this.transform.position + Vector3.up * 1f, posDir, out RaycastHit hit))
-                {
-                    if (hit.collider == other)
-                    {
-                        if (isTackling)
-                        {
-                            Reception p = other.gameObject.GetComponent<Reception>();
-                            if (p.isHit) { return; }
-                            p.KnockBack(transform.position, curentknockbackForce);
-                        }
-                    }
-                }
-            }
-        }
-    }*/
     private void OnTriggerStay(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))

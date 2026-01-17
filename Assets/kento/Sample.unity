@@ -940,6 +940,14 @@ PrefabInstance:
       propertyPath: angle
       value: 60
       objectReference: {fileID: 0}
+    - target: {fileID: 7865676919794776010, guid: d4a6348dea067154fac4fe701b89656e, type: 3}
+      propertyPath: WeakKnockbackForce
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 7865676919794776010, guid: d4a6348dea067154fac4fe701b89656e, type: 3}
+      propertyPath: StrongKnockbackForce
+      value: 40
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

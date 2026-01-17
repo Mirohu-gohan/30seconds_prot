@@ -15,18 +15,20 @@ public class Reception : MonoBehaviour
 
     [SerializeField] private float StunInvincibleTime = 1.0f; //–³“GŽžŠÔ
 
-
     Rigidbody rb;
+    Animator animator;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        animator = GetComponentInChildren<Animator>();
         col = GetComponent<Collider>();
     }
 
     // Update is called once per frame
     void Update()
     {
+      
         if (isKnockback)
         {
             knockbackCounter -= Time.deltaTime;
@@ -37,6 +39,9 @@ public class Reception : MonoBehaviour
                 rb.linearVelocity = Vector3.zero;
             }
         }
+
+        if (!animator) { return; }
+        animator.SetBool("IsHit",isKnockback);
     }
 
     private void FixedUpdate()

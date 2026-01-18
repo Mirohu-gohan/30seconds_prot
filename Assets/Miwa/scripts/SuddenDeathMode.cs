@@ -9,6 +9,12 @@ public class SuddenDeathMode : IGameMode
         // 攻撃力を爆上げ（10倍）にする
         ApplyPowerUp(true);
         Debug.Log("<color=red>サドンデス開始：全プレイヤーの攻撃力を10倍に設定しました！</color>");
+
+        //UIの表示
+        if (GameManager_M.Instance != null && GameManager_M.Instance.suddenDeathUI != null)
+        {
+            GameManager_M.Instance.suddenDeathUI.SetActive(true);
+        }
     }
 
     public void OnUpdate() { }
@@ -17,6 +23,12 @@ public class SuddenDeathMode : IGameMode
     {
         // モード終了時に元に戻す（1/10倍にする）
         ApplyPowerUp(false);
+
+        //UIの非表示
+        if (GameManager_M.Instance != null && GameManager_M.Instance.suddenDeathUI != null)
+        {
+            GameManager_M.Instance.suddenDeathUI.SetActive(false);
+        }
     }
 
     private void ApplyPowerUp(bool enable)

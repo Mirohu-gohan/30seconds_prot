@@ -22,9 +22,12 @@ public class GameManager_M : MonoBehaviour
     
     [Header("ラウンド表示用")]
     public Text roundTextUI;
-    
+
     [Header("リザルト表示用")]
     public Text resultTextUI;
+
+    [Header("サドンデス専用演出")]
+    public GameObject suddenDeathUI;
 
     [Header("ゲーム設定")]
     public float survivalTimeLimit = 20.0f;

@@ -26,7 +26,7 @@ public class GameManager_M : MonoBehaviour
     [Header("リザルト表示用")]
     public Text resultTextUI;
 
-    [Header("サドンデス専用演出")]
+    [Header("サドンデス")]
     public GameObject suddenDeathUI;
 
     [Header("ゲーム設定")]

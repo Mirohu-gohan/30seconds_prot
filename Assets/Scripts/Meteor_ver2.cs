@@ -11,11 +11,17 @@ public class Meteor_ver2 : MonoBehaviour
     [Header("エフェクト削除設定")]
     [SerializeField] private ParticleSystem[] particlesToRemove; // 削除するパーティクルシステム
 
+    [Header("SE")]
+    [SerializeField] private AudioClip exprosion;
+    AudioSource audioSource;
+
     private Rigidbody rb;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -59,6 +65,10 @@ public class Meteor_ver2 : MonoBehaviour
                         }
                     }
                 }
+
+                // 衝突音の追加
+                audioSource.PlayOneShot(exprosion);
+
             }
 
             // 縮小して消滅するコルーチンを開始

@@ -7,8 +7,6 @@ public class SurvivalMode : IGameMode
     private float currentTime;
     private Text timerText;
 
-
-
     public SurvivalMode(Text uiText, float timeLimit)
     {
         timerText = uiText;
@@ -17,43 +15,26 @@ public class SurvivalMode : IGameMode
 
     public void OnEnter() 
     {
-        if (GameManager_M.Instance != null&&GameManager_M.Instance.roundTextUI !=null)
-        {
-            int round = GameManager_M.CurrentRound;
 
-            GameManager_M.Instance.roundTextUI.text = "Round" + round;
-            GameManager_M.Instance.roundTextUI.gameObject.SetActive(true);
-
-            //GameManeger_M‚Éˆ—‚ğ‚¨Šè‚¢
-            /*GameManager_M.Instance.HideUI(2.0f);*/
-        }
     }
 
     public void OnUpdate()
     {
-        // ƒ^ƒCƒ}[XV
+        // 1. æ™‚é–“ã®è¨ˆç®—ï¼ˆGameManagerã®Updateã‹ã‚‰å‘¼ã°ã‚Œã‚‹ï¼‰
         currentTime -= Time.deltaTime;
-        if (timerText != null)
-            timerText.text = Mathf.Max(0, currentTime).ToString("F1");
-            timerText.gameObject.SetActive(true);
 
-        // 1. ŠÔØ‚ê”»’è
+        // 2. ç§’æ•°ã‚’ç”»é¢ã«å‡ºã™
+        if (timerText != null)
+        {
+            timerText.text = Mathf.Max(0, currentTime).ToString("F1");
+        }
+
+        // 3. æ™‚é–“åˆ‡ã‚Œåˆ¤å®š
         if (currentTime <= 0)
         {
-            // ˆø”‚È‚µ = ˆø‚«•ª‚¯ƒŠƒUƒ‹ƒg
-            //GameManager_M.Instance.ChangeMode(new GameOverMode(""));
-            GameManager_M.Instance.NextRound(true);
+            // GameManagerã«ã€Œæ™‚é–“åˆ‡ã‚Œã ã‚ˆã€ã¨ä¼ãˆã‚‹
+            GameManager_M.Instance.TimeExpiredForSurvival();
         }
-
-        // 2. ¶‚«c‚è”»’èi1l‚É‚È‚Á‚½‚çI—¹j
-        if (GameManager_M.Instance.GetActivePlayersCount() <= 1)
-        {
-            //string winner = GameManager_M.Instance.GetWinnerName();
-            //GameManager_M.Instance.ChangeMode(new GameOverMode(winner));
-            GameManager_M.Instance.NextRound(false);
-        }
-        Debug.Log("ƒ^ƒCƒ}[XV’†: " + currentTime); // ‚±‚ê‚ªƒRƒ“ƒ\[ƒ‹‚Éo‚é‚©ƒ`ƒFƒbƒN
-        currentTime -= Time.deltaTime;
     }
 
     public void OnExit() { }

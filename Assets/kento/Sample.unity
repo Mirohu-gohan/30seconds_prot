@@ -251,11 +251,12 @@ GameObject:
   - component: {fileID: 780129150}
   - component: {fileID: 780129149}
   - component: {fileID: 780129148}
+  - component: {fileID: 780129151}
   - component: {fileID: 780129147}
   - component: {fileID: 780129146}
   m_Layer: 0
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -285,7 +286,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!65 &780129147
 BoxCollider:
@@ -370,12 +371,27 @@ Transform:
   m_GameObject: {fileID: 780129145}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.23780142, y: 0.8243302, z: 9.16}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -0.23780142, y: 1.38, z: 9.16}
+  m_LocalScale: {x: 1, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &780129151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 780129145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b3bdda097612c1458b44f284c026df0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isKnockback: 0
+  isHit: 0
+  StunInvincibleTime: 1
 --- !u!65 &826957995 stripped
 BoxCollider:
   m_CorrespondingSourceObject: {fileID: 4604816776429329412, guid: 41e93e82702c7364183c4102a96abf22, type: 3}
@@ -530,6 +546,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player 5
       objectReference: {fileID: 0}
+    - target: {fileID: 4927183563175391618, guid: 167166524bb4a3649bdebd38dcc85931, type: 3}
+      propertyPath: m_Radius
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4927183563175391618, guid: 167166524bb4a3649bdebd38dcc85931, type: 3}
+      propertyPath: m_Center.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5128585452599055210, guid: 167166524bb4a3649bdebd38dcc85931, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -569,6 +593,18 @@ PrefabInstance:
     - target: {fileID: 5128585452599055210, guid: 167166524bb4a3649bdebd38dcc85931, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7865676919794776010, guid: 167166524bb4a3649bdebd38dcc85931, type: 3}
+      propertyPath: WeakKnockbackForce
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 7865676919794776010, guid: 167166524bb4a3649bdebd38dcc85931, type: 3}
+      propertyPath: StrongKnockbackForce
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 9102891950027234856, guid: 167166524bb4a3649bdebd38dcc85931, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -6,7 +6,7 @@ public class GameOverMode : IGameMode
 {
     private string _winnerName;
 
-    // ƒRƒ“ƒXƒgƒ‰ƒNƒ^i–¼‘O‚ª‚È‚¯‚ê‚Î "DRAW" ‚Æ‚İ‚È‚·j
+    // ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã§å‹è€…ã®åå‰ã‚’å—ã‘å–ã‚‹ã§ã‚ã‚Šã¾ã™ï¼
     public GameOverMode(string winnerName = "")
     {
         _winnerName = winnerName;
@@ -14,43 +14,15 @@ public class GameOverMode : IGameMode
 
     public void OnEnter()
     {
-        // ŠÔ‚ğ’Êí‘¬“x‚É–ß‚·
+
         Time.timeScale = 1.0f;
 
-        // 1. ŸÒ‚Ì–¼‘O‚ğ”»’è
         string winnerMessage = string.IsNullOrEmpty(_winnerName) ? "DRAW GAME" : _winnerName + " WIN!";
-
-        // 2. GameManager‚ÌƒŠƒUƒ‹ƒg•\¦‹@”\‚ğŒÄ‚Ño‚·
         if (GameManager_M.Instance != null)
         {
-            // Šù‘¶‚Ìƒ‰ƒEƒ“ƒh•\¦UI‚Í‰B‚·
-            /*if (GameManager_M.Instance.roundTextUI != null)
-                GameManager_M.Instance.roundTextUI.gameObject.SetActive(false);*/
-
-            // ƒŠƒUƒ‹ƒgUI‚ğ•\¦
             GameManager_M.Instance.ShowResultUI(winnerMessage);
-
-            // ‘SƒvƒŒƒCƒ„[‚Ì‘€ì‚ğ–³Œø‰»
             GameManager_M.Instance.SetAllPlayersControl(false);
         }
-        // šd—vFƒXƒ[‚ğ‰ğœ‚µA’Êí‘¬“x(1.0)‚É‚·‚é
-        /*Time.timeScale = 1.0f;
-
-        if (GameManager_M.Instance != null && GameManager_M.Instance.roundTextUI != null)
-        {
-            // •\¦‚·‚éƒƒbƒZ[ƒW‚Ìì¬
-            string resultMessage = string.IsNullOrEmpty(_winnerName) ? "TIME UP / DRAW" : _winnerName + " WIN!";
-
-            // UI‚ğƒŠƒUƒ‹ƒg•\¦‚É‘‚«Š·‚¦
-            GameManager_M.Instance.roundTextUI.text = "RESULT\n" + resultMessage;
-            GameManager_M.Instance.roundTextUI.color = Color.white;
-            GameManager_M.Instance.roundTextUI.gameObject.SetActive(true);
-        }
-
-        // ƒvƒŒƒCƒ„[‚ğ~‚ß‚é
-        GameManager_M.Instance.SetAllPlayersControl(false);
-
-        Debug.Log("Result: " + _winnerName);*/
     }
 
     public void OnUpdate() { }

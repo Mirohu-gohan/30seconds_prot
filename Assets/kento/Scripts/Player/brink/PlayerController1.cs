@@ -1,5 +1,10 @@
-﻿
+﻿using System;
+using System.Diagnostics.Contracts;
+using UnityEditor;
+using UnityEditor.Rendering;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
+using UnityEngine.Android;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 //using static System.Net.Mime.MediaTypeNames;
@@ -7,7 +12,7 @@ using UnityEngine.UI;
 public class PlayerController1 : MonoBehaviour
 {
     [Header("移動設定")]
-   
+
     [SerializeField] private float speed = 5.0f; //移動スピード
     [SerializeField] private float ChargeMoveSpeedRate = 0.3f; //チャージ・硬直中の速度倍率
     private float speed2 = 0; //チャージ中のスピード
@@ -22,39 +27,45 @@ public class PlayerController1 : MonoBehaviour
 
     [Header("ブリンク設定")]
 
-    [SerializeField] private float tackleForce = 15.0f;    //�^�b�N���p���[
-    [SerializeField] private float tackleDuration = 0.5f;//�^�b�N����Ԃ̎�������
-    [SerializeField] private float tackleCooldown = 1.0f;//�^�b�N���̃N�[���_�E������
-    [SerializeField] private float WeakKnockbackForce = 2.5f; //��p���`�m�b�N�o�b�N
-    [SerializeField] private float StrongKnockbackForce = 5.0f;//強パンチノックバック
-    private float curentknockbackForce = 0f;//現在のノックバック力
-  
+    [SerializeField] private float tackleForce;    //ブリンク力
+    [SerializeField] private float tackleDuration = 0.5f;//持続時間
+    [SerializeField] private float tackleCooldown = 1.0f;//クールダウン時間
 
+    //-----硬直-----
     [SerializeField] private float StrongRecoveryTime = 1.0f; //硬直時間
     private float curentRecoveryTime;
     private bool isfinish = false;
+
+    [Header("ノックバック,無敵設定")]
+    [SerializeField] private float WeakKnockbackForce = 2.5f; //弱ブリンクノックバック
+    [SerializeField] private float StrongKnockbackForce = 5.0f;//強ブリンクノックバック
+    private float curentknockbackForce = 0f;//現在のノックバック力
 
 
     private Rigidbody rb;
     private bool isTackling = false;
     private float lastTackleTime = 0f; // 最後のタックル時間
-   
-    private bool isPrese = false; //押されているかフラグ
-    [HideInInspector] public bool isStrt = false;//タイマスタートフラグ
-    private float t = 0f; //タイマー
-    public float chargeMax = 5.0f; //タイマー上限
-    private bool isMax = false;//チャージがMaxかのフラグ
-  
-   
 
+
+    private bool isPrese = false; //攻撃キー入力フラグ
+    [HideInInspector] public bool isStrt = false;//チャージ開始フラグ
+    private float t = 0f; //チャージ量
+    public float chargeMax = 5.0f; //チャージ上限
+    private bool isMax = false;//チャージがMaxかのフラグ
+
+    [Header("当たり判定設定")]
+    [SerializeField] private SphereCollider searchArea;
+    [SerializeField] private float angle = 45f;
+
+
+
+    //-----PlayerID-----
     private int playerID;
     private PlayerInput playerInput;
     [SerializeField] private Text IDtext;
 
-    private Animator animator;
-
-    //private float y = -5.0f;
-
+    Reception reception;
+    private Animator anime;
 
     private void Awake()
     {
@@ -62,46 +73,39 @@ public class PlayerController1 : MonoBehaviour
         rotSpeed2 = rotSpeed * ChargeRotateSpeedRate;
         curentRecoveryTime = StrongRecoveryTime;
     }
-    
+
 
     public void OnMove(InputAction.CallbackContext context)
     {
         inputVer = context.ReadValue<Vector2>();
     }
-    
+
     public void OnTackle(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
             isfinish = false;
-            
+
             if (!isTackling && Time.time > lastTackleTime + tackleCooldown)
             {
-                isPrese = true;
                 isStrt = true;
-                animator.SetBool("Charge", true);
+                isPrese = true;
+
+                anime.SetBool("Charge", true);
             }
         }
-        if (context.canceled )
+        if (context.canceled)
         {
-            animator.SetBool("Charge", false);
+            anime.SetBool("Charge", false);
             isPrese = false;
             if (isStrt && !isTackling && Time.time > lastTackleTime + tackleCooldown)
             {
                 Tackle();
-                if (isMax)
-                {
-                    animator.SetBool("AtackKyou", true);
-                }
-                else if (!isMax)
-                {
-                    animator.SetBool("AtackJaku", true);
-                }
             }
             isStrt = false;
         }
     }
-    
+
     public void SetCharge(float value)
     {
         t = value;
@@ -114,22 +118,22 @@ public class PlayerController1 : MonoBehaviour
         {
             playerID = playerInput.playerIndex;
         }
-        
+
         IDtext.text += $"Player {playerID + 1}\n";
-       
+
         rb = GetComponent<Rigidbody>();
-        animator = GetComponentInChildren<Animator>();
+        anime = GetComponentInChildren<Animator>();
+        reception = GetComponent<Reception>();
     }
 
     void FixedUpdate()
     {
-            Move();
+        Move();
         if (!isfinish)
         {
             float mag = inputVer.magnitude;
-            animator.SetFloat("speed", mag);
+            anime.SetFloat("speed",mag);
         }
-
 
         if (isStrt)
         {
@@ -139,10 +143,10 @@ public class PlayerController1 : MonoBehaviour
             }
             if (t >= chargeMax)
             {
-              isMax = true;
+                isMax = true;
             }
         }
-        else if(!isStrt)
+        else if (!isStrt)
         {
             t = 0f;
         }
@@ -159,35 +163,41 @@ public class PlayerController1 : MonoBehaviour
             }
         }
 
+       
+
     }
 
     void Move()
     {
         if (isfinish) { return; }
+        if (reception != null && reception.isKnockback) return;
+
         if (isPrese)
         {
             curentSpeed = speed2;
             curentRotSpeed = rotSpeed2;
         }
-        if(!isPrese)
+        if (!isPrese)
         {
             curentSpeed = speed;
             curentRotSpeed = rotSpeed;
         }
+
         if (!isTackling)
         {
             Vector3 move = new Vector3(inputVer.x, 0f, inputVer.y) * curentSpeed * Time.deltaTime;
-            rb.MovePosition(rb.position + move);
             //transform.position += move;
+            rb.MovePosition(rb.position + move);
+
+
 
             if (move != Vector3.zero)
             {
                 Quaternion Rot = Quaternion.LookRotation(move, Vector3.up);
-                //transform.rotation = Quaternion.Slerp(transform.rotation, Rot, curentRotSpeed * Time.deltaTime);
+                //transform.rotation = Quaternion.Slerp(transform.rotation,Rot,curentRotSpeed * Time.deltaTime);
                 rb.MoveRotation(Quaternion.Slerp(rb.rotation, Rot, curentRotSpeed * Time.fixedDeltaTime));
             }
         }
-       
     }
 
     void Tackle()
@@ -196,52 +206,79 @@ public class PlayerController1 : MonoBehaviour
         isTackling = true;
         lastTackleTime = Time.time;
 
-        rb.AddForce(transform.forward * tackleForce * t, ForceMode.Impulse);
+        rb.AddForce(transform.forward * tackleForce, ForceMode.Impulse);
 
         Invoke("EndTackle", tackleDuration);
+
     }
 
-   
+
 
     void EndTackle()
     {
-        isTackling = false;
         rb.linearVelocity = Vector3.zero;
+        isTackling = false;
 
         //ここで硬直処理
         if (isMax)
         {
             isfinish = true;
         }
-        isMax = false;
-        animator.SetBool("AtackKyou", false);
-        animator.SetBool("AtackJaku", false);
 
+        isMax = false;
+        anime.SetBool("AtackKyou",false);
+        anime.SetBool("AtackJaku",false );
     }
 
-
-    private void OnCollisionEnter(Collision collision)
+   
+    private void OnTriggerStay(Collider other)
     {
-        if (isTackling)
+        if (other.gameObject.CompareTag("Player"))
         {
-            Rigidbody enemyrb = collision.gameObject.GetComponent<Rigidbody>();
-            if (enemyrb != null)
-            {
-                if (isMax)
-                {
-                    curentknockbackForce = StrongKnockbackForce;
-                }
-                else
-                {
-                    curentknockbackForce = WeakKnockbackForce;
-                }
+            Vector3 posDir = other.transform.position - this.transform.position;
+            float target_angle = Vector3.Angle(this.transform.forward, posDir);
 
-                Vector3 knockBackDir = collision.transform.position - transform.position;
-                knockBackDir.y = 0f;
-                Debug.Log(curentknockbackForce);
-                enemyrb.AddForce(knockBackDir.normalized * curentknockbackForce, ForceMode.Impulse);
+            var dist = Vector3.Distance(other.transform.position, transform.position);
+
+            if (target_angle > angle) { return; }
+
+            if (target_angle <= angle)
+            {
+                if (Physics.Raycast(this.transform.position + Vector3.up * 1.2f, posDir, out RaycastHit hit))
+                {
+                    if (hit.collider == other)
+                    {
+                        if (isTackling)
+                        {
+                            if (isMax)
+                            {
+                                anime.SetBool("AtackKyou", true);
+                                curentknockbackForce = StrongKnockbackForce;
+                            }
+                            else
+                            {
+                                anime.SetBool("AtackJaku", true);
+                                curentknockbackForce = WeakKnockbackForce;
+                            }
+                            Reception p = other.gameObject.GetComponent<Reception>();
+                            if (p.isHit) { return; }
+                            p.KnockBack(transform.position, curentknockbackForce);
+                        }
+                    }
+                }
             }
         }
-      
     }
+
+#if UNITY_EDITOR
+    private void OnDrawGizmos()
+    {
+        var pos = transform.position;
+        pos.y = 1.0f;
+        Handles.color = Color.red;
+        Handles.DrawSolidArc(pos, Vector3.up, Quaternion.Euler(0.0f, -angle, 0f) * transform.forward, angle * 2f, searchArea.radius);
+    }
+#endif
 }
+
+

@@ -30,9 +30,6 @@ public class SoundManager : MonoBehaviour
     public AudioClip meteorImpactSE;  // 岩にヒビが入る
     public AudioClip groundBreakSE;   // 岩が真っ二つに割れる（地面が崩れる音）
 
-    public AudioClip fallMeteor;      // 隕石の落下音
-    public AudioClip exprosion;       // 隕石の衝突音
-
     [Header("■ リザルト画面")]
     public AudioClip resultBGM;      // maou_game_jingle05
     public AudioClip cursorMoveSE;   // 決定ボタンを押す49

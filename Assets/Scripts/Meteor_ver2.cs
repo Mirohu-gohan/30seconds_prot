@@ -19,7 +19,8 @@ public class Meteor_ver2 : MonoBehaviour
 
         if (SoundManager.Instance != null)
         {
-            SoundManager.Instance.PlaySE(SoundManager.Instance.fallMeteor);
+            // 隕石の落下音
+            SoundManager.Instance.PlaySE(SoundManager.Instance.meteorFallSE);
         }
     }
 
@@ -68,7 +69,8 @@ public class Meteor_ver2 : MonoBehaviour
                 // 衝突音の追加
                 if (SoundManager.Instance != null)
                 {
-                    SoundManager.Instance.PlaySE(SoundManager.Instance.exprosion);
+                    // 隕石の衝突音
+                    SoundManager.Instance.PlaySE(SoundManager.Instance.meteorImpactSE);
                 }
 
             }

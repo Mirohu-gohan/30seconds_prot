@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
 using UnityEditor;
-using UnityEditor.Rendering;
-using UnityEditor.ShaderGraph.Internal;
+#if UNITY_EDITOR
+using UnityEditor.Rendering; 
+using UnityEditor.ShaderGraph;
+#endif
 using UnityEngine;
 using UnityEngine.Android;
 using UnityEngine.InputSystem;

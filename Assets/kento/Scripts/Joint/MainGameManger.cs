@@ -28,7 +28,7 @@ public class MainGameManger : MonoBehaviour
         int count   = PlayerDataHolder.Instance.GetPlayerCount();
 
         //l”•ªPlayer‚Ì¶¬,PlayerID
-        for (int i = 0; i < count; i++)
+        for (int i = 0; i < pos.Length; i++)
         {
             if (i < count && devices[i] != null)
             {

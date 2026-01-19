@@ -26,12 +26,13 @@ public class GameManager_M : MonoBehaviour
     [Header("リザルト表示用")]
     public Text resultTextUI;
 
-    [Header("サドンデス専用演出")]
+    [Header("サドンデス")]
     public GameObject suddenDeathUI;
 
     [Header("ゲーム設定")]
     public float survivalTimeLimit = 20.0f;
     public float deathYCoordinate = -10.0f;
+    public float upperDeathYCoordinate = 20.0f;
 
     public enum Mode { Survival, SuddenDeath, GameOver }
     public Mode CurrentModeState;
@@ -155,6 +156,7 @@ public class GameManager_M : MonoBehaviour
         }
     }
 
+    //落下、吹っ飛び時にDeathする処理
     private void CheckPlayersFalling()
     {
         if (CurrentModeState == Mode.GameOver) return;
@@ -164,7 +166,7 @@ public class GameManager_M : MonoBehaviour
             GameObject player = activePlayers[i];
             if (player == null) { activePlayers.RemoveAt(i); continue; }
 
-            if (player.transform.position.y < deathYCoordinate)
+            if (player.transform.position.y < deathYCoordinate|| player.transform.position.y>upperDeathYCoordinate)
             {
                 if (SoundManager.Instance != null)
                 {

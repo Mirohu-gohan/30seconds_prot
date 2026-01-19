@@ -32,6 +32,7 @@ public class GameManager_M : MonoBehaviour
     [Header("ƒQ[ƒ€İ’è")]
     public float survivalTimeLimit = 20.0f;
     public float deathYCoordinate = -10.0f;
+    public float upperDeathYCoordinate = 20.0f;
 
     public enum Mode { Survival, SuddenDeath, GameOver }
     public Mode CurrentModeState;
@@ -155,6 +156,7 @@ public class GameManager_M : MonoBehaviour
         }
     }
 
+    //—‰ºA‚Á”ò‚Ñ‚ÉDeath‚·‚éˆ—
     private void CheckPlayersFalling()
     {
         if (CurrentModeState == Mode.GameOver) return;
@@ -164,7 +166,7 @@ public class GameManager_M : MonoBehaviour
             GameObject player = activePlayers[i];
             if (player == null) { activePlayers.RemoveAt(i); continue; }
 
-            if (player.transform.position.y < deathYCoordinate)
+            if (player.transform.position.y < deathYCoordinate|| player.transform.position.y>upperDeathYCoordinate)
             {
                 if (SoundManager.Instance != null)
                 {

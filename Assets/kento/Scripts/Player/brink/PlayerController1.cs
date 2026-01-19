@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
 using UnityEditor;
-#if UNITY_EDITOR
-using UnityEditor.Rendering; 
-using UnityEditor.ShaderGraph;
-#endif
+using UnityEditor.Rendering;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
-using UnityEngine.Android;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 //using static System.Net.Mime.MediaTypeNames;
@@ -55,6 +52,10 @@ public class PlayerController1 : MonoBehaviour
     public float chargeMax = 5.0f; //チャージ上限
     private bool isMax = false;//チャージがMaxかのフラグ
 
+    bool isAttack1 = false;
+    bool isAttack2 = false;
+
+
     [Header("当たり判定設定")]
     [SerializeField] private SphereCollider searchArea;
     [SerializeField] private float angle = 45f;
@@ -67,7 +68,7 @@ public class PlayerController1 : MonoBehaviour
     [SerializeField] private Text IDtext;
 
     Reception reception;
-    private Animator anime;
+    Animator animator;
 
     private void Awake()
     {
@@ -92,13 +93,10 @@ public class PlayerController1 : MonoBehaviour
             {
                 isStrt = true;
                 isPrese = true;
-
-                anime.SetBool("Charge", true);
             }
         }
         if (context.canceled)
         {
-            anime.SetBool("Charge", false);
             isPrese = false;
             if (isStrt && !isTackling && Time.time > lastTackleTime + tackleCooldown)
             {
@@ -124,55 +122,57 @@ public class PlayerController1 : MonoBehaviour
         IDtext.text += $"Player {playerID + 1}\n";
 
         rb = GetComponent<Rigidbody>();
-        anime = GetComponentInChildren<Animator>();
+        animator = GetComponentInChildren<Animator>();
         reception = GetComponent<Reception>();
     }
 
     void FixedUpdate()
     {
-        Move();
-        if (!isfinish)
+        if (reception != null && !reception.isKnockback)
         {
-            float mag = inputVer.magnitude;
-            anime.SetFloat("speed",mag);
-        }
-
-        if (isStrt)
-        {
-            if (t < chargeMax)
+            if (isStrt)
             {
-                t += Time.deltaTime;
+                if (t < chargeMax)
+                {
+                    t += Time.deltaTime;
+                }
+                if (t >= chargeMax)
+                {
+                    isMax = true;
+                }
             }
-            if (t >= chargeMax)
+            else if (!isStrt)
             {
-                isMax = true;
+                t = 0f;
             }
-        }
-        else if (!isStrt)
-        {
-            t = 0f;
-        }
-        if (isfinish)
-        {
-            if (curentRecoveryTime > 0)
+            if (isfinish)
             {
-                curentRecoveryTime -= Time.deltaTime;
+                if (curentRecoveryTime > 0)
+                {
+                    curentRecoveryTime -= Time.deltaTime;
+                }
+                if (curentRecoveryTime <= 0)
+                {
+                    isfinish = false;
+                    curentRecoveryTime = StrongRecoveryTime;
+                }
             }
-            if (curentRecoveryTime <= 0)
-            {
-                isfinish = false;
-                curentRecoveryTime = StrongRecoveryTime;
-            }
+            Move();
         }
 
        
 
+        float mag = inputVer.magnitude;
+        animator.SetFloat("Speed", mag);
+        animator.SetBool("IsChage",isStrt);
+        animator.SetBool("IsAttack1",isAttack1);
+        animator.SetBool("IsAttack2",isAttack2);
     }
 
     void Move()
     {
         if (isfinish) { return; }
-        if (reception != null && reception.isKnockback) return;
+        //if (reception != null && reception.isKnockback) return;
 
         if (isPrese)
         {
@@ -205,9 +205,21 @@ public class PlayerController1 : MonoBehaviour
     void Tackle()
     {
         if (isfinish) { return; }
+        if (reception != null && reception.isKnockback) return;
         isTackling = true;
         lastTackleTime = Time.time;
 
+        if (isMax)
+        {
+            curentknockbackForce = StrongKnockbackForce;
+            isAttack2 = true;
+        }
+        else
+        {
+            curentknockbackForce = WeakKnockbackForce;
+            isAttack1 = true;
+        }
+       
         rb.AddForce(transform.forward * tackleForce, ForceMode.Impulse);
 
         Invoke("EndTackle", tackleDuration);
@@ -228,11 +240,10 @@ public class PlayerController1 : MonoBehaviour
         }
 
         isMax = false;
-        anime.SetBool("AtackKyou",false);
-        anime.SetBool("AtackJaku",false );
+        isAttack1 = false;
+        isAttack2 = false;
     }
 
-   
     private void OnTriggerStay(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
@@ -252,16 +263,6 @@ public class PlayerController1 : MonoBehaviour
                     {
                         if (isTackling)
                         {
-                            if (isMax)
-                            {
-                                anime.SetBool("AtackKyou", true);
-                                curentknockbackForce = StrongKnockbackForce;
-                            }
-                            else
-                            {
-                                anime.SetBool("AtackJaku", true);
-                                curentknockbackForce = WeakKnockbackForce;
-                            }
                             Reception p = other.gameObject.GetComponent<Reception>();
                             if (p.isHit) { return; }
                             p.KnockBack(transform.position, curentknockbackForce);

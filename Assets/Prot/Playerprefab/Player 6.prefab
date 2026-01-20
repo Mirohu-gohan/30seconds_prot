@@ -158,8 +158,8 @@ MonoBehaviour:
   tackleDuration: 0.5
   tackleCooldown: 1
   StrongRecoveryTime: 1
-  WeakKnockbackForce: 10
-  StrongKnockbackForce: 25
+  WeakKnockbackForce: 15
+  StrongKnockbackForce: 30
   isStrt: 0
   chargeMax: 5
   searchArea: {fileID: 4927183563175391618}

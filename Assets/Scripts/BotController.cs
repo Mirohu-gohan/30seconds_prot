@@ -25,9 +25,15 @@ public class BotController : MonoBehaviour
     private float actTimer = 0f;
     private float nextActDuration = 0f;
 
+    private Reception reception;
+    private Animator animator;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        reception = GetComponent<Reception>();
+        animator = GetComponentInChildren<Animator>();
+
         SetNextAct();
     }
 
@@ -55,6 +61,9 @@ public class BotController : MonoBehaviour
         {
             transform.Translate(Vector3.forward * Speed * Time.deltaTime);
         }
+
+        float mag = Speed;
+        animator.SetFloat("Speed", isMove ? mag : 0f);
     }
 
 
@@ -89,6 +98,7 @@ public class BotController : MonoBehaviour
 
     private void SetNextAct()
     {
+        if(reception.isHit) {return;}
         if (isMove)
         {
             nextActDuration = Random.Range(minWalkTime, maxWalkTime);

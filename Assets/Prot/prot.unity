@@ -2511,8 +2511,8 @@ MonoBehaviour:
   deathYCoordinate: -10
   upperDeathYCoordinate: 20
   CurrentModeState: 0
-  suddenDeathKnockbackMultiplier: 2
-  currentKnockbackMultiplier: 1
+  suddenDeathKnockbackMultiplier: 10
+  currentKnockbackMultiplier: 5
 --- !u!114 &310970695
 MonoBehaviour:
   m_ObjectHideFlags: 0

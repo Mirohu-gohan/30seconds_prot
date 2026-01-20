@@ -45,10 +45,25 @@ public class MainGameManger : MonoBehaviour
             }
             else
             {
-                Instantiate(botPrefab, pos[i].position, pos[i].rotation);
+                // --- ここから書き換え ---
+                // 1. Botを生成して、変数「botObj」に入れる
+                GameObject botObj = Instantiate(botPrefab, pos[i].position, pos[i].rotation);
+
+                // 2. 生成したBotから PlayerHealth スクリプトを探す
+                PlayerHealth health = botObj.GetComponent<PlayerHealth>();
+                if (health != null)
+                {
+                    // 3. Botに「お前は i 番目（0, 1, 2, 3...）だよ」と教え込む
+                    health.playerIndex = i;
+                }
+                // --- ここまで ---
             }
+            //else
+            //{
+            //    Instantiate(botPrefab, pos[i].position, pos[i].rotation);
+            //}
         }
-        
+
 
     }
 

@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 3e77a773c2c299a4cbbebb36568b1f0e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0286e61ac5580b04d9fa3f4f7753f115, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -205,7 +205,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 3e77a773c2c299a4cbbebb36568b1f0e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0286e61ac5580b04d9fa3f4f7753f115, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -305,13 +305,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   backgroundPanel: {fileID: 3626742637940476068}
-  playerNameText: {fileID: 0}
   stars:
   - {fileID: 5374971687687035810}
   - {fileID: 5211980618289485973}
   - {fileID: 4171342521222879435}
-  starOnColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  starOffColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  starOnColor: {r: 1, g: 1, b: 0, a: 1}
+  starOffColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &8463930565696723558
 GameObject:
   m_ObjectHideFlags: 0
@@ -377,7 +376,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 3e77a773c2c299a4cbbebb36568b1f0e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0286e61ac5580b04d9fa3f4f7753f115, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

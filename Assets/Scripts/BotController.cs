@@ -108,4 +108,12 @@ public class BotController : MonoBehaviour
             nextActDuration = Random.Range(minWaitTime, maxWaitTime);
         }
     }
+
+    private void OnDrawGizmos()
+    {
+        if (Sensor == null) return;
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(Sensor.position + Vector3.down * sensorDistance, sensorRadius);
+    }
 }

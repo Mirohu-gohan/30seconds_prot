@@ -4640,7 +4640,7 @@ PrefabInstance:
       objectReference: {fileID: 4049848038291858225, guid: 3e70f513b78eef6448d917028ce81396, type: 3}
     - target: {fileID: 1772771688016775720, guid: e66787d700696b24b9600224cfce643e, type: 3}
       propertyPath: moveSpeed
-      value: 10
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 1772771688016775720, guid: e66787d700696b24b9600224cfce643e, type: 3}
       propertyPath: spawnInterval
@@ -4660,7 +4660,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2984008395524873667, guid: e66787d700696b24b9600224cfce643e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.7
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 2984008395524873667, guid: e66787d700696b24b9600224cfce643e, type: 3}
       propertyPath: m_LocalPosition.y
@@ -4668,7 +4668,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2984008395524873667, guid: e66787d700696b24b9600224cfce643e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 5.26
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2984008395524873667, guid: e66787d700696b24b9600224cfce643e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -5354,6 +5354,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 556938480091158522, guid: 2171721bbe61a49419aa9cb1ff5e2af5, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5311989696810065148, guid: 2171721bbe61a49419aa9cb1ff5e2af5, type: 3}
       propertyPath: m_Name
       value: SoundManager

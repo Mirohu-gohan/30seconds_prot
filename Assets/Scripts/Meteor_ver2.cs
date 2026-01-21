@@ -13,15 +13,30 @@ public class Meteor_ver2 : MonoBehaviour
 
     private Rigidbody rb;
 
+    private knockback kk;
+
+    [Header("サウンド関係")]
+    public AudioSource AS;
+
+    public AudioClip MFS;
+    public float FallSoundVolume = 0.25f;
+    public AudioClip MIS;
+    public float ImpactSoundVolume = 0.35f;
+
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
 
-        if (SoundManager.Instance != null)
-        {
-            // 隕石の落下音
-            SoundManager.Instance.PlaySE(SoundManager.Instance.meteorFallSE);
-        }
+        kk = GetComponent<knockback>();
+
+        //if (SoundManager.Instance != null)
+        //{
+        // 隕石の落下音
+        //SoundManager.Instance.PlaySE(SoundManager.Instance.meteorFallSE);
+        //}
+        AS.PlayOneShot(MFS,FallSoundVolume);
+
     }
 
     void Update()
@@ -66,13 +81,19 @@ public class Meteor_ver2 : MonoBehaviour
                     }
                 }
 
-                // 衝突音の追加
-                if (SoundManager.Instance != null)
+                if (kk  != null)
                 {
-                    // 隕石の衝突音
-                    SoundManager.Instance.PlaySE(SoundManager.Instance.meteorImpactSE);
+                    Destroy(kk);
                 }
 
+                // 衝突音の追加
+                //if (SoundManager.Instance != null)
+                //{
+                    // 隕石の衝突音
+                    //SoundManager.Instance.PlaySE(SoundManager.Instance.meteorImpactSE);
+                //}
+
+                AS.PlayOneShot(MIS,ImpactSoundVolume);
             }
 
             // 縮小して消滅するコルーチンを開始

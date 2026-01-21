@@ -26,8 +26,8 @@ public class SoundManager : MonoBehaviour
     public AudioClip chargeSE;        // energycharge_kantai2
     public AudioClip dashStartSE;     // パンチの風切り音（スローモーション）1
     public AudioClip dashHitSE;       // 必殺技ヒット
-    public AudioClip meteorFallSE;    // ゴゴゴ 激しい地鳴り音
-    public AudioClip meteorImpactSE;  // 岩にヒビが入る
+    //public AudioClip meteorFallSE;    // ゴゴゴ 激しい地鳴り音
+    //public AudioClip meteorImpactSE;  // 岩にヒビが入る
     public AudioClip groundBreakSE;   // 岩が真っ二つに割れる（地面が崩れる音）
 
     [Header("■ リザルト画面")]

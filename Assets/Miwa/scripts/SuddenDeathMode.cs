@@ -8,7 +8,6 @@ public class SuddenDeathMode : IGameMode
     {
         // 攻撃力を爆上げ（10倍）にする
         ApplyPowerUp(true);
-        Debug.Log("<color=red>サドンデス開始：全プレイヤーの攻撃力を10倍に設定しました！</color>");
 
         //UIの表示
         if (GameManager_M.Instance != null && GameManager_M.Instance.suddenDeathUI != null)
@@ -64,6 +63,28 @@ public class SuddenDeathMode : IGameMode
                     float currentVal = (float)weakField.GetValue(controller);
                     weakField.SetValue(controller, currentVal * multiplier);
                 }
+            }
+        }
+    }
+
+    public void PowerUpSinglePlayer(GameObject player)
+    {
+        var controller = player.GetComponent<PlayerController1>();
+        if (controller != null)
+        {
+            BindingFlags flags = BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public;
+            FieldInfo strongField = typeof(PlayerController1).GetField("StrongKnockbackForce", flags);
+            FieldInfo weakField = typeof(PlayerController1).GetField("WeakKnockbackForce", flags);
+
+            if (strongField != null)
+            {
+                float val = (float)strongField.GetValue(controller);
+                strongField.SetValue(controller, val * 10.0f);
+            }
+            if (weakField != null)
+            {
+                float val = (float)weakField.GetValue(controller);
+                weakField.SetValue(controller, val * 10.0f);
             }
         }
     }

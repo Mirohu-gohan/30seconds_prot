@@ -149,7 +149,10 @@ public class GameManager_M : MonoBehaviour
             Destroy(p);
             return;
         }
-        if (!activePlayers.Contains(p)) activePlayers.Add(p);
+        if (CurrentModeState == Mode.SuddenDeath && _currentMode is SuddenDeathMode suddenMode)
+        {
+            suddenMode.PowerUpSinglePlayer(p);
+        }
         if (PlayerUIManager.Instance != null)
         {
             PlayerUIManager.Instance.InitializePlayerUI(playerWins.Length);
@@ -291,6 +294,7 @@ public class GameManager_M : MonoBehaviour
     {
         Destroy(join);
         SceneManager.LoadScene(s);
+        AudioListener.pause = true;
     }
 
     public void HideUI(float delay) { }

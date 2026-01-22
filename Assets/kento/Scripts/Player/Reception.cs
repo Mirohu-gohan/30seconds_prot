@@ -57,14 +57,9 @@ public class Reception : MonoBehaviour
         isKnockback = true;
         knockbackCounter = knockbackTime;
 
-        var thispos = transform.position;
-        thispos.y = 0;
-
-        knockbackDir = (thispos - pos).normalized * force;
+        knockbackDir = pos.normalized * force;
         rb.linearVelocity = Vector3.zero;
-        Debug.Log("–³“GŠJŽn");
         StartCoroutine(Hit());
-
     }
 
     IEnumerator Hit()

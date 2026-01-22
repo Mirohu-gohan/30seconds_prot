@@ -1,11 +1,4 @@
-﻿using System;
-using System.Diagnostics.Contracts;
-using UnityEditor;
-#if UNITY_EDITOR
-using UnityEditor;
-using UnityEditor.Rendering;
-using UnityEditor.ShaderGraph.Internal;
-#endif
+﻿using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -38,6 +31,15 @@ public class PlayerController1 : MonoBehaviour
     private float curentRecoveryTime;
     private bool isfinish = false;
 
+    private bool isPrese = false; //攻撃キー入力フラグ
+    [HideInInspector] public bool isStrt = false;//チャージ開始フラグ
+    private float t = 0f; //チャージ量
+    [HideInInspector] public float chargeMax = 5.0f; //チャージ上限
+    private bool isMax = false;//チャージがMaxかのフラグ
+
+    bool isAttack1 = false;
+    bool isAttack2 = false;
+
     [Header("ノックバック,無敵設定")]
     [SerializeField] private float WeakKnockbackForce = 2.5f; //弱ブリンクノックバック
     [SerializeField] private float StrongKnockbackForce = 5.0f;//強ブリンクノックバック
@@ -47,16 +49,6 @@ public class PlayerController1 : MonoBehaviour
     private Rigidbody rb;
     private bool isTackling = false;
     private float lastTackleTime = 0f; // 最後のタックル時間
-
-
-    private bool isPrese = false; //攻撃キー入力フラグ
-    [HideInInspector] public bool isStrt = false;//チャージ開始フラグ
-    private float t = 0f; //チャージ量
-    public float chargeMax = 5.0f; //チャージ上限
-    private bool isMax = false;//チャージがMaxかのフラグ
-
-    bool isAttack1 = false;
-    bool isAttack2 = false;
 
 
     [Header("当たり判定設定")]
@@ -163,13 +155,13 @@ public class PlayerController1 : MonoBehaviour
             Move();
         }
 
-       
+
 
         float mag = inputVer.magnitude;
         animator.SetFloat("Speed", mag);
-        animator.SetBool("IsChage",isStrt);
-        animator.SetBool("IsAttack1",isAttack1);
-        animator.SetBool("IsAttack2",isAttack2);
+        animator.SetBool("IsChage", isStrt);
+        animator.SetBool("IsAttack1", isAttack1);
+        animator.SetBool("IsAttack2", isAttack2);
     }
 
     void Move()
@@ -222,7 +214,7 @@ public class PlayerController1 : MonoBehaviour
             curentknockbackForce = WeakKnockbackForce;
             isAttack1 = true;
         }
-       
+
         rb.AddForce(transform.forward * tackleForce, ForceMode.Impulse);
 
         Invoke("EndTackle", tackleDuration);
@@ -236,15 +228,18 @@ public class PlayerController1 : MonoBehaviour
         rb.linearVelocity = Vector3.zero;
         isTackling = false;
 
+        isAttack1 = false;
+        isAttack2 = false;
+
         //ここで硬直処理
         if (isMax)
         {
+            isAttack2 = false;
             isfinish = true;
         }
 
         isMax = false;
-        isAttack1 = false;
-        isAttack2 = false;
+
     }
 
     private void OnTriggerStay(Collider other)
@@ -268,7 +263,11 @@ public class PlayerController1 : MonoBehaviour
                         {
                             Reception p = other.gameObject.GetComponent<Reception>();
                             if (p.isHit) { return; }
-                            p.KnockBack(transform.position, curentknockbackForce);
+                            p.KnockBack(rb.linearVelocity.normalized, curentknockbackForce);
+
+                            //当たった時点でInvokeをキャンセルしてタックルを止める
+                            CancelInvoke("EndTackle");
+                            EndTackle();
                         }
                     }
                 }

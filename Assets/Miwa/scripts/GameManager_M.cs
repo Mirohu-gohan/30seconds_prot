@@ -149,6 +149,9 @@ public class GameManager_M : MonoBehaviour
             Destroy(p);
             return;
         }
+
+        if (!activePlayers.Contains(p)) { activePlayers.Add(p); }
+
         if (CurrentModeState == Mode.SuddenDeath && _currentMode is SuddenDeathMode suddenMode)
         {
             suddenMode.PowerUpSinglePlayer(p);

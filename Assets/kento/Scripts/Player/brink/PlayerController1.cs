@@ -55,6 +55,12 @@ public class PlayerController1 : MonoBehaviour
     [SerializeField] private SphereCollider searchArea;
     [SerializeField] private float angle = 45f;
 
+    [Header("エフェクト設定")]
+    [SerializeField] private ParticleSystem run;//走り
+    [SerializeField] private ParticleSystem chage;//チャージ
+    [SerializeField] private ParticleSystem strong;//強
+    [SerializeField] private ParticleSystem weak;//弱
+
 
 
     //-----PlayerID-----
@@ -70,12 +76,28 @@ public class PlayerController1 : MonoBehaviour
         speed2 = speed * ChargeMoveSpeedRate;
         rotSpeed2 = rotSpeed * ChargeRotateSpeedRate;
         curentRecoveryTime = StrongRecoveryTime;
+
+        run.Stop();
+        chage.Stop();
+        strong.Stop(); 
+        weak.Stop();
     }
 
 
     public void OnMove(InputAction.CallbackContext context)
     {
         inputVer = context.ReadValue<Vector2>();
+        if (context.performed)
+        {
+            if (run && !run.isPlaying)
+                run.Play();
+        }
+
+        if (context.canceled)
+        {
+            if (run && run.isPlaying)
+                run.Stop();
+        }
     }
 
     public void OnTackle(InputAction.CallbackContext context)
@@ -88,6 +110,7 @@ public class PlayerController1 : MonoBehaviour
             {
                 isStrt = true;
                 isPrese = true;
+                chage.Play();
             }
         }
         if (context.canceled)
@@ -95,6 +118,7 @@ public class PlayerController1 : MonoBehaviour
             isPrese = false;
             if (isStrt && !isTackling && Time.time > lastTackleTime + tackleCooldown)
             {
+                chage.Stop();
                 Tackle();
             }
             isStrt = false;
@@ -207,11 +231,13 @@ public class PlayerController1 : MonoBehaviour
         if (isMax)
         {
             curentknockbackForce = StrongKnockbackForce;
+            strong.Play();
             isAttack2 = true;
         }
         else
         {
             curentknockbackForce = WeakKnockbackForce;
+            weak.Play();
             isAttack1 = true;
         }
 
@@ -227,6 +253,8 @@ public class PlayerController1 : MonoBehaviour
     {
         rb.linearVelocity = Vector3.zero;
         isTackling = false;
+        strong.Stop();
+        weak.Stop();
 
         isAttack1 = false;
         isAttack2 = false;

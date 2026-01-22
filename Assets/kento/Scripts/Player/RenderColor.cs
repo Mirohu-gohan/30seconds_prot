@@ -19,15 +19,15 @@ public class RenderColor : MonoBehaviour
             }
             else if (input.playerIndex == 1)
             {
-                render.material.color = Color.green;
+                render.material.color = Color.blue;
             }
             else if (input.playerIndex == 2)
             {
-                render.material.color = Color.yellow;
+                render.material.color = Color.green;
             }
             else if (input.playerIndex == 3)
             {
-                render.material.color = Color.blue;
+                render.material.color = Color.yellow;
             }
         }
     }

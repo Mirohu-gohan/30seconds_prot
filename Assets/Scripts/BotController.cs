@@ -25,6 +25,7 @@ public class BotController : MonoBehaviour
     private float actTimer = 0f;
     private float nextActDuration = 0f;
 
+
     private Reception reception;
     private Animator animator;
 
@@ -33,7 +34,6 @@ public class BotController : MonoBehaviour
     {
         reception = GetComponent<Reception>();
         animator = GetComponentInChildren<Animator>();
-
         SetNextAct();
     }
 
@@ -61,7 +61,7 @@ public class BotController : MonoBehaviour
         {
             transform.Translate(Vector3.forward * Speed * Time.deltaTime);
         }
-
+      
         float mag = Speed;
         animator.SetFloat("Speed", isMove ? mag : 0f);
     }

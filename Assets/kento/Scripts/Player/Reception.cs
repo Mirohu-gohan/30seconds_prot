@@ -15,11 +15,15 @@ public class Reception : MonoBehaviour
 
     [SerializeField] private float StunInvincibleTime = 1.0f; //ñ≥ìGéûä‘
 
+    //[SerializeField] private ParticleSystem hit;
+
     Rigidbody rb;
     Animator animator;
 
     void Start()
     {
+        //hit.Stop();
+
         rb = GetComponent<Rigidbody>();
         animator = GetComponentInChildren<Animator>();
         col = GetComponent<Collider>();
@@ -54,6 +58,10 @@ public class Reception : MonoBehaviour
 
     public void KnockBack(Vector3 pos, float force)
     {
+/*        ParticleSystem hitPar = Instantiate(hit);
+        hit.transform.position = transform.position ;
+        hitPar.Play();
+        Destroy(hitPar.gameObject,2.0f);*/
         isKnockback = true;
         knockbackCounter = knockbackTime;
 
@@ -71,7 +79,6 @@ public class Reception : MonoBehaviour
 
         rb.useGravity = true;
         col.enabled = true;
-        Debug.Log("ñ≥ìGèIóπ");
         isHit = false;
     }
 }

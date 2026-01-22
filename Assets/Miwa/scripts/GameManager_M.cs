@@ -99,12 +99,23 @@ public class GameManager_M : MonoBehaviour
         
         if (PlayerUIManager.Instance != null)
         {
-            PlayerUIManager.Instance.InitializePlayerUI(GetActivePlayersCount());
+            PlayerUIManager.Instance.InitializePlayerUI(playerWins.Length);
+
+            if (CurrentModeState == Mode.SuddenDeath)
+            {
+                for (int i = 0; i < playerWins.Length; i++)
+                {
+                    if (!_qualifiedIndices.Contains(i))
+                    {
+                        PlayerUIManager.Instance.SetPlayerDead(i);
+                    }
+                }
+            }
         }
         for (int i = 0; i < playerWins.Length; i++)
-            {
-                PlayerUIManager.Instance.UpdatePlayerScore(i, playerWins[i]);
-            }
+        {
+            PlayerUIManager.Instance.UpdatePlayerScore(i, playerWins[i]);
+        }
     }
 
     void Update()
@@ -138,11 +149,14 @@ public class GameManager_M : MonoBehaviour
             Destroy(p);
             return;
         }
-        if (!activePlayers.Contains(p)) activePlayers.Add(p);
+        if (CurrentModeState == Mode.SuddenDeath && _currentMode is SuddenDeathMode suddenMode)
+        {
+            suddenMode.PowerUpSinglePlayer(p);
+        }
         if (PlayerUIManager.Instance != null)
-            {
-                PlayerUIManager.Instance.InitializePlayerUI(activePlayers.Count);
-            }
+        {
+            PlayerUIManager.Instance.InitializePlayerUI(playerWins.Length);
+        }
     }
 
     public void OnPlayerEliminated(GameObject eliminatedPlayer)
@@ -249,6 +263,8 @@ public class GameManager_M : MonoBehaviour
 
     public void ShowResultUI(string resultText)
     {
+        Time.timeScale = 0f;
+
         if (resultCanvas != null)
         {
             if (roundTextUI != null) roundTextUI.gameObject.SetActive(false);
@@ -264,6 +280,8 @@ public class GameManager_M : MonoBehaviour
 
             if (SoundManager.Instance != null)
             {
+                if (SoundManager.Instance.seSource != null) SoundManager.Instance.seSource.Stop();
+
                 SoundManager.Instance.PlaySE(SoundManager.Instance.gameEndGongSE);
                 SoundManager.Instance.PlayBGM(SoundManager.Instance.resultBGM);
             }
@@ -276,6 +294,7 @@ public class GameManager_M : MonoBehaviour
     {
         Destroy(join);
         SceneManager.LoadScene(s);
+        AudioListener.pause = true;
     }
 
     public void HideUI(float delay) { }

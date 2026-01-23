@@ -5,10 +5,10 @@ using UnityEngine.Rendering.Universal;
 public class DecalColor : MonoBehaviour
 {
     private DecalProjector projector;
-    [SerializeField] private Material matreial1;
-    [SerializeField] private Material matreial2;
-    [SerializeField] private Material matreial3;
-    [SerializeField] private Material matreial4;
+    [SerializeField] private Material red;
+    [SerializeField] private Material bule;
+    [SerializeField] private Material yello;
+    [SerializeField] private Material green;
 
     private PlayerInput input;
 
@@ -23,19 +23,19 @@ public class DecalColor : MonoBehaviour
         {
             if (input.playerIndex == 0)
             {
-                projector.material = matreial1;
+                projector.material = red;
             }
             else if (input.playerIndex == 1)
             {
-                projector.material = matreial2;
+                projector.material = bule;
             }
             else if (input.playerIndex == 2)
             {
-                projector.material = matreial3;
+                projector.material = green;
             }
             else if (input.playerIndex == 3)
             {
-                projector.material = matreial4;
+                projector.material = yello;
             }
         }
 

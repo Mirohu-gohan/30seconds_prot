@@ -32,7 +32,7 @@ public class PlayerController1 : MonoBehaviour
     private bool isfinish = false;
 
     private bool isPrese = false; //攻撃キー入力フラグ
-    [HideInInspector] public bool isStrt = false;//チャージ開始フラグ
+     public bool isStrt = false;//チャージ開始フラグ
     private float t = 0f; //チャージ量
     [HideInInspector] public float chargeMax = 5.0f; //チャージ上限
     private bool isMax = false;//チャージがMaxかのフラグ
@@ -104,6 +104,7 @@ public class PlayerController1 : MonoBehaviour
     {
         if (context.performed)
         {
+            if (isStrt || isTackling) return;
             isfinish = false;
 
             if (!isTackling && Time.time > lastTackleTime + tackleCooldown)
@@ -224,6 +225,7 @@ public class PlayerController1 : MonoBehaviour
     void Tackle()
     {
         if (isfinish) { return; }
+        isStrt = false;
         if (reception != null && reception.isKnockback) return;
         isTackling = true;
         lastTackleTime = Time.time;
@@ -289,9 +291,11 @@ public class PlayerController1 : MonoBehaviour
                     {
                         if (isTackling)
                         {
+                            animator.SetBool("IsChage", false);
                             Reception p = other.gameObject.GetComponent<Reception>();
                             if (p.isHit) { return; }
                             p.KnockBack(rb.linearVelocity.normalized, curentknockbackForce);
+                           
 
                             //当たった時点でInvokeをキャンセルしてタックルを止める
                             CancelInvoke("EndTackle");

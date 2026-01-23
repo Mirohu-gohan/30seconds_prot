@@ -277,6 +277,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -2716379124438198801, guid: 77dcc2b656b064248a4e72facf4c35db, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 77dcc2b656b064248a4e72facf4c35db, type: 3}
       propertyPath: m_Name
       value: island
@@ -366,6 +370,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2754954434735137207}
     m_Modifications:
+    - target: {fileID: -9054575575880313163, guid: 77dcc2b656b064248a4e72facf4c35db, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 77dcc2b656b064248a4e72facf4c35db, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0
@@ -495,6 +503,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7428115117466296517}
     m_Modifications:
+    - target: {fileID: -8980897025114580100, guid: 77dcc2b656b064248a4e72facf4c35db, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 77dcc2b656b064248a4e72facf4c35db, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0
@@ -684,6 +696,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4972235463064429755, guid: 77dcc2b656b064248a4e72facf4c35db, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 6167696076890655526, guid: 77dcc2b656b064248a4e72facf4c35db, type: 3}
       propertyPath: m_Layer
       value: 3
@@ -805,6 +821,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Stage
       objectReference: {fileID: 0}
+    - target: {fileID: 2233201265657129058, guid: 77dcc2b656b064248a4e72facf4c35db, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: -7612500599777965640, guid: 77dcc2b656b064248a4e72facf4c35db, type: 3}
@@ -925,6 +945,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 77dcc2b656b064248a4e72facf4c35db, type: 3}
       propertyPath: m_TagString
       value: Stage
+      objectReference: {fileID: 0}
+    - target: {fileID: 4715269274766456787, guid: 77dcc2b656b064248a4e72facf4c35db, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7930437464689409330, guid: 77dcc2b656b064248a4e72facf4c35db, type: 3}
       propertyPath: m_Layer

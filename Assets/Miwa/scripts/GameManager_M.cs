@@ -41,12 +41,22 @@ public class GameManager_M : MonoBehaviour
     private List<GameObject> activePlayers = new List<GameObject>();
 
     public float suddenDeathKnockbackMultiplier = 2.0f; 
-    public float currentKnockbackMultiplier = 1.0f;    
+    public float currentKnockbackMultiplier = 1.0f;
+
+    private List<int> _lastActiveIndices = new List<int>();//同時にデスした時のため直前に生きていたPlayerを格納
 
     private GameObject join;
 
     void Awake()
     {
+        if (CurrentRound == 1)
+        {
+            for (int i = 0; i < playerWins.Length; i++)
+            {
+                playerWins[i] = 0;
+            }
+        }
+        AudioListener.pause = false;
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
     }
@@ -176,7 +186,23 @@ public class GameManager_M : MonoBehaviour
     //落下、吹っ飛び時にDeathする処理
     private void CheckPlayersFalling()
     {
+        //同時に落ちた場合の処理
         if (CurrentModeState == Mode.GameOver) return;
+
+        List<int> currentLiving = new List<int>();
+        foreach (var p in activePlayers)
+        {
+            if (p != null)
+            {
+                var h = p.GetComponent<PlayerHealth>();
+                if (h != null) currentLiving.Add(h.playerIndex);
+            }
+        }
+
+        if(currentLiving.Count > 0)
+        {
+            _lastActiveIndices =new List<int>(currentLiving);
+        }
 
         for (int i = activePlayers.Count - 1; i >= 0; i--)
         {
@@ -227,8 +253,11 @@ public class GameManager_M : MonoBehaviour
                 var health = p.GetComponent<PlayerHealth>();
                 if (health != null) survivors.Add(health.playerIndex);
             }
-            if (survivors.Count == 0) survivors = new List<int> { 0, 1, 2, 3 };
-            
+            if (survivors.Count == 0)
+            {
+                survivors = (_lastActiveIndices.Count > 0) ? _lastActiveIndices : new List<int>{0, 1, 2, 3};
+
+            }
             TriggerSuddenDeath(survivors);
             return; 
         }
@@ -240,10 +269,24 @@ public class GameManager_M : MonoBehaviour
         }
         else
         {
-            string winner = GetWinnerName();
-            CurrentRound = 1; 
-            ChangeMode(new GameOverMode(winner));
+            StartCoroutine(WaitAndShowResult());
         }
+    }
+
+    private IEnumerator WaitAndShowResult()
+    {
+        if (PlayerUIManager.Instance != null)
+        {
+            for (int i = 0; i < playerWins.Length; i++)
+            {
+                PlayerUIManager.Instance.UpdatePlayerScore(i, playerWins[i]);
+            }
+        }
+        yield return new WaitForSeconds(1.0f);
+
+        string finalwinner = GetWinnerName();
+        CurrentRound = 1;
+        ChangeMode(new GameOverMode(finalwinner));
     }
 
     private void TriggerSuddenDeath(List<int> qualifiers)
@@ -322,9 +365,25 @@ public class GameManager_M : MonoBehaviour
         return count;
     }
 
+    //勝利者の名前を表示する
     public string GetWinnerName()
     {
-        foreach (var p in activePlayers) if (p != null) return p.name;
-        return "Unknown";
+        List<string> winners = new List<string>();
+        int maxWins = 0;
+
+        for (int i = 0;i<playerWins.Length;i++)
+        {
+            if (playerWins[i] > maxWins) maxWins= playerWins[i];
+        }
+
+        if (maxWins > 0)
+        {
+            for(int i = 0;i<playerWins.Length;i++)
+            {
+                if(playerWins[i] == maxWins) winners.Add("Player"+(i+1));
+            }
+        }
+
+        return string.Join("&", winners);
     }
 }

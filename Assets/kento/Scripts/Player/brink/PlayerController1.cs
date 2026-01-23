@@ -291,7 +291,6 @@ public class PlayerController1 : MonoBehaviour
                     {
                         if (isTackling)
                         {
-                            animator.SetBool("IsChage", false);
                             Reception p = other.gameObject.GetComponent<Reception>();
                             if (p.isHit) { return; }
                             p.KnockBack(rb.linearVelocity.normalized, curentknockbackForce);

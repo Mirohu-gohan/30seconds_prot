@@ -6,6 +6,7 @@ public class SurvivalMode : IGameMode
 {
     private float currentTime;
     private Text timerText;
+    public bool isTimerActive=false;
 
     public SurvivalMode(Text uiText, float timeLimit)
     {
@@ -20,6 +21,8 @@ public class SurvivalMode : IGameMode
 
     public void OnUpdate()
     {
+        if (!isTimerActive) return;
+
         // 1. 時間の計算（GameManagerのUpdateから呼ばれる）
         currentTime -= Time.deltaTime;
 

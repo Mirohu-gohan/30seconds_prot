@@ -19,6 +19,7 @@ public class GameManager_M : MonoBehaviour
     [Header("UI設定")]
     public Text timerTextUI;
     public GameObject resultCanvas;
+    public Text CountdownUI;
     
     [Header("ラウンド表示用")]
     public Text roundTextUI;
@@ -59,6 +60,8 @@ public class GameManager_M : MonoBehaviour
         AudioListener.pause = false;
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
+
+        StartCoroutine(StartCountdown());//ゲーム開始時にカウントダウンを入れてディレイ
     }
 
     void Start()
@@ -102,6 +105,48 @@ public class GameManager_M : MonoBehaviour
         join = GameObject.Find("JoinedManager");
         StartCoroutine(InitializeUIWithDelay());
     }
+
+
+    private IEnumerator StartCountdown()
+    {
+        SetAllPlayersControl(false);
+        //時間制限を停止
+        if(_currentMode is SurvivalMode survival)
+        {
+            survival.isTimerActive=false;
+        }
+
+        int count = 3;
+        while (count > 0)
+        {
+            //動きを止めてカウントダウンを開始
+            if (CountdownUI != null)
+            {
+                CountdownUI.text = count.ToString();
+
+                yield return new WaitForSeconds(1.0f);
+                count--;
+            }
+        }
+        //STARTを表示してゲーム開始
+        if (CountdownUI != null)
+        {
+            CountdownUI.text = "START!!";
+            SetAllPlayersControl(true);
+            if(_currentMode is SurvivalMode survivalstart)
+            {
+                survivalstart.isTimerActive=true;
+            }
+
+            yield return new WaitForSeconds(1.0f);
+            if (CountdownUI != null)
+            {
+                CountdownUI.text = "";
+            }
+        }
+    }
+
+
     //現在の参加人数を取得してUIを作るロジックです
     private IEnumerator InitializeUIWithDelay()
     {

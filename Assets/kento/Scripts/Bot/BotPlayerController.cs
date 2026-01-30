@@ -73,6 +73,9 @@ public class BotPlayerController : MonoBehaviour
     Reception reception;
     Animator animator;
 
+    GameManager_M gm;
+    GameObject ob;
+
 
     void Awake()
     {
@@ -88,6 +91,8 @@ public class BotPlayerController : MonoBehaviour
 
     void Start()
     {
+        ob = GameObject.Find("Timebox");
+        gm = ob.GetComponent<GameManager_M>();
         rb = GetComponent<Rigidbody>();
         animator = GetComponentInChildren<Animator>();
         reception = GetComponent<Reception>();
@@ -96,6 +101,7 @@ public class BotPlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (GameManager_M.Instance != null && !GameManager_M.Instance.IsGameStartedProperty) return; // 移動処理などをすべてスキップ
         searchTimer += Time.deltaTime;
         if (searchTimer >= searchInterval)
         {
@@ -222,6 +228,10 @@ public class BotPlayerController : MonoBehaviour
             isAttack1 = true;
         }
 
+        if (gm.CurrentModeState == GameManager_M.Mode.SuddenDeath)
+        {
+            curentknockbackForce *= 10f;
+        }
         rb.AddForce(transform.forward * tackleForce, ForceMode.Impulse);
 
         Invoke("EndTackle", tackleDuration);

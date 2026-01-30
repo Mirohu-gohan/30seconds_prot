@@ -9,6 +9,7 @@ public class DecalColor : MonoBehaviour
     [SerializeField] private Material bule;
     [SerializeField] private Material yello;
     [SerializeField] private Material green;
+    [SerializeField] private Material black;
 
     private PlayerInput input;
 
@@ -18,7 +19,7 @@ public class DecalColor : MonoBehaviour
 
         input = transform.parent.GetComponent<PlayerInput>();
 
-
+        projector.material = black;
         if (input != null)
         {
             if (input.playerIndex == 0)

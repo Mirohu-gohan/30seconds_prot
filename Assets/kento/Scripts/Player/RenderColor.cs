@@ -11,6 +11,7 @@ public class RenderColor : MonoBehaviour
         render = GetComponent<Renderer>();
         input = transform.parent.GetComponent<PlayerInput>();
 
+        render.material.color = Color.black;
         if (input != null)
         {
             if (input.playerIndex == 0)

@@ -1,8 +1,8 @@
-using NUnit.Framework;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class BotPlayerController : MonoBehaviour
 {
@@ -55,9 +55,8 @@ public class BotPlayerController : MonoBehaviour
     private float searchTimer = 0f;
 
     [Header("ステージ範囲")]
-    [SerializeField] private Vector3 stageMin;
-    [SerializeField] private Vector3 stageMax;
-
+    [SerializeField] private Vector3 stageMin; // ステージの最小座標
+    [SerializeField] private Vector3 stageMax; // ステージの最大座標
 
     [Header("当たり判定設定")]
     [SerializeField] private SphereCollider searchArea;
@@ -65,6 +64,7 @@ public class BotPlayerController : MonoBehaviour
 
     //-----その他-----
     public List<GameObject> players = new List<GameObject>();  //Player達
+    public List<GameObject> outPlayers = new List<GameObject>();  //場外Player達
     private float minDistance = Mathf.Infinity; //最短距離をだすための目安値
 
     public GameObject target;       //攻撃対象
@@ -73,12 +73,14 @@ public class BotPlayerController : MonoBehaviour
     Reception reception;
     Animator animator;
 
-    private void Awake()
+
+    void Awake()
     {
         speed2 = speed * ChargeMoveSpeedRate;
         rotSpeed2 = rotSpeed * ChargeRotateSpeedRate;
         curentRecoveryTime = StrongRecoveryTime;
     }
+
     public void SetCharge(float value)
     {
         t = value;
@@ -97,37 +99,18 @@ public class BotPlayerController : MonoBehaviour
         searchTimer += Time.deltaTime;
         if (searchTimer >= searchInterval)
         {
+            CollectPlayers();
             SearchTarget();
             searchTimer = 0f;
         }
-
         if (target == null) return;
 
-        if (IsOutOfStage(transform.position))
-        {
-            ResetTarget();
-            return;
-        }
-
-        // ターゲットが場外なら切り替える
-        if (target != null && IsOutOfStage(target.transform.position))
-        {
-            if (!players.Contains(target))
-            {
-                players.Add(target); // ★無視リストへ
-            }
-            ResetTarget();
-            SearchTarget();
-            return;
-        }
-
         // ステージ外チェック
-        /*  if (IsOutOfStage(transform.position) || IsOutOfStage(target.transform.position))
-          {
-              ResetTarget();
-              SearchTarget();
-              return;
-          }*/
+        if (IsOutOfStage(transform.position) || IsOutOfStage(target.transform.position))
+        {
+            ResetTarget();
+            return;
+        }
 
         distance = Vector3.Distance(transform.position, target.transform.position);
 
@@ -162,12 +145,11 @@ public class BotPlayerController : MonoBehaviour
             isMax = false;
         }
         float mag = rb.linearVelocity.magnitude;
-        animator.SetFloat("Speed",mag);
+        animator.SetFloat("Speed", mag);
         animator.SetBool("IsChage", isStrt);
         animator.SetBool("isAttack1", isAttack1);
         animator.SetBool("isAttack2", isAttack2);
     }
-
     void Move()
     {
         if (isPrese)
@@ -303,20 +285,36 @@ public class BotPlayerController : MonoBehaviour
     }
 #endif
 
+    void CollectPlayers()
+    {
+        players.Clear();
 
+        foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Player"))
+        {
+            if (obj == gameObject) continue; // 自分は除外
+            if (IsOutOfStage(obj.transform.position))
+            {
+                // ステージ外のプレイヤーはoutPlayersに追加
+                if (!outPlayers.Contains(obj))
+                    outPlayers.Add(obj);
+            }
+            else
+            {
+                players.Add(obj);
+            }
+        }
+    }
 
     void SearchTarget()
     {
         if (isTackling || isStrt) return;
 
-        minDistance = Mathf.Infinity;
         target = null;
+        minDistance = Mathf.Infinity;
 
-        foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Player"))
+        foreach (GameObject obj in players)
         {
-            if (obj == gameObject) continue;
-
-            if (players.Contains(obj)) continue;
+            if (obj == null) continue;
 
             float dist = Vector3.Distance(transform.position, obj.transform.position);
             if (dist > searchRange) continue;
@@ -327,11 +325,23 @@ public class BotPlayerController : MonoBehaviour
                 target = obj;
             }
         }
+
+        // targetがステージ外に出た場合はリセットしてoutPlayersに追加
+        if (target != null && IsOutOfStage(target.transform.position))
+        {
+            if (!outPlayers.Contains(target))
+                outPlayers.Add(target);
+            target = null;
+        }
     }
+
     bool IsOutOfStage(Vector3 pos)
     {
-        return pos.x < stageMin.x || pos.x > stageMax.x ||
-               pos.z < stageMin.z || pos.z > stageMax.z;
+        // x, y, z がすべて範囲内かチェック
+        if (pos.x < stageMin.x || pos.x > stageMax.x) return true;
+        if (pos.z < stageMin.z || pos.z > stageMax.z) return true;
+
+        return false; // 全部範囲内ならステージ内
     }
     void ResetTarget()
     {
@@ -348,5 +358,4 @@ public class BotPlayerController : MonoBehaviour
         CancelInvoke(nameof(EndTackle));
         isTackling = false;
     }
-
 }

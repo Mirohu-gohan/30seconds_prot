@@ -19,6 +19,7 @@ public class GameManager_M : MonoBehaviour
     [Header("UI設定")]
     public Text timerTextUI;
     public GameObject resultCanvas;
+    public Text CountdownUI;
     
     [Header("ラウンド表示用")]
     public Text roundTextUI;
@@ -47,6 +48,9 @@ public class GameManager_M : MonoBehaviour
 
     private GameObject join;
 
+    private bool isGameStarted = false;//ゲーム開始フラグ
+    public bool IsGameStartedProperty => isGameStarted;
+
     void Awake()
     {
         if (CurrentRound == 1)
@@ -59,6 +63,8 @@ public class GameManager_M : MonoBehaviour
         AudioListener.pause = false;
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
+
+        StartCoroutine(StartCountdown());//ゲーム開始時にカウントダウンを入れてディレイ
     }
 
     void Start()
@@ -83,9 +89,6 @@ public class GameManager_M : MonoBehaviour
                 // 通常バトル用BGM
                 SoundManager.Instance.PlayBGM(SoundManager.Instance.normalBattleBGM);
             }
-            
-            // 試合開始ゴング！
-            SoundManager.Instance.PlaySE(SoundManager.Instance.gameStartGongSE);
         }
 
         if (_isSuddenDeathNext)
@@ -102,6 +105,85 @@ public class GameManager_M : MonoBehaviour
         join = GameObject.Find("JoinedManager");
         StartCoroutine(InitializeUIWithDelay());
     }
+
+
+    private IEnumerator StartCountdown()
+    {
+        isGameStarted = false;
+        SetAllPlayersControl(false);
+        //時間制限を停止
+        if(_currentMode is SurvivalMode survival)
+        {
+            survival.isTimerActive=false;
+        }
+
+        int count = 3;
+        while (count > 0)
+        {
+            //動きを止めてカウントダウンを開始
+            if (CountdownUI != null)
+            {
+                CountdownUI.text = count.ToString();
+
+                yield return new WaitForSeconds(1.0f);
+                count--;
+            }
+        }
+        //STARTを表示してゲーム開始
+        if (CountdownUI != null)
+        {
+            CountdownUI.text = "START!!";
+            // 試合開始ゴング！
+            SoundManager.Instance.PlaySE(SoundManager.Instance.gameStartGongSE);
+            isGameStarted = true;
+            SetAllPlayersControl(true);
+            if(_currentMode is SurvivalMode survivalstart)
+            {
+                survivalstart.isTimerActive=true;
+            }
+
+            yield return new WaitForSeconds(1.0f);
+            if (CountdownUI != null)
+            {
+                CountdownUI.text = "";
+            }
+        }
+    }
+    //ゲームスタート時の処理の停止
+    public void SetAllPlayersControl(bool enabled)
+    {
+        foreach (var player in GetActivePlayers())
+        {
+            if (player == null) continue;
+            var input = player.GetComponent<UnityEngine.InputSystem.PlayerInput>();
+            if (input != null) input.enabled = enabled;
+
+            var rb = player.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                if (!enabled)
+                {
+                    rb.linearVelocity = Vector3.zero;
+                    rb.angularVelocity = Vector3.zero;
+                    rb.isKinematic = true;
+                }
+                else
+                {
+                    rb.isKinematic = false;
+                }
+            }
+
+            var moveScrit = player.GetComponent<PlayerController1>();
+            if (moveScrit != null) moveScrit.enabled = enabled;
+
+            var moveBotScript = player.GetComponent<BotController>();
+            if (moveBotScript != null) moveBotScript.enabled = enabled;
+        }
+
+
+    }
+
+
     //現在の参加人数を取得してUIを作るロジックです
     private IEnumerator InitializeUIWithDelay()
     {
@@ -130,6 +212,8 @@ public class GameManager_M : MonoBehaviour
 
     void Update()
     {
+        if (!isGameStarted || CurrentModeState == Mode.GameOver) return;
+
         if (_currentMode != null) _currentMode.OnUpdate();
         CheckPlayersFalling();
     }
@@ -345,16 +429,6 @@ public class GameManager_M : MonoBehaviour
 
     public void HideUI(float delay) { }
     private IEnumerator HideUIRoutine(float delay) { yield break; }
-
-    public void SetAllPlayersControl(bool enabled)
-    {
-        foreach (var player in GetActivePlayers())
-        {
-            if (player == null) continue;
-            var input = player.GetComponent<UnityEngine.InputSystem.PlayerInput>();
-            if (input != null) input.enabled = enabled;
-        }
-    }
 
     public List<GameObject> GetActivePlayers() { activePlayers.RemoveAll(p => p == null); return activePlayers; }
     

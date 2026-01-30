@@ -9,6 +9,8 @@ public class PauseManager : MonoBehaviour
 
     private bool isPaused = false;
 
+    private Gamepad pad;
+
     void Start()
     {
         if (pausePanel != null)
@@ -24,10 +26,12 @@ public class PauseManager : MonoBehaviour
             TogglePause();
         }
         
-        if (Keyboard.current != null && Keyboard.current.pKey.wasPressedThisFrame)
+        if (Gamepad.current != null && Gamepad.current.selectButton.wasPressedThisFrame)
         {
             TogglePause();
         }
+
+
     }
 
     public void TogglePause()

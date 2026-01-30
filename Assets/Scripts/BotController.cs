@@ -40,6 +40,7 @@ public class BotController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (GameManager_M.Instance != null && !GameManager_M.Instance.IsGameStartedProperty)return; // 移動処理などをすべてスキップ
         bool isGround = Check(Sensor);
 
         if (!isGround)

@@ -86,6 +86,7 @@ public class PlayerController1 : MonoBehaviour
 
     public void OnMove(InputAction.CallbackContext context)
     {
+        if (GameManager_M.Instance != null && !GameManager_M.Instance.IsGameStartedProperty){inputVer = Vector2.zero;return;}
         inputVer = context.ReadValue<Vector2>();
         if (context.performed)
         {
@@ -102,6 +103,7 @@ public class PlayerController1 : MonoBehaviour
 
     public void OnTackle(InputAction.CallbackContext context)
     {
+        if (GameManager_M.Instance != null && !GameManager_M.Instance.IsGameStartedProperty) return;
         if (context.performed)
         {
             if (isStrt || isTackling) return;

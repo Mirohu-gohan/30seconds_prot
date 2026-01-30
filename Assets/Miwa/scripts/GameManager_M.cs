@@ -48,6 +48,9 @@ public class GameManager_M : MonoBehaviour
 
     private GameObject join;
 
+    private bool isGameStarted = false;//ゲーム開始フラグ
+    public bool IsGameStartedProperty => isGameStarted;
+
     void Awake()
     {
         if (CurrentRound == 1)
@@ -86,9 +89,6 @@ public class GameManager_M : MonoBehaviour
                 // 通常バトル用BGM
                 SoundManager.Instance.PlayBGM(SoundManager.Instance.normalBattleBGM);
             }
-            
-            // 試合開始ゴング！
-            SoundManager.Instance.PlaySE(SoundManager.Instance.gameStartGongSE);
         }
 
         if (_isSuddenDeathNext)
@@ -109,6 +109,7 @@ public class GameManager_M : MonoBehaviour
 
     private IEnumerator StartCountdown()
     {
+        isGameStarted = false;
         SetAllPlayersControl(false);
         //時間制限を停止
         if(_currentMode is SurvivalMode survival)
@@ -132,6 +133,9 @@ public class GameManager_M : MonoBehaviour
         if (CountdownUI != null)
         {
             CountdownUI.text = "START!!";
+            // 試合開始ゴング！
+            SoundManager.Instance.PlaySE(SoundManager.Instance.gameStartGongSE);
+            isGameStarted = true;
             SetAllPlayersControl(true);
             if(_currentMode is SurvivalMode survivalstart)
             {
@@ -144,6 +148,39 @@ public class GameManager_M : MonoBehaviour
                 CountdownUI.text = "";
             }
         }
+    }
+    //ゲームスタート時の処理の停止
+    public void SetAllPlayersControl(bool enabled)
+    {
+        foreach (var player in GetActivePlayers())
+        {
+            if (player == null) continue;
+            var input = player.GetComponent<UnityEngine.InputSystem.PlayerInput>();
+            if (input != null) input.enabled = enabled;
+
+            var rb = player.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                if (!enabled)
+                {
+                    rb.linearVelocity = Vector3.zero;
+                    rb.angularVelocity = Vector3.zero;
+                    rb.isKinematic = true;
+                }
+                else
+                {
+                    rb.isKinematic = false;
+                }
+            }
+
+            var moveScrit = player.GetComponent<PlayerController1>();
+            if (moveScrit != null) moveScrit.enabled = enabled;
+
+            var moveBotScript = player.GetComponent<BotController>();
+            if (moveBotScript != null) moveBotScript.enabled = enabled;
+        }
+
+
     }
 
 
@@ -175,6 +212,8 @@ public class GameManager_M : MonoBehaviour
 
     void Update()
     {
+        if (!isGameStarted || CurrentModeState == Mode.GameOver) return;
+
         if (_currentMode != null) _currentMode.OnUpdate();
         CheckPlayersFalling();
     }
@@ -390,16 +429,6 @@ public class GameManager_M : MonoBehaviour
 
     public void HideUI(float delay) { }
     private IEnumerator HideUIRoutine(float delay) { yield break; }
-
-    public void SetAllPlayersControl(bool enabled)
-    {
-        foreach (var player in GetActivePlayers())
-        {
-            if (player == null) continue;
-            var input = player.GetComponent<UnityEngine.InputSystem.PlayerInput>();
-            if (input != null) input.enabled = enabled;
-        }
-    }
 
     public List<GameObject> GetActivePlayers() { activePlayers.RemoveAll(p => p == null); return activePlayers; }
     

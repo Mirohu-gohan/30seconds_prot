@@ -62,6 +62,13 @@ public class BotPlayerController : MonoBehaviour
     [SerializeField] private SphereCollider searchArea;
     [SerializeField] private float angle = 45f;
 
+
+    [Header("エフェクト設定")]
+    [SerializeField] private ParticleSystem run;//走り
+    [SerializeField] private ParticleSystem chage;//チャージ
+    [SerializeField] private ParticleSystem strong;//強
+    [SerializeField] private ParticleSystem weak;//弱
+
     //-----その他-----
     public List<GameObject> players = new List<GameObject>();  //Player達
     public List<GameObject> outPlayers = new List<GameObject>();  //場外Player達
@@ -82,6 +89,11 @@ public class BotPlayerController : MonoBehaviour
         speed2 = speed * ChargeMoveSpeedRate;
         rotSpeed2 = rotSpeed * ChargeRotateSpeedRate;
         curentRecoveryTime = StrongRecoveryTime;
+
+        run.Stop();
+        chage.Stop();
+        strong.Stop();
+        weak.Stop();
     }
 
     public void SetCharge(float value)
@@ -123,6 +135,7 @@ public class BotPlayerController : MonoBehaviour
         if (distance > 5f)
         {
             Move();
+            run.Play();
         }
 
         if (distance < 15f)
@@ -150,6 +163,7 @@ public class BotPlayerController : MonoBehaviour
             t = 0f;
             isMax = false;
         }
+        if (animator == null) { return; }
         float mag = rb.linearVelocity.magnitude;
         animator.SetFloat("Speed", mag);
         animator.SetBool("IsChage", isStrt);
@@ -195,6 +209,7 @@ public class BotPlayerController : MonoBehaviour
                 if (!isStrt)
                 {
                     r = Random.Range(5f, 10f);
+                    chage.Play();
                 }
                 isStrt = true;
                 isPrese = true;
@@ -205,6 +220,7 @@ public class BotPlayerController : MonoBehaviour
             isPrese = false;
             if (isStrt && !isTackling && Time.time > lastTackleTime + tackleCooldown)
             {
+                chage.Stop();
                 Tackle();
             }
             isStrt = false;
@@ -220,11 +236,13 @@ public class BotPlayerController : MonoBehaviour
         if (isMax)
         {
             curentknockbackForce = StrongKnockbackForce;
+            strong.Play();
             isAttack2 = true;
         }
         else
         {
             curentknockbackForce = WeakKnockbackForce;
+            weak.Play();
             isAttack1 = true;
         }
 
@@ -240,6 +258,8 @@ public class BotPlayerController : MonoBehaviour
     {
         rb.linearVelocity = Vector3.zero;
         isTackling = false;
+        strong.Stop();
+        weak.Stop();
 
         //ここで硬直処理
         if (isMax)

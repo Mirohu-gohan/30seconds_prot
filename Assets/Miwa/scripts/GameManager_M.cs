@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -10,27 +10,27 @@ public class GameManager_M : MonoBehaviour
 {
     public static GameManager_M Instance { get; private set; }
 
-    // --- Ã“I•Ï” ---
+    // --- é™çš„å¤‰æ•° ---
     private static bool _isSuddenDeathNext = false;
     private static List<int> _qualifiedIndices = new List<int>(); 
     public static int CurrentRound = 1;
     public static int[] playerWins = new int[4];
 
-    [Header("UIİ’è")]
+    [Header("UIè¨­å®š")]
     public Text timerTextUI;
     public GameObject resultCanvas;
     public Text CountdownUI;
     
-    [Header("ƒ‰ƒEƒ“ƒh•\¦—p")]
+    [Header("ãƒ©ã‚¦ãƒ³ãƒ‰è¡¨ç¤ºç”¨")]
     public Text roundTextUI;
 
-    [Header("ƒŠƒUƒ‹ƒg•\¦—p")]
+    [Header("ãƒªã‚¶ãƒ«ãƒˆè¡¨ç¤ºç”¨")]
     public Text resultTextUI;
 
-    [Header("ƒTƒhƒ“ƒfƒX")]
+    [Header("ã‚µãƒ‰ãƒ³ãƒ‡ã‚¹")]
     public GameObject suddenDeathUI;
 
-    [Header("ƒQ[ƒ€İ’è")]
+    [Header("ã‚²ãƒ¼ãƒ è¨­å®š")]
     public float survivalTimeLimit = 20.0f;
     public float deathYCoordinate = -10.0f;
     public float upperDeathYCoordinate = 20.0f;
@@ -44,11 +44,11 @@ public class GameManager_M : MonoBehaviour
     public float suddenDeathKnockbackMultiplier = 2.0f; 
     public float currentKnockbackMultiplier = 1.0f;
 
-    private List<int> _lastActiveIndices = new List<int>();//“¯‚ÉƒfƒX‚µ‚½‚Ì‚½‚ß’¼‘O‚É¶‚«‚Ä‚¢‚½Player‚ğŠi”[
+    private List<int> _lastActiveIndices = new List<int>();//åŒæ™‚ã«ãƒ‡ã‚¹ã—ãŸæ™‚ã®ãŸã‚ç›´å‰ã«ç”Ÿãã¦ã„ãŸPlayerã‚’æ ¼ç´
 
     private GameObject join;
 
-    private bool isGameStarted = false;//ƒQ[ƒ€ŠJnƒtƒ‰ƒO
+    private bool isGameStarted = false;//ã‚²ãƒ¼ãƒ é–‹å§‹ãƒ•ãƒ©ã‚°
     public bool IsGameStartedProperty => isGameStarted;
 
     void Awake()
@@ -64,7 +64,7 @@ public class GameManager_M : MonoBehaviour
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
 
-        StartCoroutine(StartCountdown());//ƒQ[ƒ€ŠJn‚ÉƒJƒEƒ“ƒgƒ_ƒEƒ“‚ğ“ü‚ê‚ÄƒfƒBƒŒƒC
+        StartCoroutine(StartCountdown());//ã‚²ãƒ¼ãƒ é–‹å§‹æ™‚ã«ã‚«ã‚¦ãƒ³ãƒˆãƒ€ã‚¦ãƒ³ã‚’å…¥ã‚Œã¦ãƒ‡ã‚£ãƒ¬ã‚¤
     }
 
     void Start()
@@ -76,17 +76,17 @@ public class GameManager_M : MonoBehaviour
 
         UpdateRoundDisplay();
 
-@@@@//‚±‚±‚ÉBGMÄ¶‚Ìˆ—‚ğ’Ç‰Á‚µ‚½‚æ`‚ñ
+ã€€ã€€ã€€ã€€//ã“ã“ã«BGMå†ç”Ÿã®å‡¦ç†ã‚’è¿½åŠ ã—ãŸã‚ˆï½ã‚“
         if (SoundManager.Instance != null)
         {
             if (_isSuddenDeathNext)
             {
-                // ƒTƒhƒ“ƒfƒX—pBGM
+                // ã‚µãƒ‰ãƒ³ãƒ‡ã‚¹ç”¨BGM
                 SoundManager.Instance.PlayBGM(SoundManager.Instance.suddenDeathBGM);
             }
             else
             {
-                // ’Êíƒoƒgƒ‹—pBGM
+                // é€šå¸¸ãƒãƒˆãƒ«ç”¨BGM
                 SoundManager.Instance.PlayBGM(SoundManager.Instance.normalBattleBGM);
             }
         }
@@ -111,7 +111,7 @@ public class GameManager_M : MonoBehaviour
     {
         isGameStarted = false;
         SetAllPlayersControl(false);
-        //ŠÔ§ŒÀ‚ğ’â~
+        //æ™‚é–“åˆ¶é™ã‚’åœæ­¢
         if(_currentMode is SurvivalMode survival)
         {
             survival.isTimerActive=false;
@@ -120,7 +120,7 @@ public class GameManager_M : MonoBehaviour
         int count = 3;
         while (count > 0)
         {
-            //“®‚«‚ğ~‚ß‚ÄƒJƒEƒ“ƒgƒ_ƒEƒ“‚ğŠJn
+            //å‹•ãã‚’æ­¢ã‚ã¦ã‚«ã‚¦ãƒ³ãƒˆãƒ€ã‚¦ãƒ³ã‚’é–‹å§‹
             if (CountdownUI != null)
             {
                 CountdownUI.text = count.ToString();
@@ -129,11 +129,11 @@ public class GameManager_M : MonoBehaviour
                 count--;
             }
         }
-        //START‚ğ•\¦‚µ‚ÄƒQ[ƒ€ŠJn
+        //STARTã‚’è¡¨ç¤ºã—ã¦ã‚²ãƒ¼ãƒ é–‹å§‹
         if (CountdownUI != null)
         {
             CountdownUI.text = "START!!";
-            // ‡ŠJnƒSƒ“ƒOI
+            // è©¦åˆé–‹å§‹ã‚´ãƒ³ã‚°ï¼
             SoundManager.Instance.PlaySE(SoundManager.Instance.gameStartGongSE);
             isGameStarted = true;
             SetAllPlayersControl(true);
@@ -149,7 +149,7 @@ public class GameManager_M : MonoBehaviour
             }
         }
     }
-    //ƒQ[ƒ€ƒXƒ^[ƒg‚Ìˆ—‚Ì’â~
+    //ã‚²ãƒ¼ãƒ ã‚¹ã‚¿ãƒ¼ãƒˆæ™‚ã®å‡¦ç†ã®åœæ­¢
     public void SetAllPlayersControl(bool enabled)
     {
         foreach (var player in GetActivePlayers())
@@ -184,7 +184,7 @@ public class GameManager_M : MonoBehaviour
     }
 
 
-    //Œ»İ‚ÌQ‰Ál”‚ğæ“¾‚µ‚ÄUI‚ğì‚éƒƒWƒbƒN‚Å‚·
+    //ç¾åœ¨ã®å‚åŠ äººæ•°ã‚’å–å¾—ã—ã¦UIã‚’ä½œã‚‹ãƒ­ã‚¸ãƒƒã‚¯ã§ã™
     private IEnumerator InitializeUIWithDelay()
     {
         yield return null; 
@@ -267,10 +267,10 @@ public class GameManager_M : MonoBehaviour
         }
     }
 
-    //—‰ºA‚Á”ò‚Ñ‚ÉDeath‚·‚éˆ—
+    //è½ä¸‹ã€å¹ã£é£›ã³æ™‚ã«Deathã™ã‚‹å‡¦ç†
     private void CheckPlayersFalling()
     {
-        //“¯‚É—‚¿‚½ê‡‚Ìˆ—
+        //åŒæ™‚ã«è½ã¡ãŸå ´åˆã®å‡¦ç†
         if (CurrentModeState == Mode.GameOver) return;
 
         List<int> currentLiving = new List<int>();
@@ -319,16 +319,19 @@ public class GameManager_M : MonoBehaviour
 
     public void NextRound(bool isTimeUp = false)
     {
-
+        // 1. 1äººã ã‘ç”Ÿãæ®‹ã£ã¦ã„ã‚‹å ´åˆã€ãã®ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«å‹ã¡æ˜Ÿã‚’ä»˜ä¸
         if (GetActivePlayersCount() == 1)
         {
-            var winner = activePlayers[0]; 
+            var winner = activePlayers[0];
             var health = winner.GetComponent<PlayerHealth>();
             if (health != null)
             {
-                playerWins[health.playerIndex]++; 
+                playerWins[health.playerIndex]++;
+                Debug.Log($"Player {health.playerIndex + 1} ãŒå‹åˆ©ï¼ ç¾åœ¨ã®å‹ã¡æ˜Ÿ: {playerWins[health.playerIndex]}");
             }
         }
+
+        // 2. ã‚¿ã‚¤ãƒ ã‚¢ãƒƒãƒ—ã¾ãŸã¯å…¨å“¡æ­»äº¡ã®å ´åˆã€ã‚µãƒ‰ãƒ³ãƒ‡ã‚¹ã¸
         if (isTimeUp || GetActivePlayersCount() == 0)
         {
             List<int> survivors = new List<int>();
@@ -339,21 +342,34 @@ public class GameManager_M : MonoBehaviour
             }
             if (survivors.Count == 0)
             {
-                survivors = (_lastActiveIndices.Count > 0) ? _lastActiveIndices : new List<int>{0, 1, 2, 3};
-
+                survivors = (_lastActiveIndices.Count > 0) ? _lastActiveIndices : new List<int> { 0, 1, 2, 3 };
             }
             TriggerSuddenDeath(survivors);
-            return; 
+            return;
         }
 
-        if (CurrentRound < 3)
+        // â˜… 3. èª°ã‹ãŒ3å‹ã—ãŸã‹ã©ã†ã‹ã‚’ãƒã‚§ãƒƒã‚¯
+        bool someoneReachedThreeWins = false;
+        for (int i = 0; i < playerWins.Length; i++)
         {
-            CurrentRound++;
-            RestartGame();
+            if (playerWins[i] >= 3) // 3å‹ã«åˆ°é”ã—ãŸã‹
+            {
+                someoneReachedThreeWins = true;
+                break;
+            }
+        }
+
+        // â˜… 4. åˆ¤å®šçµæœã«ã‚ˆã‚‹åˆ†å²
+        if (someoneReachedThreeWins)
+        {
+            // èª°ã‹ãŒ3å‹ã—ãŸã‚‰ãƒªã‚¶ãƒ«ãƒˆç”»é¢ã¸
+            StartCoroutine(WaitAndShowResult());
         }
         else
         {
-            StartCoroutine(WaitAndShowResult());
+            // ã¾ã 3å‹ã—ãŸäººãŒã„ãªã‘ã‚Œã°ã€æ¬¡ã®ãƒ©ã‚¦ãƒ³ãƒ‰ã¸ï¼ˆãƒªãƒ­ãƒ¼ãƒ‰ï¼‰
+            CurrentRound++; // è¡¨ç¤ºä¸Šã®ãƒ©ã‚¦ãƒ³ãƒ‰æ•°ã‚’ã‚«ã‚¦ãƒ³ãƒˆã‚¢ãƒƒãƒ—
+            RestartGame();
         }
     }
 
@@ -439,25 +455,31 @@ public class GameManager_M : MonoBehaviour
         return count;
     }
 
-    //Ÿ—˜Ò‚Ì–¼‘O‚ğ•\¦‚·‚é
+    //å‹åˆ©è€…ã®åå‰ã‚’è¡¨ç¤ºã™ã‚‹
     public string GetWinnerName()
     {
         List<string> winners = new List<string>();
-        int maxWins = 0;
 
-        for (int i = 0;i<playerWins.Length;i++)
+        // å˜ç´”ã«3å‹ã—ã¦ã„ã‚‹ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’ãƒªã‚¹ãƒˆã‚¢ãƒƒãƒ—
+        for (int i = 0; i < playerWins.Length; i++)
         {
-            if (playerWins[i] > maxWins) maxWins= playerWins[i];
-        }
-
-        if (maxWins > 0)
-        {
-            for(int i = 0;i<playerWins.Length;i++)
+            if (playerWins[i] >= 3)
             {
-                if(playerWins[i] == maxWins) winners.Add("Player"+(i+1));
+                winners.Add("Player " + (i + 1));
             }
         }
 
-        return string.Join("&", winners);
+        // ã‚‚ã—ãƒã‚°ç­‰ã§3å‹ãŒã„ãªã„å ´åˆã¯æœ€å¤§ã‚¹ã‚³ã‚¢ã®äººã‚’å‡ºã™
+        if (winners.Count == 0)
+        {
+            int maxWins = 0;
+            for (int i = 0; i < playerWins.Length; i++)
+                if (playerWins[i] > maxWins) maxWins = playerWins[i];
+
+            for (int i = 0; i < playerWins.Length; i++)
+                if (playerWins[i] == maxWins) winners.Add("Player " + (i + 1));
+        }
+
+        return string.Join(" & ", winners);
     }
 }

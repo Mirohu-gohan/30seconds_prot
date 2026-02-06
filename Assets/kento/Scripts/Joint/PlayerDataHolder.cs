@@ -36,7 +36,14 @@ public class PlayerDataHolder : MonoBehaviour
         playerCount = cout;
     }
 
-    
+    public bool IsDeviceForPlayer(int playerIndex, InputDevice device)
+    {
+        if (device == null) return false;
+        if (playerIndex < 0 || playerIndex >= devices.Length) return false;
+
+        return devices[playerIndex] == device;
+    }
+
     public InputDevice[] GetDevices() => devices; //Playerのデバイス取得
     public int GetPlayerCount() => playerCount;   //Playerの接続数取得
 

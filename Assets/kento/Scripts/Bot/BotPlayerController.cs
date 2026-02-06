@@ -68,6 +68,12 @@ public class BotPlayerController : MonoBehaviour
     [SerializeField] private SphereCollider searchArea;
     [SerializeField] private float angle = 45f;
 
+    [Header("エフェクト")]
+    [SerializeField] private ParticleSystem run;
+    [SerializeField] private ParticleSystem charge;
+    [SerializeField] private ParticleSystem weak;
+    [SerializeField] private ParticleSystem strong;
+
     //-----その他-----
     public List<GameObject> players = new List<GameObject>();  //Player達
     public List<GameObject> outPlayers = new List<GameObject>();  //場外Player達
@@ -79,12 +85,20 @@ public class BotPlayerController : MonoBehaviour
     Reception reception;
     Animator animator;
 
+    GameManager_M gm;
+    GameObject ob;
+
 
     void Awake()
     {
         speed2 = speed * ChargeMoveSpeedRate;
         rotSpeed2 = rotSpeed * ChargeRotateSpeedRate;
         curentRecoveryTime = StrongRecoveryTime;
+
+        run.Stop();
+        charge.Stop();
+        weak.Stop();
+        strong.Stop();
     }
 
     public void SetCharge(float value)
@@ -94,6 +108,8 @@ public class BotPlayerController : MonoBehaviour
 
     void Start()
     {
+        ob = GameObject.Find("Timebox");
+        gm = ob.GetComponent<GameManager_M>();
         rb = GetComponent<Rigidbody>();
         animator = GetComponentInChildren<Animator>();
         reception = GetComponent<Reception>();
@@ -102,6 +118,7 @@ public class BotPlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (GameManager_M.Instance != null && !GameManager_M.Instance.IsGameStartedProperty) return; 
         searchTimer += Time.deltaTime;
         if (searchTimer >= searchInterval)
         {
@@ -167,7 +184,12 @@ public class BotPlayerController : MonoBehaviour
             }
         }
         float mag = rb.linearVelocity.magnitude;
-        animator.SetFloat("Speed", mag);
+        if (mag < 0.01f) { run.Stop(); }
+        else if(mag > 0.01f)
+        {
+            run.Play();
+        }
+            animator.SetFloat("Speed", mag);
         animator.SetBool("IsChage", isStrt);
         animator.SetBool("isAttack1", isAttack1);
         animator.SetBool("isAttack2", isAttack2);
@@ -212,6 +234,7 @@ public class BotPlayerController : MonoBehaviour
                 {
                     r = Random.Range(5f, 10f);
                     isStrt = true;
+                    charge.Play();
                 }
 
                 isPrese = true;
@@ -222,6 +245,7 @@ public class BotPlayerController : MonoBehaviour
             isPrese = false;
             if (isStrt && !isTackling && Time.time > lastTackleTime + tackleCooldown)
             {
+                charge.Stop();
                 Tackle();
             }
             isStrt = false;
@@ -237,12 +261,19 @@ public class BotPlayerController : MonoBehaviour
         if (isMax)
         {
             curentknockbackForce = StrongKnockbackForce;
+            strong.Play();
             isAttack2 = true;
         }
         else
         {
             curentknockbackForce = WeakKnockbackForce;
+            weak.Play();
             isAttack1 = true;
+        }
+
+        if (gm.CurrentModeState == GameManager_M.Mode.SuddenDeath)
+        {
+            curentknockbackForce *= 10f;
         }
 
         rb.AddForce(transform.forward * tackleForce, ForceMode.Impulse);
@@ -253,6 +284,8 @@ public class BotPlayerController : MonoBehaviour
     {
         rb.linearVelocity = Vector3.zero;
         isTackling = false;
+        strong.Stop();
+        weak.Stop();
 
         //ここで硬直処理
         if (isMax)

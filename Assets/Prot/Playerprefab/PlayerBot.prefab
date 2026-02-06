@@ -125,14 +125,14 @@ MonoBehaviour:
   StrongKnockbackForce: 30
   searchInterval: 0.5
   searchRange: 15
-  stageMin: {x: -9, y: 1, z: 0}
-  stageMax: {x: 9.5, y: 1, z: 18.5}
+  stageCenter: {x: 0, y: 0, z: 0}
+  stageRadius: 20
   searchArea: {fileID: 4407103116715197654}
   angle: 45
   run: {fileID: 9176368256584844025}
-  chage: {fileID: 7404967890102476659}
-  strong: {fileID: 2206471495758364626}
+  charge: {fileID: 7404967890102476659}
   weak: {fileID: 6439751526720359895}
+  strong: {fileID: 2206471495758364626}
   players: []
   outPlayers: []
   target: {fileID: 0}

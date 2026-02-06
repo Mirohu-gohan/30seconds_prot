@@ -111,43 +111,64 @@ public class GameManager_M : MonoBehaviour
     {
         isGameStarted = false;
         SetAllPlayersControl(false);
-        //時間制限を停止
-        if(_currentMode is SurvivalMode survival)
-        {
-            survival.isTimerActive=false;
-        }
+        if (_currentMode is SurvivalMode survival) survival.isTimerActive = false;
 
         int count = 3;
         while (count > 0)
         {
-            //動きを止めてカウントダウンを開始
             if (CountdownUI != null)
             {
                 CountdownUI.text = count.ToString();
+                CountdownUI.color = (count <= 1) ? Color.red : Color.white;
+
+                // 演出：残像エフェクト
+                StartCoroutine(GhostTrailEffect(CountdownUI));
 
                 yield return new WaitForSeconds(1.0f);
                 count--;
             }
         }
-        //STARTを表示してゲーム開始
+
         if (CountdownUI != null)
         {
-            CountdownUI.text = "START!!";
-            // 試合開始ゴング！
+            CountdownUI.text = "Fight!!";
+            CountdownUI.color = Color.yellow;
+            StartCoroutine(GhostTrailEffect(CountdownUI));
+
             SoundManager.Instance.PlaySE(SoundManager.Instance.gameStartGongSE);
             isGameStarted = true;
             SetAllPlayersControl(true);
-            if(_currentMode is SurvivalMode survivalstart)
-            {
-                survivalstart.isTimerActive=true;
-            }
+            if (_currentMode is SurvivalMode survivalstart) survivalstart.isTimerActive = true;
 
             yield return new WaitForSeconds(1.0f);
-            if (CountdownUI != null)
-            {
-                CountdownUI.text = "";
-            }
+            CountdownUI.text = "";
         }
+    }
+
+    // 演出用サブコルーチン
+    private IEnumerator GhostTrailEffect(Text uiText)
+    {
+        // 残像用のクローンを生成
+        Text ghost = Instantiate(uiText, uiText.transform.parent);
+        ghost.transform.localPosition = uiText.transform.localPosition;
+
+        float duration = 0.6f;
+        float elapsed = 0f;
+        Vector3 startScale = Vector3.one;
+        Vector3 endScale = new Vector3(3.0f, 3.0f, 1f); // 大きく広がる
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / duration;
+
+            // 残像を拡大させながら透明にする
+            ghost.transform.localScale = Vector3.Lerp(startScale, endScale, t);
+            ghost.color = new Color(uiText.color.r, uiText.color.g, uiText.color.b, 1f - t);
+
+            yield return null;
+        }
+        Destroy(ghost.gameObject);
     }
     //ゲームスタート時の処理の停止
     public void SetAllPlayersControl(bool enabled)

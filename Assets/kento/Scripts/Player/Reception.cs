@@ -15,14 +15,14 @@ public class Reception : MonoBehaviour
 
     [SerializeField] private float StunInvincibleTime = 1.0f; //–³“GŽžŠÔ
 
-    //[SerializeField] private ParticleSystem hit;
+    [SerializeField] private ParticleSystem hit;
 
     Rigidbody rb;
     Animator animator;
 
     void Start()
     {
-        //hit.Stop();
+        hit.Stop();
 
         rb = GetComponent<Rigidbody>();
         animator = GetComponentInChildren<Animator>();
@@ -58,10 +58,12 @@ public class Reception : MonoBehaviour
 
     public void KnockBack(Vector3 pos, float force)
     {
-/*        ParticleSystem hitPar = Instantiate(hit);
-        hit.transform.position = transform.position ;
-        hitPar.Play();
-        Destroy(hitPar.gameObject,2.0f);*/
+        if (hit != null)
+        {
+            hit.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            hit.Play(true);
+        }
+
         isKnockback = true;
         knockbackCounter = knockbackTime;
 
@@ -80,5 +82,9 @@ public class Reception : MonoBehaviour
         rb.useGravity = true;
         col.enabled = true;
         isHit = false;
+        if (hit != null)
+        {
+            hit.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        }
     }
 }

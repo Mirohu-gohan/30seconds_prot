@@ -54,20 +54,19 @@ public class BotPlayerController : MonoBehaviour
 
     private float searchTimer = 0f;
 
+    //-------------------------------------
     [Header("ステージ範囲")]
-    [SerializeField] private Vector3 stageMin; // ステージの最小座標
-    [SerializeField] private Vector3 stageMax; // ステージの最大座標
+    //四角形
+    /* [SerializeField] private Vector3 stageMin; // ステージの最小座標
+     [SerializeField] private Vector3 stageMax; // ステージの最大座標*/
+    //円形
+    [SerializeField] private Vector3 stageCenter; // ステージ中心
+    [SerializeField] private float stageRadius = 20f; // ステージ半径
+    //-------------------------------------
 
     [Header("当たり判定設定")]
     [SerializeField] private SphereCollider searchArea;
     [SerializeField] private float angle = 45f;
-
-
-    [Header("エフェクト設定")]
-    [SerializeField] private ParticleSystem run;//走り
-    [SerializeField] private ParticleSystem chage;//チャージ
-    [SerializeField] private ParticleSystem strong;//強
-    [SerializeField] private ParticleSystem weak;//弱
 
     //-----その他-----
     public List<GameObject> players = new List<GameObject>();  //Player達
@@ -80,20 +79,12 @@ public class BotPlayerController : MonoBehaviour
     Reception reception;
     Animator animator;
 
-    GameManager_M gm;
-    GameObject ob;
-
 
     void Awake()
     {
         speed2 = speed * ChargeMoveSpeedRate;
         rotSpeed2 = rotSpeed * ChargeRotateSpeedRate;
         curentRecoveryTime = StrongRecoveryTime;
-
-        run.Stop();
-        chage.Stop();
-        strong.Stop();
-        weak.Stop();
     }
 
     public void SetCharge(float value)
@@ -103,8 +94,6 @@ public class BotPlayerController : MonoBehaviour
 
     void Start()
     {
-        ob = GameObject.Find("Timebox");
-        gm = ob.GetComponent<GameManager_M>();
         rb = GetComponent<Rigidbody>();
         animator = GetComponentInChildren<Animator>();
         reception = GetComponent<Reception>();
@@ -113,7 +102,6 @@ public class BotPlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GameManager_M.Instance != null && !GameManager_M.Instance.IsGameStartedProperty) return; // 移動処理などをすべてスキップ
         searchTimer += Time.deltaTime;
         if (searchTimer >= searchInterval)
         {
@@ -135,11 +123,14 @@ public class BotPlayerController : MonoBehaviour
         if (distance > 5f)
         {
             Move();
-            run.Play();
         }
 
-        if (distance < 15f)
+        if (distance < 15f /*&& distance > r*/)
         {
+            if (IsOutOfStage(target.transform.position))
+            {
+                ResetTarget();
+            }
             Atack(true);
         }
 
@@ -163,7 +154,18 @@ public class BotPlayerController : MonoBehaviour
             t = 0f;
             isMax = false;
         }
-        if (animator == null) { return; }
+        if (isfinish)
+        {
+            if (curentRecoveryTime > 0)
+            {
+                curentRecoveryTime -= Time.deltaTime;
+            }
+            if (curentRecoveryTime <= 0)
+            {
+                isfinish = false;
+                curentRecoveryTime = StrongRecoveryTime;
+            }
+        }
         float mag = rb.linearVelocity.magnitude;
         animator.SetFloat("Speed", mag);
         animator.SetBool("IsChage", isStrt);
@@ -209,9 +211,9 @@ public class BotPlayerController : MonoBehaviour
                 if (!isStrt)
                 {
                     r = Random.Range(5f, 10f);
-                    chage.Play();
+                    isStrt = true;
                 }
-                isStrt = true;
+
                 isPrese = true;
             }
         }
@@ -220,7 +222,6 @@ public class BotPlayerController : MonoBehaviour
             isPrese = false;
             if (isStrt && !isTackling && Time.time > lastTackleTime + tackleCooldown)
             {
-                chage.Stop();
                 Tackle();
             }
             isStrt = false;
@@ -236,20 +237,14 @@ public class BotPlayerController : MonoBehaviour
         if (isMax)
         {
             curentknockbackForce = StrongKnockbackForce;
-            strong.Play();
             isAttack2 = true;
         }
         else
         {
             curentknockbackForce = WeakKnockbackForce;
-            weak.Play();
             isAttack1 = true;
         }
 
-        if (gm.CurrentModeState == GameManager_M.Mode.SuddenDeath)
-        {
-            curentknockbackForce *= 10f;
-        }
         rb.AddForce(transform.forward * tackleForce, ForceMode.Impulse);
 
         Invoke("EndTackle", tackleDuration);
@@ -258,8 +253,6 @@ public class BotPlayerController : MonoBehaviour
     {
         rb.linearVelocity = Vector3.zero;
         isTackling = false;
-        strong.Stop();
-        weak.Stop();
 
         //ここで硬直処理
         if (isMax)
@@ -312,6 +305,19 @@ public class BotPlayerController : MonoBehaviour
         pos.y = 1.0f;
         Handles.color = Color.red;
         Handles.DrawSolidArc(pos, Vector3.up, Quaternion.Euler(0.0f, -angle, 0f) * transform.forward, angle * 2f, searchArea.radius);
+
+        // ===== ステージ範囲（追加） =====
+        Handles.color = Color.green;
+
+        Vector3 center = stageCenter;
+        center.y = 0f; // XZ平面に固定
+
+        // 円の外枠
+        Handles.DrawWireDisc(center, Vector3.up, stageRadius);
+
+        // 中心点
+        Gizmos.color = Color.green;
+        Gizmos.DrawSphere(center, 0.3f);
     }
 #endif
 
@@ -337,7 +343,7 @@ public class BotPlayerController : MonoBehaviour
 
     void SearchTarget()
     {
-        if (isTackling || isStrt) return;
+        //if (isTackling || isStrt) return;
 
         target = null;
         minDistance = Mathf.Infinity;
@@ -364,15 +370,26 @@ public class BotPlayerController : MonoBehaviour
             target = null;
         }
     }
+    //-------------------------------------
 
     bool IsOutOfStage(Vector3 pos)
     {
-        // x, y, z がすべて範囲内かチェック
-        if (pos.x < stageMin.x || pos.x > stageMax.x) return true;
-        if (pos.z < stageMin.z || pos.z > stageMax.z) return true;
+        /* // x,z がすべて範囲内かチェック
+         if (pos.x < stageMin.x || pos.x > stageMax.x) return true;
+         if (pos.z < stageMin.z || pos.z > stageMax.z) return true;
 
-        return false; // 全部範囲内ならステージ内
+         return false; // 全部範囲内ならステージ内*/
+
+        // Yは無視してXZ平面だけで判定
+        //Vector3 centerXZ = new Vector3(stageCenter.x, 0f, stageCenter.z);
+        Vector3 posXZ = new Vector3(pos.x, 0f, pos.z);
+
+        float distance = Vector3.Distance(stageCenter, posXZ);
+
+        return distance > stageRadius;
     }
+    //-------------------------------------
+
     void ResetTarget()
     {
         target = null;
@@ -381,6 +398,7 @@ public class BotPlayerController : MonoBehaviour
         isPrese = false;
         isMax = false;
         t = 0f;
+        r = 0f;
 
         isAttack1 = false;
         isAttack2 = false;

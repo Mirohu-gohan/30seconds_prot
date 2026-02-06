@@ -694,6 +694,23 @@ MonoBehaviour:
       m_Action: Join
       m_Flags: 0
     m_Flags: 0
+  leaveAction:
+    m_Name: Leave
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 5104991c-94c8-41a1-9cd0-783500d75ea8
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: c1e1ebf2-4f1d-41d3-9aa7-69258f9a4ebe
+      m_Path: <Gamepad>/buttonEast
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Leave
+      m_Flags: 0
+    m_Flags: 0
   maxPlayers: 4
   device1text: {fileID: 1505149091}
   device2text: {fileID: 842079463}

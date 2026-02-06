@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 //using Unity.Services.Lobbies.Models;
 using UnityEngine;
@@ -9,6 +10,8 @@ using UnityEngine.UI;
 public class PlayerJoinedManager : MonoBehaviour
 {
     [SerializeField] private InputAction joinAction = default;  //参加するときの入力
+    [SerializeField] private InputAction leaveAction = default;  //参加するときの入力
+
     [SerializeField] private int maxPlayers = 4;　　　　　　　　//参加上限
     //----------
     [SerializeField] private Text device1text;                  //1デバイス名Text
@@ -18,17 +21,20 @@ public class PlayerJoinedManager : MonoBehaviour
 
 
 
-    private InputDevice[] joinedDevices;                        //参加中のデバイス
-    private int currentCount = 0;                               //現在の参加数
+    private List<InputDevice> joinDevices = new List<InputDevice>();             //参加中のデバイス
+    
 
 
     private void Awake()
     {
         //最大参加可能数で配列を初期化
-        joinedDevices = new InputDevice[maxPlayers];
+        joinDevices = new List<InputDevice>(maxPlayers);
         // InputActionを有効化し、コールバックを設定
         joinAction.Enable();
         joinAction.performed += OnJoin;
+
+        leaveAction.Enable();
+        leaveAction.performed += OnLeave;
 
         //-----Text非表示-----
         device1text.enabled = false;
@@ -42,54 +48,55 @@ public class PlayerJoinedManager : MonoBehaviour
     {
         joinAction.performed -= OnJoin;
         joinAction.Disable();
+
+        leaveAction.performed -= OnLeave;
+        leaveAction.Disable();
     }
 
     private void OnJoin(InputAction.CallbackContext context)
     {
         //現在の参加数がＭａｘならreturn
-        if(currentCount >= maxPlayers) {return; }
+        if (joinDevices.Count >= maxPlayers) { return; }
 
         //押されたデバイスを取得
         var device = context.control.device;
-        //参加中のデバイスの中に今押したデバイスがある場合return(重複防止)
-        foreach (var d in joinedDevices)
-        {
-            if(d == device) { return; }
-        }
+        if (joinDevices.Contains(device)) { return; }
+        joinDevices.Add(device);
 
-        //現在の参加数にデバイスを追加その後カウントを増やす
-        joinedDevices[currentCount] = device;
-        currentCount++;
+        UpdateDeviceTexts();
+    }
 
-        //それぞれのカウントでTextを表示しカウントを表示する
-        if (currentCount == 1)
+    void OnLeave(InputAction.CallbackContext context)
+    {
+        var device = context.control.device;
+        if (joinDevices.Remove(device))
         {
-            device1text.enabled = true;
-            device1text.text += $"Player {currentCount}: {device.displayName}\n";
-        }
-        if (currentCount == 2)
-        {
-            device2text.enabled = true;
-            device2text.text += $"Player {currentCount}: {device.displayName}\n";
-        }
-        if (currentCount == 3)
-        {
-            device3text.enabled = true;
-            device3text.text += $"Player {currentCount}: {device.displayName}\n";
-        }
-        if (currentCount == 4)
-        {
-            device4text.enabled = true;
-            device4text.text += $"Player {currentCount}: {device.displayName}\n";
+            UpdateDeviceTexts();
         }
     }
 
+    void UpdateDeviceTexts()
+    {
+        Text[] texts = { device1text, device2text, device3text, device4text };
+
+        for (int i = 0; i < texts.Length; i++)
+        {
+            texts[i].enabled = false;
+            texts[i].text = "";
+        }
+
+        for (int i = 0; i < joinDevices.Count; i++)
+        {
+            texts[i].enabled = true;
+            texts[i].text = $"Player {i + 1}: {joinDevices[i].displayName}";
+        }
+    }
 
 
     //StartButtonが押されたときのScene移行
     public void OnGameStarte()
     {
-        PlayerDataHolder.Instance.SetDevices(joinedDevices,currentCount);
+        PlayerDataHolder.Instance.SetDevices(joinDevices.ToArray(), joinDevices.Count);
         SceneManager.LoadScene("prot");
     }
 

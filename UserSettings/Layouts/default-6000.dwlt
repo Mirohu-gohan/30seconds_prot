@@ -119,7 +119,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 100}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 112
+  controlID: 128
   draggingID: 0
 --- !u!114 &6
 MonoBehaviour:
@@ -252,7 +252,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 50}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
-  controlID: 88
+  controlID: 104
   draggingID: 0
 --- !u!114 &11
 MonoBehaviour:
@@ -475,7 +475,7 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: 4addffff62ddffffd6e8ffff00e9ffff92f6ffff
+      m_ExpandedIDs: a6d8ffffbed8ffff32e4ffff5ce4ffff10fbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -1093,9 +1093,9 @@ MonoBehaviour:
   m_AudioPlay: 0
   m_DebugDrawModesUseInteractiveLightBakingData: 0
   m_Position:
-    m_Target: {x: 984.71906, y: 571.6221, z: 398.92944}
+    m_Target: {x: 932.057, y: 460.42783, z: 396.58957}
     speed: 2
-    m_Value: {x: 984.71906, y: 571.6221, z: 398.92944}
+    m_Value: {x: 4.0200877, y: 0.58197093, z: -2.2960901}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -1143,11 +1143,11 @@ MonoBehaviour:
   m_Rotation:
     m_Target: {x: -0.01341076, y: -0.00610718, z: 0.00004117655, w: -0.99997485}
     speed: 2
-    m_Value: {x: -0.014609483, y: -0.0061066165, z: 0.00004850342, w: -0.9998746}
+    m_Value: {x: -0.12071452, y: -0.6087745, z: 0.09433715, w: -0.77841}
   m_Size:
-    m_Target: 819.39905
+    m_Target: 773.06647
     speed: 2
-    m_Value: 784.11395
+    m_Value: 5.34534
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -2072,7 +2072,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets
+    - Assets/kento/player/1PColor
     m_Globs: []
     m_ProductIds: 
     m_AnyWithAssetOrigin: 0
@@ -2082,16 +2082,16 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets
+  - Assets/kento/player/1PColor
   m_LastFoldersGridSize: -1
   m_LastProjectPath: D:\User\Documents\30seconds_prot
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 46120100
-    m_LastClickedID: 70214
-    m_ExpandedIDs: 0000000046120100d0120100
+    m_SelectedIDs: c6130100
+    m_LastClickedID: 70598
+    m_ExpandedIDs: 00000000720c0100d40e0100da0e0100c8130100
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -2120,7 +2120,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 0000000046120100
+    m_ExpandedIDs: 00000000720c0100
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 

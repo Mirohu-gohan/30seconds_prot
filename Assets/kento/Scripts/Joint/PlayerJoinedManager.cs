@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using Unity.VisualScripting;
+
 //using Unity.Services.Lobbies.Models;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -22,8 +25,12 @@ public class PlayerJoinedManager : MonoBehaviour
 
 
     private List<InputDevice> joinDevices = new List<InputDevice>();             //参加中のデバイス
-    
 
+    [SerializeField] private RectTransform root;
+    [SerializeField] private VirtualMouseInput[] cursorPrefabs;
+    private readonly List<PlayerCursor> cursors = new();
+
+   
 
     private void Awake()
     {
@@ -61,18 +68,57 @@ public class PlayerJoinedManager : MonoBehaviour
         //押されたデバイスを取得
         var device = context.control.device;
         if (joinDevices.Contains(device)) { return; }
-        joinDevices.Add(device);
+        
+     /*   // カーソルの生成
+        int i = cursors.Count;
+        var cursor = Instantiate(cursorPrefabs[i], root);
+        cursor.name = $"Cursor#{i + 1}";
 
+        var playerInput = cursor.GetComponent<PlayerInput>();
+        playerInput.neverAutoSwitchControlSchemes = true;
+        playerInput.SwitchCurrentControlScheme(device);
+
+        // Player2以降のカーソルは入力を無効化する
+        if (i >= 1)
+        {
+            cursor.enabled = false;
+            playerInput.enabled = false;
+        }
+        // カーソルを管理リストに追加
+        cursors.Add(new PlayerCursor
+        {
+            device = device,
+            curdor = cursor
+        });*/
+        joinDevices.Add(device);
         UpdateDeviceTexts();
     }
 
     void OnLeave(InputAction.CallbackContext context)
     {
         var device = context.control.device;
-        if (joinDevices.Remove(device))
-        {
-            UpdateDeviceTexts();
-        }
+        var player = cursors.Find(p => p.device == device);
+        if (player == null) return;
+
+        cursors.Remove(player);
+        joinDevices.Remove(device);
+        Destroy(player.curdor.gameObject);
+
+        UpdateDeviceTexts();
+        /* // カーソルを管理リストから削除
+         var playerIndex = joinDevices.Count;
+         // 生成されたカーソル取得
+         var cursor = cursors.Find(c => c != null && c.name == $"Cursor#{playerIndex}");
+         if (cursor == null) return;
+         // カーソルの削除
+         cursors.Remove(cursor);
+         Destroy(cursor.gameObject);
+
+         var device = context.control.device;
+         if (joinDevices.Remove(device))
+         {
+             UpdateDeviceTexts();
+         }*/
     }
 
     void UpdateDeviceTexts()
@@ -90,6 +136,11 @@ public class PlayerJoinedManager : MonoBehaviour
             texts[i].enabled = true;
             texts[i].text = $"Player {i + 1}: {joinDevices[i].displayName}";
         }
+    }
+
+    void CreateCursor(InputDevice device)
+    {
+       
     }
 
 

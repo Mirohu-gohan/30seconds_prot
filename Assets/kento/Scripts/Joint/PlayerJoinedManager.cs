@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Unity.VisualScripting;
@@ -12,38 +12,38 @@ using UnityEngine.UI;
 
 public class PlayerJoinedManager : MonoBehaviour
 {
-    [SerializeField] private InputAction joinAction = default;  //Q‰Á‚·‚é‚Æ‚«‚Ì“ü—Í
-    [SerializeField] private InputAction leaveAction = default;  //Q‰Á‚·‚é‚Æ‚«‚Ì“ü—Í
+    [SerializeField] private InputAction joinAction = default;  //å‚åŠ ã™ã‚‹ã¨ãã®å…¥åŠ›
+    [SerializeField] private InputAction leaveAction = default;  //å‚åŠ ã™ã‚‹ã¨ãã®å…¥åŠ›
 
-    [SerializeField] private int maxPlayers = 4;@@@@@@@@//Q‰ÁãŒÀ
+    [SerializeField] private int maxPlayers = 4;ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€//å‚åŠ ä¸Šé™
     //----------
-    [SerializeField] private Text device1text;                  //1ƒfƒoƒCƒX–¼Text
-    [SerializeField] private Text device2text;@@@@@@@@@//2ƒfƒoƒCƒX–¼Text
-    [SerializeField] private Text device3text;@@@@@@@@@//3ƒfƒoƒCƒX–¼Text
-    [SerializeField] private Text device4text;@@@@@@@@@//4ƒfƒoƒCƒX–¼Text
+    [SerializeField] private Text device1text;                  //1ãƒ‡ãƒã‚¤ã‚¹åText
+    [SerializeField] private Text device2text;ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€//2ãƒ‡ãƒã‚¤ã‚¹åText
+    [SerializeField] private Text device3text;ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€//3ãƒ‡ãƒã‚¤ã‚¹åText
+    [SerializeField] private Text device4text;ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€//4ãƒ‡ãƒã‚¤ã‚¹åText
 
 
 
-    private List<InputDevice> joinDevices = new List<InputDevice>();             //Q‰Á’†‚ÌƒfƒoƒCƒX
+    private List<InputDevice> joinDevices = new List<InputDevice>();             //å‚åŠ ä¸­ã®ãƒ‡ãƒã‚¤ã‚¹
 
-    //ƒJ[ƒ\ƒ‹
+/*    //ã‚«ãƒ¼ã‚½ãƒ«
     [SerializeField] private Canvas uiCanv;
     [SerializeField] private GameObject cursors;
     private InputDevice mindevice;
-    private GameObject cursorInstance;
+    private GameObject cursorInstance;*/
 
     private void Awake()
     {
-        //Å‘åQ‰Á‰Â”\”‚Å”z—ñ‚ğ‰Šú‰»
+        //æœ€å¤§å‚åŠ å¯èƒ½æ•°ã§é…åˆ—ã‚’åˆæœŸåŒ–
         joinDevices = new List<InputDevice>(maxPlayers);
-        // InputAction‚ğ—LŒø‰»‚µAƒR[ƒ‹ƒoƒbƒN‚ğİ’è
+        // InputActionã‚’æœ‰åŠ¹åŒ–ã—ã€ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã‚’è¨­å®š
         joinAction.Enable();
         joinAction.performed += OnJoin;
 
         leaveAction.Enable();
         leaveAction.performed += OnLeave;
 
-        //-----Text”ñ•\¦-----
+        //-----Textéè¡¨ç¤º-----
         device1text.enabled = false;
         device2text.enabled = false;
         device3text.enabled = false;
@@ -62,20 +62,20 @@ public class PlayerJoinedManager : MonoBehaviour
 
     private void OnJoin(InputAction.CallbackContext context)
     {
-        //Œ»İ‚ÌQ‰Á”‚ª‚l‚‚˜‚È‚çreturn
+        //ç¾åœ¨ã®å‚åŠ æ•°ãŒï¼­ï½ï½˜ãªã‚‰return
         if (joinDevices.Count >= maxPlayers) { return; }
 
-        //‰Ÿ‚³‚ê‚½ƒfƒoƒCƒX‚ğæ“¾
+        //æŠ¼ã•ã‚ŒãŸãƒ‡ãƒã‚¤ã‚¹ã‚’å–å¾—
         var device = context.control.device;
         if (joinDevices.Contains(device)) { return; }
 
-        if (mindevice != null) return;
+       /* if (mindevice != null) return;
         mindevice = context.control.device;
         int i = joinDevices.Count;
         cursorInstance = Instantiate(cursors, uiCanv.transform, false);
-        cursorInstance.GetComponent<CursorController>().controlDevice = mindevice;
+        cursorInstance.GetComponent<CursorController>().controlDevice = mindevice;*/
 
-        joinDevices.Add(mindevice);
+        joinDevices.Add(device);
         UpdateDeviceTexts();
     }
 
@@ -83,11 +83,11 @@ public class PlayerJoinedManager : MonoBehaviour
     {
         var device = context.control.device;
 
-        if (context.control.device != mindevice) return;
+        if (context.control.device != device) return;
 
-        Destroy(cursorInstance);
+        /*Destroy(cursorInstance);
         cursorInstance = null;
-        mindevice = null;
+        mindevice = null;*/
 
         joinDevices.Clear();
         //joinDevices.Remove(device);
@@ -108,13 +108,13 @@ public class PlayerJoinedManager : MonoBehaviour
         for (int i = 0; i < joinDevices.Count; i++)
         {
             texts[i].enabled = true;
-            //texts[i].text = $"Player {i + 1}: {joinDevices[i].displayName}\nQ‰Á’†";
-            texts[i].text = $"{joinDevices[i].displayName}\nQ‰Á’†";
+            //texts[i].text = $"Player {i + 1}: {joinDevices[i].displayName}\nå‚åŠ ä¸­";
+            texts[i].text = $"{joinDevices[i].displayName}\nå‚åŠ ä¸­";
         }
     }
 
 
-    //StartButton‚ª‰Ÿ‚³‚ê‚½‚Æ‚«‚ÌSceneˆÚs
+    //StartButtonãŒæŠ¼ã•ã‚ŒãŸã¨ãã®Sceneç§»è¡Œ
     public void OnGameStarte()
     {
         PlayerDataHolder.Instance.SetDevices(joinDevices.ToArray(), joinDevices.Count);

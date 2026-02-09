@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 
@@ -7,16 +7,17 @@ public class PauseManager : MonoBehaviour
     [Header("ポーズ画面のパネル")]
     public GameObject pausePanel;
 
-    private bool isPaused = false;
+    // ぼかし用のGlobal Volume
+    [Header("ぼかし演出用のVolume")]
+    public GameObject blurVolume;
 
-    private Gamepad pad;
+    private bool isPaused = false;
 
     void Start()
     {
-        if (pausePanel != null)
-        {
-            pausePanel.SetActive(false);
-        }
+        if (pausePanel != null) pausePanel.SetActive(false);
+        // ★開始時はぼかしをOFFにしておく
+        if (blurVolume != null) blurVolume.SetActive(false);
     }
 
     void Update()
@@ -25,36 +26,33 @@ public class PauseManager : MonoBehaviour
         {
             TogglePause();
         }
-        
+
         if (Gamepad.current != null && Gamepad.current.selectButton.wasPressedThisFrame)
         {
             TogglePause();
         }
-
-
     }
 
     public void TogglePause()
     {
-        isPaused = !isPaused;
-
-        if (pausePanel != null)
+        if (GameManager_M.Instance != null && GameManager_M.Instance.CurrentModeState == GameManager_M.Mode.GameOver)
         {
-            pausePanel.SetActive(isPaused);
+            return;
         }
 
-        // 時間を止める
-        Time.timeScale = isPaused ? 0f : 1f;
+        isPaused = !isPaused;
 
+        if (pausePanel != null) pausePanel.SetActive(isPaused);
+        if (blurVolume != null) blurVolume.SetActive(isPaused);
+
+        Time.timeScale = isPaused ? 0f : 1f;
         AudioListener.pause = isPaused;
     }
 
+
     public void OnRestartButton()
     {
-        // 時間と音を戻してからリスタート
-        Time.timeScale = 1f;
-        AudioListener.pause = false; 
-
+        ResetPauseState();
         if (GameManager_M.Instance != null)
         {
             GameManager_M.Instance.RestartGame();
@@ -67,8 +65,15 @@ public class PauseManager : MonoBehaviour
 
     public void OnTitleButton()
     {
+        ResetPauseState();
+        SceneManager.LoadScene("TitleScene");
+    }
+
+   //シーン遷移前にぼかしや時間を確実にリセットする用
+    private void ResetPauseState()
+    {
         Time.timeScale = 1f;
         AudioListener.pause = false;
-        SceneManager.LoadScene("TitleScene");
+        if (blurVolume != null) blurVolume.SetActive(false);
     }
 }

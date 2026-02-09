@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Runtime.InteropServices;
 //using Unity.Services.Lobbies.Models;
 using UnityEngine;
@@ -8,29 +8,29 @@ using UnityEngine.UI;
 
 public class PlayerJoinedManager : MonoBehaviour
 {
-    [SerializeField] private InputAction joinAction = default;  //Q‰Á‚·‚é‚Æ‚«‚Ì“ü—Í
-    [SerializeField] private int maxPlayers = 4;@@@@@@@@//Q‰ÁãŒÀ
+    [SerializeField] private InputAction joinAction = default;  //å‚åŠ ã™ã‚‹ã¨ãã®å…¥åŠ›
+    [SerializeField] private int maxPlayers = 4;ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€//å‚åŠ ä¸Šé™
     //----------
-    [SerializeField] private Text device1text;                  //1ƒfƒoƒCƒX–¼Text
-    [SerializeField] private Text device2text;@@@@@@@@@//2ƒfƒoƒCƒX–¼Text
-    [SerializeField] private Text device3text;@@@@@@@@@//3ƒfƒoƒCƒX–¼Text
-    [SerializeField] private Text device4text;@@@@@@@@@//4ƒfƒoƒCƒX–¼Text
+    [SerializeField] private Text device1text;                  //1ãƒ‡ãƒã‚¤ã‚¹åText
+    [SerializeField] private Text device2text;ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€//2ãƒ‡ãƒã‚¤ã‚¹åText
+    [SerializeField] private Text device3text;ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€//3ãƒ‡ãƒã‚¤ã‚¹åText
+    [SerializeField] private Text device4text;ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€//4ãƒ‡ãƒã‚¤ã‚¹åText
 
 
 
-    private InputDevice[] joinedDevices;                        //Q‰Á’†‚ÌƒfƒoƒCƒX
-    private int currentCount = 0;                               //Œ»İ‚ÌQ‰Á”
+    private InputDevice[] joinedDevices;                        //å‚åŠ ä¸­ã®ãƒ‡ãƒã‚¤ã‚¹
+    private int currentCount = 0;                               //ç¾åœ¨ã®å‚åŠ æ•°
 
 
     private void Awake()
     {
-        //Å‘åQ‰Á‰Â”\”‚Å”z—ñ‚ğ‰Šú‰»
+        //æœ€å¤§å‚åŠ å¯èƒ½æ•°ã§é…åˆ—ã‚’åˆæœŸåŒ–
         joinedDevices = new InputDevice[maxPlayers];
-        // InputAction‚ğ—LŒø‰»‚µAƒR[ƒ‹ƒoƒbƒN‚ğİ’è
+        // InputActionã‚’æœ‰åŠ¹åŒ–ã—ã€ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã‚’è¨­å®š
         joinAction.Enable();
         joinAction.performed += OnJoin;
 
-        //-----Text”ñ•\¦-----
+        //-----Textéè¡¨ç¤º-----
         device1text.enabled = false;
         device2text.enabled = false;
         device3text.enabled = false;
@@ -46,38 +46,38 @@ public class PlayerJoinedManager : MonoBehaviour
 
     private void OnJoin(InputAction.CallbackContext context)
     {
-        //Œ»İ‚ÌQ‰Á”‚ª‚l‚‚˜‚È‚çreturn
+        //ç¾åœ¨ã®å‚åŠ æ•°ãŒï¼­ï½ï½˜ãªã‚‰return
         if(currentCount >= maxPlayers) {return; }
 
-        //‰Ÿ‚³‚ê‚½ƒfƒoƒCƒX‚ğæ“¾
+        //æŠ¼ã•ã‚ŒãŸãƒ‡ãƒã‚¤ã‚¹ã‚’å–å¾—
         var device = context.control.device;
-        //Q‰Á’†‚ÌƒfƒoƒCƒX‚Ì’†‚É¡‰Ÿ‚µ‚½ƒfƒoƒCƒX‚ª‚ ‚éê‡return(d•¡–h~)
+        //å‚åŠ ä¸­ã®ãƒ‡ãƒã‚¤ã‚¹ã®ä¸­ã«ä»ŠæŠ¼ã—ãŸãƒ‡ãƒã‚¤ã‚¹ãŒã‚ã‚‹å ´åˆreturn(é‡è¤‡é˜²æ­¢)
         foreach (var d in joinedDevices)
         {
             if(d == device) { return; }
         }
 
-        //Œ»İ‚ÌQ‰Á”‚ÉƒfƒoƒCƒX‚ğ’Ç‰Á‚»‚ÌŒãƒJƒEƒ“ƒg‚ğ‘‚â‚·
+        //ç¾åœ¨ã®å‚åŠ æ•°ã«ãƒ‡ãƒã‚¤ã‚¹ã‚’è¿½åŠ ãã®å¾Œã‚«ã‚¦ãƒ³ãƒˆã‚’å¢—ã‚„ã™
         joinedDevices[currentCount] = device;
         currentCount++;
 
-        //‚»‚ê‚¼‚ê‚ÌƒJƒEƒ“ƒg‚ÅText‚ğ•\¦‚µƒJƒEƒ“ƒg‚ğ•\¦‚·‚é
-        if (currentCount == 1)
+        //ãã‚Œãã‚Œã®ã‚«ã‚¦ãƒ³ãƒˆã§Textã‚’è¡¨ç¤ºã—ã‚«ã‚¦ãƒ³ãƒˆã‚’è¡¨ç¤ºã™ã‚‹
+        if (currentCount == 1 && device1text != null)
         {
             device1text.enabled = true;
             device1text.text += $"Player {currentCount}: {device.displayName}\n";
         }
-        if (currentCount == 2)
+        if (currentCount == 2 && device2text != null)
         {
             device2text.enabled = true;
             device2text.text += $"Player {currentCount}: {device.displayName}\n";
         }
-        if (currentCount == 3)
+        if (currentCount == 3 && device3text != null)
         {
             device3text.enabled = true;
             device3text.text += $"Player {currentCount}: {device.displayName}\n";
         }
-        if (currentCount == 4)
+        if (currentCount == 4 && device4text != null)
         {
             device4text.enabled = true;
             device4text.text += $"Player {currentCount}: {device.displayName}\n";
@@ -86,7 +86,7 @@ public class PlayerJoinedManager : MonoBehaviour
 
 
 
-    //StartButton‚ª‰Ÿ‚³‚ê‚½‚Æ‚«‚ÌSceneˆÚs
+    //StartButtonãŒæŠ¼ã•ã‚ŒãŸã¨ãã®Sceneç§»è¡Œ
     public void OnGameStarte()
     {
         PlayerDataHolder.Instance.SetDevices(joinedDevices,currentCount);

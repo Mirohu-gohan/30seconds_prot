@@ -26,6 +26,7 @@ public class GameManager_M : MonoBehaviour
 
     [Header("リザルト表示用")]
     public Text resultTextUI;
+    public Text winnerNameTextUI;
 
     [Header("サドンデス")]
     public GameObject suddenDeathUI;
@@ -34,6 +35,11 @@ public class GameManager_M : MonoBehaviour
     public float survivalTimeLimit = 20.0f;
     public float deathYCoordinate = -10.0f;
     public float upperDeathYCoordinate = 20.0f;
+
+    [Header("リザルト演出用")]
+    public GameObject ResultCanvas;      // リザルト用のCanvas（またはPanel）
+    public RectTransform resultRibbon;    // スパン！！と動かすボタングループ
+    public GameObject resultBlurVolume;  // リザルト時に自動でONにするGlobal Volume
 
     public enum Mode { Survival, SuddenDeath, GameOver }
     public Mode CurrentModeState;
@@ -369,7 +375,7 @@ public class GameManager_M : MonoBehaviour
             return;
         }
 
-        // ★ 3. 誰かが3勝したかどうかをチェック
+        // 誰かが3勝したかどうかをチェック
         bool someoneReachedThreeWins = false;
         for (int i = 0; i < playerWins.Length; i++)
         {
@@ -380,7 +386,7 @@ public class GameManager_M : MonoBehaviour
             }
         }
 
-        // ★ 4. 判定結果による分岐
+        //  判定結果による分岐
         if (someoneReachedThreeWins)
         {
             // 誰かが3勝したらリザルト画面へ
@@ -430,29 +436,86 @@ public class GameManager_M : MonoBehaviour
 
     public void ShowResultUI(string resultText)
     {
-        Time.timeScale = 0f;
-
+        
         if (resultCanvas != null)
         {
-            if (roundTextUI != null) roundTextUI.gameObject.SetActive(false);
             resultCanvas.SetActive(true);
-            if (resultTextUI != null) resultTextUI.text = resultText;
-
-            Button firstButton = resultCanvas.GetComponentInChildren<Button>();
-            if (firstButton != null)
-            {
-                firstButton.Select();
-                EventSystem.current.SetSelectedGameObject(firstButton.gameObject);
-            }
-
-            if (SoundManager.Instance != null)
-            {
-                if (SoundManager.Instance.seSource != null) SoundManager.Instance.seSource.Stop();
-
-                SoundManager.Instance.PlaySE(SoundManager.Instance.gameEndGongSE);
-                SoundManager.Instance.PlayBGM(SoundManager.Instance.resultBGM);
-            }
         }
+
+       
+        var pm = Object.FindFirstObjectByType<PauseManager>();
+        if (pm != null && pm.pausePanel != null)
+        {
+            pm.pausePanel.SetActive(false);
+        }
+
+        
+        if (resultBlurVolume != null)
+        {
+            resultBlurVolume.SetActive(true);
+        }
+
+        if (winnerNameTextUI != null)
+        {
+            winnerNameTextUI.text = resultText;
+            winnerNameTextUI.gameObject.SetActive(true);
+        }
+
+       
+        if (resultTextUI != null)
+        {
+            resultTextUI.text = "Result";
+            resultTextUI.gameObject.SetActive(true);
+        }
+
+       
+        if (resultRibbon != null)
+        {
+            resultRibbon.gameObject.SetActive(true);
+            StartCoroutine(AnimateButtonsSwipe());
+        }
+
+       
+        Button firstButton = resultCanvas.GetComponentInChildren<Button>();
+        if (firstButton != null)
+        {
+            firstButton.Select();
+        }
+    }
+
+    private IEnumerator AnimateButtonsSwipe()
+    {
+        if (resultRibbon == null) yield break;
+
+        
+        Vector2 endPos = Vector2.zero;
+       
+        Vector2 startPos = new Vector2(2000, 0);
+
+      
+        resultRibbon.anchoredPosition = startPos;
+
+        float duration = 0.3f;
+        float elapsed = 0f;
+
+        
+        Time.timeScale = 0f;
+
+        while (elapsed < duration)
+        {
+            
+            elapsed += Time.unscaledDeltaTime;
+            float t = elapsed / duration;
+
+           
+            t = 1f - Mathf.Pow(1f - t, 5f);
+
+            resultRibbon.anchoredPosition = Vector2.Lerp(startPos, endPos, t);
+            yield return null;
+        }
+
+      
+        resultRibbon.anchoredPosition = endPos;
     }
 
     public void RestartGame() => SceneManager.LoadScene(SceneManager.GetActiveScene().name);

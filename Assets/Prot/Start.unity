@@ -687,14 +687,6 @@ MonoBehaviour:
       m_Action: Join
       m_Flags: 0
     - m_Name: 
-      m_Id: ec84733c-627a-4856-b570-40272d3e06e8
-      m_Path: <Mouse>/clickCount
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Join
-      m_Flags: 0
-    - m_Name: 
       m_Id: a5ba19f2-1c08-4597-ac40-8b3d55118433
       m_Path: <Keyboard>/j
       m_Interactions: 
@@ -733,8 +725,6 @@ MonoBehaviour:
   device2text: {fileID: 842079463}
   device3text: {fileID: 1517362970}
   device4text: {fileID: 1008970074}
-  uiCanv: {fileID: 175202193}
-  cursors: {fileID: 4010830591232946320, guid: 957b11552501fa14b93956334d945f33, type: 3}
 --- !u!4 &348367791
 Transform:
   m_ObjectHideFlags: 0

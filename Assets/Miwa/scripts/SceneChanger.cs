@@ -38,4 +38,14 @@ public class SceneChanger : MonoBehaviour
         Scene activeScene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(activeScene.name);
     }
+    public void QuitGame()
+    {
+#if UNITY_EDITOR
+        // Unityエディタ実行中の場合は、再生モードを停止する
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+            // ビルドされた実際のゲームでは、アプリを完全に終了する
+            Application.Quit();
+#endif
+    }
 }

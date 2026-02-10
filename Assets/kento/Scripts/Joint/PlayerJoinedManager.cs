@@ -14,6 +14,7 @@ public class PlayerJoinedManager : MonoBehaviour
 {
     [SerializeField] private InputAction joinAction = default;  //参加するときの入力
     [SerializeField] private InputAction leaveAction = default;  //参加するときの入力
+    [SerializeField] private InputAction startAction = default;
 
     [SerializeField] private int maxPlayers = 4;　　　　　　　　//参加上限
     //----------
@@ -43,6 +44,8 @@ public class PlayerJoinedManager : MonoBehaviour
         leaveAction.Enable();
         leaveAction.performed += OnLeave;
 
+        startAction.Enable();
+        startAction.performed += ctx => OnGameStarte(ctx);
         //-----Text非表示-----
         device1text.enabled = false;
         device2text.enabled = false;
@@ -58,6 +61,9 @@ public class PlayerJoinedManager : MonoBehaviour
 
         leaveAction.performed -= OnLeave;
         leaveAction.Disable();
+
+        startAction.RemoveAllBindingOverrides();
+        startAction.Disable();
     }
 
     private void OnJoin(InputAction.CallbackContext context)
@@ -115,7 +121,7 @@ public class PlayerJoinedManager : MonoBehaviour
 
 
     //StartButtonが押されたときのScene移行
-    public void OnGameStarte()
+    public void OnGameStarte(InputAction.CallbackContext context)
     {
         PlayerDataHolder.Instance.SetDevices(joinDevices.ToArray(), joinDevices.Count);
         SceneManager.LoadScene("prot");

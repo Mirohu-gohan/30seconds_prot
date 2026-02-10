@@ -720,6 +720,39 @@ MonoBehaviour:
       m_Action: Leave
       m_Flags: 0
     m_Flags: 0
+  startAction:
+    m_Name: Start
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 54112101-e3ab-48ea-84de-0130aefec668
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: One Modifier
+      m_Id: 34a3f57f-0bff-4921-892c-fceafb5b3074
+      m_Path: OneModifier
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Start
+      m_Flags: 4
+    - m_Name: modifier
+      m_Id: 2becdc92-a4ed-4daa-aa84-9a3c7dd4d731
+      m_Path: <Gamepad>/leftShoulder
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Start
+      m_Flags: 8
+    - m_Name: binding
+      m_Id: c734d0d0-c8be-4466-9cac-c5a3e05e4d81
+      m_Path: <Gamepad>/rightShoulder
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Start
+      m_Flags: 8
+    m_Flags: 0
   maxPlayers: 4
   device1text: {fileID: 1505149091}
   device2text: {fileID: 842079463}
@@ -848,7 +881,7 @@ MonoBehaviour:
   m_ActionsAsset: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_PointAction: {fileID: 2123319695}
   m_MoveAction: {fileID: 2059311415}
-  m_SubmitAction: {fileID: 1640287177}
+  m_SubmitAction: {fileID: 0}
   m_CancelAction: {fileID: 333198475}
   m_LeftClickAction: {fileID: 782586389}
   m_MiddleClickAction: {fileID: 1751017449}
@@ -1904,20 +1937,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1517362968}
   m_CullTransparentMesh: 1
---- !u!114 &1640287177
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
-  m_Name: UI/Submit
-  m_EditorClassIdentifier: 
-  m_Asset: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  m_ActionId: 7607c7b6-cd76-4816-beef-bd0341cfe950
 --- !u!1 &1719355364
 GameObject:
   m_ObjectHideFlags: 0

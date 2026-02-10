@@ -3664,7 +3664,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pausePanel: {fileID: 1198649453}
-  blurVolume: {fileID: 0}
+  blurVolume: {fileID: 1955170447}
 --- !u!114 &562680552
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6036,6 +6036,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -122320321181713254, guid: 2171721bbe61a49419aa9cb1ff5e2af5, type: 3}
+      propertyPath: m_Volume
+      value: 0.006
+      objectReference: {fileID: 0}
+    - target: {fileID: 201867025634345380, guid: 2171721bbe61a49419aa9cb1ff5e2af5, type: 3}
+      propertyPath: seVolume
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 201867025634345380, guid: 2171721bbe61a49419aa9cb1ff5e2af5, type: 3}
+      propertyPath: bgmVolume
+      value: 0.06
+      objectReference: {fileID: 0}
+    - target: {fileID: 556938480091158522, guid: 2171721bbe61a49419aa9cb1ff5e2af5, type: 3}
+      propertyPath: m_Volume
+      value: 0.006
+      objectReference: {fileID: 0}
     - target: {fileID: 556938480091158522, guid: 2171721bbe61a49419aa9cb1ff5e2af5, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -6612,7 +6628,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1386003405
 RectTransform:
   m_ObjectHideFlags: 0

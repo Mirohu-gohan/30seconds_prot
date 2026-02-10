@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
@@ -8,6 +8,10 @@ public class SoundManager : MonoBehaviour
     public AudioSource bgmSource; // BGM用(LoopONにするであります!)
     public AudioSource seSource;  // SE用(LoopOFFにするであります!)
     //とりあえずテキストに合わせて変数を作って奥であります！
+
+    [Range(0f, 1f)] public float bgmVolume = 0.1f;
+    [Range(0f, 1f)] public float seVolume = 0.4f;
+
     [Header("■ 参加画面")]
     public AudioClip titleBGM;       
     public AudioClip playerJoinSE;   // 決定ボタンを押す14
@@ -41,11 +45,19 @@ public class SoundManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+
+            ApplyVolume();
         }
         else
         {
             Destroy(gameObject);
         }
+    }
+
+    public void ApplyVolume()
+    {
+        if (bgmSource != null) bgmSource.volume = bgmVolume;
+        if (seSource != null) seSource.volume = seVolume;
     }
 
     // BGM再生ロジック
@@ -55,12 +67,13 @@ public class SoundManager : MonoBehaviour
         if (bgmSource.clip == clip && bgmSource.isPlaying) return;
 
         bgmSource.clip = clip;
+        bgmSource.volume = bgmVolume;
         bgmSource.Play();
     }
 
     //  SE再生 ロジック
     public void PlaySE(AudioClip clip)
     {
-        if (clip != null) seSource.PlayOneShot(clip);
+        if (clip != null) seSource.PlayOneShot(clip, seVolume);
     }
 }

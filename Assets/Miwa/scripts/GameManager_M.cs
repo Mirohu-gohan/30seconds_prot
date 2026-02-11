@@ -524,6 +524,15 @@ public class GameManager_M : MonoBehaviour
 
     public void BackToJoinScene(string s)
     {
+        CurrentRound = 1;         
+        _isSuddenDeathNext = false;  
+        _qualifiedIndices.Clear();
+
+        for (int i = 0; i < playerWins.Length; i++)  // 全プレイヤーの勝利数を0にする
+        {
+            playerWins[i] = 0;
+        }
+
         Destroy(join);
         SceneManager.LoadScene(s);
         AudioListener.pause = true;

@@ -123,8 +123,28 @@ public class PlayerJoinedManager : MonoBehaviour
     //StartButtonが押されたときのScene移行
     public void OnGameStarte(InputAction.CallbackContext context)
     {
-        PlayerDataHolder.Instance.SetDevices(joinDevices.ToArray(), joinDevices.Count);
-        SceneManager.LoadScene("prot");
+        string currentSceneName = SceneManager.GetActiveScene().name;
+
+        if (currentSceneName == "Title" || currentSceneName == "Start")
+        {
+            startAction.Disable();
+            joinAction.Disable();
+            leaveAction.Disable();
+
+            PlayerDataHolder.Instance.SetDevices(joinDevices.ToArray(), joinDevices.Count);
+            SceneManager.LoadScene("prot");
+        }
+    }
+
+    private void Start()
+    {
+        string currentSceneName = SceneManager.GetActiveScene().name;
+        if (currentSceneName == "Title" || currentSceneName == "JoinScene")
+        {
+            startAction.Enable();
+            joinAction.Enable();
+            leaveAction.Enable();
+        }
     }
 
 }

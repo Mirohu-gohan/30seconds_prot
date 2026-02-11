@@ -752,6 +752,14 @@ MonoBehaviour:
       m_Groups: 
       m_Action: Start
       m_Flags: 8
+    - m_Name: 
+      m_Id: 410a9a59-cdf8-46d4-b03f-045a4f03e401
+      m_Path: <Keyboard>/enter
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Start
+      m_Flags: 0
     m_Flags: 0
   maxPlayers: 4
   device1text: {fileID: 1505149091}

@@ -1,9 +1,9 @@
-using System.Collections;
+ï»¿using System.Collections;
 using UnityEngine;
 
-public class Reception : MonoBehaviour
+public class Reception1 : MonoBehaviour
 {
-    [Header("ƒmƒbƒNƒoƒbƒN,–³“Gİ’è")]
+    [Header("ãƒãƒƒã‚¯ãƒãƒƒã‚¯,ç„¡æ•µè¨­å®š")]
     private float knockbackTime = 0.3f;
     private float knockbackCounter;
 
@@ -13,7 +13,7 @@ public class Reception : MonoBehaviour
 
     private Collider col;
 
-    [SerializeField] private float StunInvincibleTime = 1.0f; //–³“GŠÔ
+    [SerializeField] private float StunInvincibleTime = 1.0f; //ç„¡æ•µæ™‚é–“
 
     [SerializeField] private ParticleSystem hit;
 

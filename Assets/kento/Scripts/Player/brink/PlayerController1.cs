@@ -68,7 +68,7 @@ public class PlayerController1 : MonoBehaviour
     private PlayerInput playerInput;
     [SerializeField] private Text IDtext;
 
-    Reception reception;
+    Reception1 reception;
     Animator animator;
 
     private void Awake()
@@ -155,7 +155,7 @@ public class PlayerController1 : MonoBehaviour
 
         rb = GetComponent<Rigidbody>();
         animator = GetComponentInChildren<Animator>();
-        reception = GetComponent<Reception>();
+        reception = GetComponent<Reception1>();
     }
 
     void FixedUpdate()
@@ -303,7 +303,7 @@ public class PlayerController1 : MonoBehaviour
                     {
                         if (isTackling)
                         {
-                            Reception p = other.gameObject.GetComponent<Reception>();
+                            Reception1 p = other.gameObject.GetComponent<Reception1>();
                             if (p.isHit) { return; }
                             p.KnockBack(rb.linearVelocity.normalized, curentknockbackForce);
                            

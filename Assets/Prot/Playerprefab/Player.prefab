@@ -104,6 +104,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5128585452599055210}
+  - component: {fileID: 9148173049239270920}
+  - component: {fileID: 2558363494868429046}
+  - component: {fileID: 6518204270756566033}
+  - component: {fileID: 3369485105163062920}
+  - component: {fileID: 840228222234589201}
+  - component: {fileID: 3939939216947566100}
   - component: {fileID: 4832575302415769368}
   - component: {fileID: 2795932701591639972}
   - component: {fileID: -473602532291038583}
@@ -140,6 +146,93 @@ Transform:
   - {fileID: 8234240898049261327}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9148173049239270920
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3736281241373610117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0464244499b71c540b1c5540cb1f643e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2558363494868429046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3736281241373610117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f23e492f9039cd24abb62336c99b9d8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6518204270756566033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3736281241373610117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8d5a30cad425a64ba18d8697d3c18e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Speed: 5
+  chargingmoveSpeedRate: 0.3
+  rotSpeed: 10
+  ChargeingRotSpeedRate: 0.7
+--- !u!114 &3369485105163062920
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3736281241373610117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d74cf065567fd5449a92b220c44d817f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curentForce: 15
+  chargeMax: 5
+  StrongRecoveryTime: 1
+  isRigid: 0
+  WeakKnockbackForce: 15
+  StrongKnockbackForce: 30
+  searchArea: {fileID: 4927183563175391618}
+  angle: 45
+--- !u!114 &840228222234589201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3736281241373610117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49b30c4453cb9fb45bd1da19a32d0e1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaxChargeTime: 1.5
+  MeterImage: {fileID: 4728771281042430425}
+--- !u!114 &3939939216947566100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3736281241373610117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c5a1880899cbca46aa747d327cad0bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  StunInvincibleTime: 1
 --- !u!114 &4832575302415769368
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -167,8 +260,8 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: PlayerController1, Assembly-CSharp
+      - m_Target: {fileID: 2558363494868429046}
+        m_TargetAssemblyTypeName: PlayerInputController, Assembly-CSharp
         m_MethodName: OnMove
         m_Mode: 0
         m_Arguments:
@@ -199,9 +292,9 @@ MonoBehaviour:
     m_ActionName: 'Player/Crouch[/Keyboard/c]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: PlayerController1, Assembly-CSharp
-        m_MethodName: OnTackle
+      - m_Target: {fileID: 2558363494868429046}
+        m_TargetAssemblyTypeName: PlayerInputController, Assembly-CSharp
+        m_MethodName: OnAtatck
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -265,6 +358,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 9caa3d8a-6b2f-4e8e-8bad-6ede561bd9be
     m_ActionName: UI/TrackedDeviceOrientation
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 6e307aed-21c0-463a-bac3-822cf96e6df2
+    m_ActionName: 'Player/Enter[/Keyboard/enter]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player

@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class BotController : MonoBehaviour
 {
@@ -26,13 +26,13 @@ public class BotController : MonoBehaviour
     private float nextActDuration = 0f;
 
 
-    private Reception reception;
+    private Reception1 reception;
     private Animator animator;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        reception = GetComponent<Reception>();
+        reception = GetComponent<Reception1>();
         animator = GetComponentInChildren<Animator>();
         SetNextAct();
     }

@@ -146,7 +146,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: isAttack1
+    m_ConditionEvent: IsAttack1
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 452476963790938203}
@@ -423,13 +423,13 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
-  - m_Name: isAttack1
+  - m_Name: IsAttack1
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
-  - m_Name: isAttack2
+  - m_Name: IsAttack2
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -491,7 +491,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: isAttack2
+    m_ConditionEvent: IsAttack2
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -3691767274782935039}
@@ -516,7 +516,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: isAttack2
+    m_ConditionEvent: IsAttack2
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -3691767274782935039}
@@ -567,7 +567,7 @@ AnimatorStateMachine:
   m_EntryTransitions: []
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
-  m_AnyStatePosition: {x: 0, y: -10, z: 0}
+  m_AnyStatePosition: {x: 320, y: -70, z: 0}
   m_EntryPosition: {x: -90, y: 80, z: 0}
   m_ExitPosition: {x: 750, y: -230, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
@@ -587,10 +587,10 @@ AnimatorStateTransition:
     m_ConditionEvent: IsChage
     m_EventTreshold: 0
   - m_ConditionMode: 2
-    m_ConditionEvent: isAttack1
+    m_ConditionEvent: IsAttack1
     m_EventTreshold: 0
   - m_ConditionMode: 2
-    m_ConditionEvent: isAttack2
+    m_ConditionEvent: IsAttack2
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -8765959079248864128}
@@ -621,10 +621,10 @@ AnimatorStateTransition:
     m_ConditionEvent: IsChage
     m_EventTreshold: 0
   - m_ConditionMode: 2
-    m_ConditionEvent: isAttack1
+    m_ConditionEvent: IsAttack1
     m_EventTreshold: 0
   - m_ConditionMode: 2
-    m_ConditionEvent: isAttack2
+    m_ConditionEvent: IsAttack2
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -4959519833899419862}
@@ -649,7 +649,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: isAttack1
+    m_ConditionEvent: IsAttack1
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 452476963790938203}
@@ -727,7 +727,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 2
-    m_ConditionEvent: isAttack1
+    m_ConditionEvent: IsAttack1
     m_EventTreshold: 0
   - m_ConditionMode: 3
     m_ConditionEvent: Speed

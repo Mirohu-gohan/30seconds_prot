@@ -11,12 +11,12 @@ public class BotPowerMeter : MonoBehaviour
 
     [SerializeField] private float MaxChargeTime = 1.5f;
 
-    private BotPlayerController bc;
+    private BotPlayerController1 bc;
 
 
     private void Start()
     {
-        bc = GetComponent<BotPlayerController>();
+        bc = GetComponent<BotPlayerController1>();
         MeterImage.fillAmount = 0;
     }
 

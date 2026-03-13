@@ -34,8 +34,8 @@ public class AtackController : MonoBehaviour
 
     Rigidbody rb;
     PlayerStateManager stateManager;
-    PlayerInputController inputController;
-   
+    AnimatorController animeCon;
+     
     public void SetCharge(float value)
     {
         t = value;
@@ -47,7 +47,7 @@ public class AtackController : MonoBehaviour
 
         rb = GetComponent<Rigidbody>();
         stateManager = GetComponent<PlayerStateManager>();
-        inputController = GetComponent<PlayerInputController>();
+        animeCon = GetComponent<AnimatorController>();
     }
 
     void Update()
@@ -66,6 +66,7 @@ public class AtackController : MonoBehaviour
         if(stateManager.State == State.Knockback)
         {
             t = 0f;
+            animeCon.isStart = false;
             CancelInvoke("EndAttack");
             EndAttack();
         }
@@ -98,13 +99,13 @@ public class AtackController : MonoBehaviour
             
             //チャージ開始,ステート変更
             stateManager.SetActionState(ActionState.Charge);
-            inputController.isStart = true;
+            animeCon.isStart = true;
         }
         if (x == 1)
         {
             if(lisCooldown) { return; }
             if (isRigid) { return; }
-            inputController.isStart = false;
+            animeCon.isStart = false;
             if (stateManager.ActionState == ActionState.Charge)
             {
                 //チャージを止め攻撃,ステート変更
@@ -117,13 +118,15 @@ public class AtackController : MonoBehaviour
                 {
                     curentknockbackForce = StrongKnockbackForce;
                     stateManager.SetAttackPower(AttackPower.Strong);
-                    inputController.isAttack2 = true;
+                    animeCon.isAttack2 = true;
+                    Debug.Log("強");
                 }
                 else
                 {
                     curentknockbackForce = WeakKnockbackForce;
                     stateManager.SetAttackPower(AttackPower.Weak);
-                    inputController.isAttack1 = true;
+                    animeCon.isAttack1 = true;
+                    Debug.Log("弱");
                 }
 
                 rb.AddForce(transform.forward * curentForce, ForceMode.Impulse);
@@ -146,8 +149,8 @@ public class AtackController : MonoBehaviour
         }
     
         isMax = false;
-        inputController.isAttack1 = false;
-        inputController.isAttack2 = false;
+        animeCon.isAttack1 = false;
+        animeCon.isAttack2 = false;
         stateManager.SetAttackPower(AttackPower.None);
         t = 0f;
 
@@ -182,11 +185,13 @@ public class AtackController : MonoBehaviour
                         if (stateManager.ActionState == ActionState.Attack)
                         {
                             Reception p = other.gameObject.GetComponent<Reception>();
-                            //if (p.isHit) { return; }
+                            if (p == null) { return; }
                             p.KnockBack(rb.linearVelocity.normalized, curentknockbackForce);
                             //当たった時点でInvokeをキャンセルしてタックルを止める
                             CancelInvoke("EndAttack");
                             EndAttack();
+                            animeCon.isAttack1 = false;
+                            animeCon.isAttack2 = false;
                         }
                     }
                 }

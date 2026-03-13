@@ -4,12 +4,10 @@ using UnityEngine.InputSystem.Users;
 
 public class PlayerInputController : MonoBehaviour
 {
-    Vector2 inputVeer;
+    Vector2 inputVer;
 
-    [HideInInspector] public bool isStart;
-    [HideInInspector] public bool isAttack1;
-    [HideInInspector] public bool isAttack2;
-    Animator animator;
+    public Vector2 InputVeer => inputVer; // 追加
+
 
     private PlayerStateManager stateManager;
     private MoveController move;
@@ -17,7 +15,6 @@ public class PlayerInputController : MonoBehaviour
 
     private void Awake()
     {
-        animator = GetComponentInChildren<Animator>();
         stateManager = GetComponent<PlayerStateManager>();
         move = GetComponent<MoveController>();
         atack = GetComponent<AtackController>();
@@ -25,12 +22,12 @@ public class PlayerInputController : MonoBehaviour
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        inputVeer = context.ReadValue<Vector2>();
+        inputVer = context.ReadValue<Vector2>();
 
         //ステート変更のための入力受け取り
-        stateManager.UpdateMoveState(inputVeer);
+        stateManager.UpdateMoveState(inputVer);
         //移動処理のための入力受け取り
-        move.SetMoveInput(inputVeer);
+        move.SetMoveInput(inputVer);
     }
 
     public void OnAtatck(InputAction.CallbackContext context)
@@ -43,14 +40,5 @@ public class PlayerInputController : MonoBehaviour
         {
             atack.Shot(1);
         }
-    }
-
-    private void Update()
-    {
-        float mag = inputVeer.magnitude;
-        animator.SetFloat("Speed", mag);
-        animator.SetBool("IsChage", isStart);
-        animator.SetBool("IsAttack1", isAttack1);
-        animator.SetBool("IsAttack2", isAttack2);
     }
 }

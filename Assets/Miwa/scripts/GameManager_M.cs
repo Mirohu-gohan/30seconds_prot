@@ -204,7 +204,7 @@ public class GameManager_M : MonoBehaviour
             var moveScrit = player.GetComponent<PlayerController1>();
             if (moveScrit != null) moveScrit.enabled = enabled;
 
-            var moveBotScript = player.GetComponent<BotPlayerController>();
+            var moveBotScript = player.GetComponent<BotPlayerController1>();
             if (moveBotScript != null) moveBotScript.enabled = enabled;
 
         }

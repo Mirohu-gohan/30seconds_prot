@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
-public class BotPlayerController : MonoBehaviour
+public class BotPlayerController1 : MonoBehaviour
 {
     [Header("移動設定")]
 

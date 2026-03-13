@@ -6,7 +6,7 @@ using UnityEngine.Rendering.Universal;
 
 public class BotPlayerController : MonoBehaviour
 {
-    [Header("移動設定")]
+   /* [Header("移動設定")]
 
     [SerializeField] private float speed = 5.0f; //移動スピード
     [SerializeField] private float ChargeMoveSpeedRate = 0.3f; //チャージ・硬直中の速度倍率
@@ -357,5 +357,5 @@ public class BotPlayerController : MonoBehaviour
 
         CancelInvoke(nameof(EndTackle));
         isTackling = false;
-    }
+    }*/
 }

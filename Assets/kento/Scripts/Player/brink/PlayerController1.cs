@@ -128,7 +128,7 @@ public class PlayerController1 : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (reception != null && !reception.isKnockback)
+        if (reception != null /*&& !reception.isKnockback*/)
         {
             if (isStrt)
             {
@@ -205,7 +205,7 @@ public class PlayerController1 : MonoBehaviour
     void Tackle()
     {
         if (isfinish) { return; }
-        if (reception != null && reception.isKnockback) return;
+        if (reception != null/* && reception.isKnockback*/) return;
         isTackling = true;
         lastTackleTime = Time.time;
 
@@ -264,7 +264,7 @@ public class PlayerController1 : MonoBehaviour
                         if (isTackling)
                         {
                             Reception p = other.gameObject.GetComponent<Reception>();
-                            if (p.isHit) { return; }
+                           /* if (p.isHit) { return; }*/
                             p.KnockBack(transform.position, curentknockbackForce);
                         }
                     }

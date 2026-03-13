@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class BotPowerMeter : MonoBehaviour
 {
-    [SerializeField] private Image MeterImage;
+  /*  [SerializeField] private Image MeterImage;
 
     private float meterSpeed = 1.0f;
     private Coroutine meter;
@@ -37,5 +37,5 @@ public class BotPowerMeter : MonoBehaviour
 
         // Player のタックル力 (t) に反映
         bc.SetCharge(MeterImage.fillAmount * bc.chargeMax);
-    }
+    }*/
 }

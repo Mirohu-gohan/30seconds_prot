@@ -48,6 +48,10 @@ public class GameManager_M : MonoBehaviour
     public RectTransform resultRibbon;    // スパン！！と動かすボタングループ
     public GameObject resultBlurVolume;  // リザルト時に自動でONにするGlobal Volume
 
+    [Header("スコア")]
+    public Transform[] SpawnPoint;
+    public float Spawntime = 3.0f;
+
     public enum Mode { Survival, SuddenDeath, ScoreMode,GameOver }
     public Mode CurrentModeState;
 
@@ -351,6 +355,7 @@ public class GameManager_M : MonoBehaviour
                     {
                         scoreHandler.HandleDeath();
                     }
+                }
 
                     if (SoundManager.Instance != null)
                 {
@@ -363,10 +368,45 @@ public class GameManager_M : MonoBehaviour
                     PlayerUIManager.Instance.SetPlayerDead(health.playerIndex);
                 }
 
-                OnPlayerEliminated(player);
-                Destroy(player);
+                if (CurrentModeState == Mode.ScoreMode)
+                {
+                    StartCoroutine(RespawnPlayer(player, health.playerIndex));
+                }
+                else
+                {
+                    OnPlayerEliminated(player);
+                    Destroy(player);
+                }
             }
         }
+    }
+
+    //スコアモードの時にリスポーンする処理
+    private IEnumerator RespawnPlayer(GameObject player, int playerIndex)
+    {
+        player.SetActive(false);
+
+        yield return new WaitForSeconds(Spawntime);
+
+        Vector3 spawnPosition = new Vector3(0, 10, 0);
+        //randomにスポーン
+        if(SpawnPoint !=null && SpawnPoint.Length>0)
+        {
+            int randomIndex = Random.Range(0, SpawnPoint.Length);
+            spawnPosition = SpawnPoint[randomIndex].position;
+
+        }
+
+        player.transform.position = spawnPosition;
+        var rb = player.GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            // 落下スピードが残ったままにならないようにゼロにする
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+        }
+        player.SetActive(true);
+
     }
 
     public void TimeExpiredForSurvival()
@@ -406,11 +446,11 @@ public class GameManager_M : MonoBehaviour
                 if (!isDraw && winnerIndex != -1)
                 {
                     playerWins[winnerIndex]++;
-                    Debug.Log($"Player {winnerIndex + 1} がスコア {maxScore} で勝利！ 現在の勝ち星: {playerWins[winnerIndex]}");
+                    Debug.Log($"Player {winnerIndex + 1} がスコア {maxScore} で勝利 現在の勝ち星: {playerWins[winnerIndex]}");
                 }
                 else
                 {
-                    Debug.Log("同点！ 勝者なし！");
+                    Debug.Log("同点 勝者なし");
                 }
             }
         }

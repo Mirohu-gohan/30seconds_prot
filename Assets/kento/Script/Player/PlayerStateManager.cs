@@ -1,3 +1,4 @@
+ï»¿using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -15,34 +16,52 @@ public enum AttackPower
 }
 public enum State
 {
-    None,Knockback
+    None,Knockback,Hit
 }
-//ƒXƒe[ƒgŠÇ—ƒNƒ‰ƒX
+//ã‚¹ãƒ†ãƒ¼ãƒˆç®¡ç†ã‚¯ãƒ©ã‚¹
 public class PlayerStateManager : MonoBehaviour
 {
-    //ƒXƒe[ƒg‚Ìƒƒ\ƒbƒh,‘ã“ü‚Í‚±‚ÌƒNƒ‰ƒX‚Ì‚İQÆ‚Í•ÊƒNƒ‰ƒX‚Å‚à‰Â
+    //ã‚¹ãƒ†ãƒ¼ãƒˆã®ãƒ¡ã‚½ãƒƒãƒ‰,ä»£å…¥ã¯ã“ã®ã‚¯ãƒ©ã‚¹ã®ã¿å‚ç…§ã¯åˆ¥ã‚¯ãƒ©ã‚¹ã§ã‚‚å¯
     public MoveState MoveState {get; private set;} = MoveState.Idle;
     public ActionState ActionState {get; private set;} = ActionState.None;
     public AttackPower AttackPower { get; private set; } = AttackPower.None;
     public State State {get; private set;} = State.None;
 
+    //ã‚¤ãƒ™ãƒ³ãƒˆ
+    public event Action<MoveState> OnMoveStateChanged;
+    public event Action<ActionState> OnActionStateChanged;
+    public event Action<AttackPower> OnAttackPowerChanged;
+    public event Action<State> OnStateChanged;
+
     public void UpdateMoveState(Vector2 inputVere)
     {
-        //“ü—Í‚ª‚³‚ê‚½‚çƒXƒe[ƒg‚ğ•ÏX(? = true,: = false) 
-        MoveState = inputVere.sqrMagnitude > 0.01 ? MoveState.Walk : MoveState.Idle;
+        //å…¥åŠ›ãŒã•ã‚ŒãŸã‚‰ã‚¹ãƒ†ãƒ¼ãƒˆã‚’å¤‰æ›´(? = true,: = false) 
+        MoveState newState = inputVere.sqrMagnitude > 0.01 ? MoveState.Walk : MoveState.Idle;
+
+        if(MoveState == newState)return;
+        MoveState = newState;
+        OnMoveStateChanged?.Invoke(MoveState);
     }
     public void SetActionState(ActionState state)
     {
-        //ƒXƒe[ƒg‚Ì•ÏX
+        if (ActionState == state) return;
+
         ActionState = state;
+        OnActionStateChanged?.Invoke(ActionState);
     }
     public void SetAttackPower(AttackPower state)
     {
+        if (AttackPower == state) return;
+
         AttackPower = state;
+        OnAttackPowerChanged?.Invoke(AttackPower);
     }
     public void SetState(State state)
     {
+        if (State == state) return;
+
         State = state;
+        OnStateChanged?.Invoke(State);
     }
 
     /* private void Update()

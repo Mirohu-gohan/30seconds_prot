@@ -1,9 +1,15 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Users;
 
 public class PlayerInputController : MonoBehaviour
 {
     Vector2 inputVeer;
+
+    [HideInInspector] public bool isStart;
+    [HideInInspector] public bool isAttack1;
+    [HideInInspector] public bool isAttack2;
+    Animator animator;
 
     private PlayerStateManager stateManager;
     private MoveController move;
@@ -11,6 +17,7 @@ public class PlayerInputController : MonoBehaviour
 
     private void Awake()
     {
+        animator = GetComponentInChildren<Animator>();
         stateManager = GetComponent<PlayerStateManager>();
         move = GetComponent<MoveController>();
         atack = GetComponent<AtackController>();
@@ -36,5 +43,14 @@ public class PlayerInputController : MonoBehaviour
         {
             atack.Shot(1);
         }
+    }
+
+    private void Update()
+    {
+        float mag = inputVeer.magnitude;
+        animator.SetFloat("Speed", mag);
+        animator.SetBool("IsChage", isStart);
+        animator.SetBool("IsAttack1", isAttack1);
+        animator.SetBool("IsAttack2", isAttack2);
     }
 }

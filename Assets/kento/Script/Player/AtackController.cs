@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
@@ -11,29 +11,30 @@ public class AtackController : MonoBehaviour
 {
     [SerializeField] private float curentForce = 15f;
     private float duration = 0.5f;
-    private float cooldown = 1.0f; //UŒ‚ƒN[ƒ‹ƒ_ƒEƒ“
+    private float cooldown = 1.0f; //æ”»æ’ƒã‚¯ãƒ¼ãƒ«ãƒ€ã‚¦ãƒ³
     private bool lisCooldown = false;
 
-    [HideInInspector] public float chargeMax = 5.0f; //ƒ`ƒƒ[ƒWãŒÀ
+    [HideInInspector] public float chargeMax = 5.0f; //ãƒãƒ£ãƒ¼ã‚¸ä¸Šé™
     private float t = 0f;
     private bool isMax = false;
 
-    //-----d’¼-----
-    [SerializeField] private float StrongRecoveryTime = 1.0f; //d’¼ŠÔ
+    //-----ç¡¬ç›´-----
+    [SerializeField] private float StrongRecoveryTime = 1.0f; //ç¡¬ç›´æ™‚é–“
     private float curentRecoveryTime;
     [HideInInspector] public bool isRigid = false;
 
-    [Header("ƒmƒbƒNƒoƒbƒN,–³“Gİ’è")]
-    [SerializeField] private float WeakKnockbackForce = 15.0f; //ãƒmƒbƒNƒoƒbƒN
-    [SerializeField] private float StrongKnockbackForce = 30.0f;//‹­ƒmƒbƒNƒoƒbƒN
-    private float curentknockbackForce = 0f;//Œ»İ‚ÌƒmƒbƒNƒoƒbƒN—Í
+    [Header("ãƒãƒƒã‚¯ãƒãƒƒã‚¯,ç„¡æ•µè¨­å®š")]
+    [SerializeField] private float WeakKnockbackForce = 15.0f; //å¼±ãƒãƒƒã‚¯ãƒãƒƒã‚¯
+    [SerializeField] private float StrongKnockbackForce = 30.0f;//å¼·ãƒãƒƒã‚¯ãƒãƒƒã‚¯
+    private float curentknockbackForce = 0f;//ç¾åœ¨ã®ãƒãƒƒã‚¯ãƒãƒƒã‚¯åŠ›
 
-    [Header("“–‚½‚è”»’èİ’è")]
+    [Header("å½“ãŸã‚Šåˆ¤å®šè¨­å®š")]
     [SerializeField] private SphereCollider searchArea;
     [SerializeField] private float angle = 45f;
 
     Rigidbody rb;
     PlayerStateManager stateManager;
+    PlayerInputController inputController;
    
     public void SetCharge(float value)
     {
@@ -46,6 +47,7 @@ public class AtackController : MonoBehaviour
 
         rb = GetComponent<Rigidbody>();
         stateManager = GetComponent<PlayerStateManager>();
+        inputController = GetComponent<PlayerInputController>();
     }
 
     void Update()
@@ -54,13 +56,11 @@ public class AtackController : MonoBehaviour
         {
             if (t < chargeMax)
             {
-                t += Time.deltaTime;
-                //stateManager.SetAttackPower(AttackPower.Weak);
+                t += Time.deltaTime; 
             }
             if(t >= chargeMax)
             {
                 isMax = true;
-                //stateManager.SetAttackPower(AttackPower.Strong);
             }
         }
         if(stateManager.State == State.Knockback)
@@ -95,22 +95,36 @@ public class AtackController : MonoBehaviour
             if(lisCooldown) { return; }
             if (stateManager.ActionState == ActionState.Charge) {return; }
             isRigid = false;
-
-            //ƒ`ƒƒ[ƒWŠJn,ƒXƒe[ƒg•ÏX
+            
+            //ãƒãƒ£ãƒ¼ã‚¸é–‹å§‹,ã‚¹ãƒ†ãƒ¼ãƒˆå¤‰æ›´
             stateManager.SetActionState(ActionState.Charge);
+            inputController.isStart = true;
         }
         if (x == 1)
         {
             if(lisCooldown) { return; }
             if (isRigid) { return; }
-
+            inputController.isStart = false;
             if (stateManager.ActionState == ActionState.Charge)
             {
-                //ƒ`ƒƒ[ƒW‚ğ~‚ßUŒ‚,ƒXƒe[ƒg•ÏX
+                //ãƒãƒ£ãƒ¼ã‚¸ã‚’æ­¢ã‚æ”»æ’ƒ,ã‚¹ãƒ†ãƒ¼ãƒˆå¤‰æ›´
                 stateManager.SetActionState(ActionState.Attack);
 
                 //? = true , : = false
-                curentknockbackForce = isMax ? StrongKnockbackForce : WeakKnockbackForce;
+                //curentknockbackForce = isMax ? StrongKnockbackForce : WeakKnockbackForce;
+
+                if (isMax)
+                {
+                    curentknockbackForce = StrongKnockbackForce;
+                    stateManager.SetAttackPower(AttackPower.Strong);
+                    inputController.isAttack2 = true;
+                }
+                else
+                {
+                    curentknockbackForce = WeakKnockbackForce;
+                    stateManager.SetAttackPower(AttackPower.Weak);
+                    inputController.isAttack1 = true;
+                }
 
                 rb.AddForce(transform.forward * curentForce, ForceMode.Impulse);
 
@@ -123,17 +137,18 @@ public class AtackController : MonoBehaviour
     void EndAttack()
     {
         rb.linearVelocity = Vector3.zero;
-        //ƒXƒe[ƒg‚ğNone‚É
+        //ã‚¹ãƒ†ãƒ¼ãƒˆã‚’Noneã«
         stateManager.SetActionState(ActionState.None);
-
+        
         if (isMax)
         {
-            Debug .Log("‹­UŒ‚");
             isRigid = true;
         }
     
         isMax = false;
-        //stateManager.SetAttackPower(AttackPower.None);
+        inputController.isAttack1 = false;
+        inputController.isAttack2 = false;
+        stateManager.SetAttackPower(AttackPower.None);
         t = 0f;
 
         StartCoroutine(CooldownCount());
@@ -169,7 +184,7 @@ public class AtackController : MonoBehaviour
                             Reception p = other.gameObject.GetComponent<Reception>();
                             //if (p.isHit) { return; }
                             p.KnockBack(rb.linearVelocity.normalized, curentknockbackForce);
-                            //“–‚½‚Á‚½“_‚ÅInvoke‚ğƒLƒƒƒ“ƒZƒ‹‚µ‚Äƒ^ƒbƒNƒ‹‚ğ~‚ß‚é
+                            //å½“ãŸã£ãŸæ™‚ç‚¹ã§Invokeã‚’ã‚­ãƒ£ãƒ³ã‚»ãƒ«ã—ã¦ã‚¿ãƒƒã‚¯ãƒ«ã‚’æ­¢ã‚ã‚‹
                             CancelInvoke("EndAttack");
                             EndAttack();
                         }

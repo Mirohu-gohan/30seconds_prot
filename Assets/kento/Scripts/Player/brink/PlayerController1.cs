@@ -62,7 +62,6 @@ public class PlayerController1 : MonoBehaviour
     [SerializeField] private ParticleSystem weak;//弱
 
 
-
     //-----PlayerID-----
     private int playerID;
     private PlayerInput playerInput;

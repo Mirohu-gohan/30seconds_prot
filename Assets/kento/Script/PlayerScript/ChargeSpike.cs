@@ -1,6 +1,4 @@
-﻿using UnityEditor.Profiling;
-using UnityEngine;
-using UnityEngine.Rendering.Universal;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class ChargeSpike : MonoBehaviour
@@ -15,7 +13,6 @@ public class ChargeSpike : MonoBehaviour
     //-----------------
     [SerializeField] private Image MeterImage;
 
-    private float meterSpeed = 1.0f;
     private Coroutine meter;
     //---------------
 

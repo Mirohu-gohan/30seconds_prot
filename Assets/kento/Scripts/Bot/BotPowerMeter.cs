@@ -6,7 +6,6 @@ public class BotPowerMeter : MonoBehaviour
 {
     [SerializeField] private Image MeterImage;
 
-    private float meterSpeed = 1.0f;
     private Coroutine meter;
 
     [SerializeField] private float MaxChargeTime = 1.5f;

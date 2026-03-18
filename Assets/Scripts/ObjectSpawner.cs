@@ -13,6 +13,16 @@ public class ObjectSpawner : MonoBehaviour
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private Vector3 moveDirection = Vector3.down;
 
+    [Header("攻撃判定設定")]
+    [Tooltip("視覚サイズに対する攻撃判定の倍率。1.0=ビジュアルと一致、小さくすると判定が狭くなる")]
+    [SerializeField] private float hitboxScale = 1.0f;
+
+    [Header("着弾地点インジケーター設定")]
+    [Tooltip("着弾地点に表示する円プレハブ。未設定の場合は半透明オレンジの円が自動生成される")]
+    [SerializeField] private GameObject landingIndicatorPrefab;
+    [Tooltip("隕石の直径に対する表示サイズの倍率")]
+    [SerializeField] private float indicatorSizeMultiplier = 1.0f;
+
     [Header("デバッグ表示")]
     [SerializeField] private bool showDebugArea = true;
     [SerializeField] private float debugAreaDistance = 10f;
@@ -33,13 +43,18 @@ public class ObjectSpawner : MonoBehaviour
             float randomScale = Random.Range(scaleRange.x, scaleRange.y);
             obj.transform.localScale = new Vector3(randomScale, randomScale, randomScale);
 
-            // SphereCollider のサイズもスケールに合わせる
+            // SphereCollider の攻撃判定を設定
+            // プレハブ本来の radius を基準に倍率だけ適用する
+            // ※ localScale がランダムスケールを担うため、ここでスケールは掛けない
             SphereCollider sphere = obj.GetComponent<SphereCollider>();
             if (sphere != null)
             {
-                float originalRadius = 0.860137f; // prefab の半径
-                sphere.radius = originalRadius * randomScale;
+                sphere.radius = sphere.radius * hitboxScale;
             }
+
+            // 着弾地点インジケーターを設定
+            MeteorLandingIndicator landingIndicator = obj.AddComponent<MeteorLandingIndicator>();
+            landingIndicator.Initialize(landingIndicatorPrefab, indicatorSizeMultiplier);
 
             // 移動コンポーネントを追加
             MoveObject moveComponent = obj.AddComponent<MoveObject>();
@@ -77,6 +92,7 @@ public class ObjectSpawner : MonoBehaviour
             Gizmos.color = Color.green;
             Gizmos.DrawLine(transform.position, debugPosition);
         }
+
     }
 }
 

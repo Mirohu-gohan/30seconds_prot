@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.Rendering.Universal;
 
 public class BotPlayerController1 : MonoBehaviour
 {
@@ -278,7 +278,7 @@ public class BotPlayerController1 : MonoBehaviour
 
         rb.AddForce(transform.forward * tackleForce, ForceMode.Impulse);
 
-        Invoke("EndTackle", tackleDuration);
+        Invoke(nameof(EndTackle), tackleDuration);
     }
     void EndTackle()
     {

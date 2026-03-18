@@ -26,6 +26,9 @@ public class BOTController : MonoBehaviour
     bool attackRest = false;
     private float restTime = 3f;
 
+    private float searchTimer = 0f;
+    private float searchInterval = 0.3f; // 0.3秒ごとにプレイヤーを探索
+
     private PlayerStateManager stateManager;
     private MoveController move;
     private AtackController atack;
@@ -61,7 +64,12 @@ public class BOTController : MonoBehaviour
             Rota();
             return;
         }
-        Serch();
+        searchTimer += Time.deltaTime;
+        if (searchTimer >= searchInterval)
+        {
+            Serch();
+            searchTimer = 0f;
+        }
 
         if (!attackRest && near != null && minDist < 10f)
         {

@@ -23,8 +23,14 @@ public class EfectController : MonoBehaviour
         chage.Stop();
         strong.Stop();
         weak.Stop();
+    }
 
-        
+    void OnDestroy()
+    {
+        if (stateManager == null) return;
+        stateManager.OnMoveStateChanged -= MoveEffect;
+        stateManager.OnActionStateChanged -= ChargeEffect;
+        stateManager.OnAttackPowerChanged -= AttackEffect;
     }
 
     void MoveEffect(MoveState state)

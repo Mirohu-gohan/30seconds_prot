@@ -17,17 +17,36 @@ public class BouncyWall : MonoBehaviour
     // ボールの速度を記録する辞書
     private Dictionary<Rigidbody, Vector3> ballVelocities = new Dictionary<Rigidbody, Vector3>();
 
-    private void FixedUpdate()
+    // キャッシュされたBallのRigidbodyリスト（毎フレーム検索を避けるため）
+    private List<Rigidbody> cachedBalls = new List<Rigidbody>();
+
+    private void Start()
     {
-        // 全てのBallタグオブジェクトの速度を記録
-        GameObject[] balls = GameObject.FindGameObjectsWithTag("Ball");
-        foreach (GameObject ball in balls)
+        RefreshBallCache();
+    }
+
+    // Ballリストを再構築する（Ballが動的に追加された場合は外部から呼び出す）
+    public void RefreshBallCache()
+    {
+        cachedBalls.Clear();
+        foreach (GameObject ball in GameObject.FindGameObjectsWithTag("Ball"))
         {
             Rigidbody rb = ball.GetComponent<Rigidbody>();
-            if (rb != null)
+            if (rb != null) cachedBalls.Add(rb);
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        // キャッシュされたBallの速度を記録
+        for (int i = cachedBalls.Count - 1; i >= 0; i--)
+        {
+            if (cachedBalls[i] == null)
             {
-                ballVelocities[rb] = rb.linearVelocity;
+                cachedBalls.RemoveAt(i); // 破棄済みのエントリを削除
+                continue;
             }
+            ballVelocities[cachedBalls[i]] = cachedBalls[i].linearVelocity;
         }
     }
 

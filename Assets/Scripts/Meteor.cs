@@ -68,6 +68,16 @@ public class Meteor : MonoBehaviour
         }
     }
 
+    private void OnDrawGizmos()
+    {
+        SphereCollider sphere = GetComponent<SphereCollider>();
+        if (sphere == null) return;
+
+        Gizmos.color = new Color(1f, 0f, 0f, 0.4f);
+        Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, transform.lossyScale);
+        Gizmos.DrawWireSphere(sphere.center, sphere.radius);
+    }
+
     private System.Collections.IEnumerator ShrinkAndDestroy()
     {
         // 指定時間待機

@@ -95,8 +95,7 @@ public class PlayerJoinedManager : MonoBehaviour
         cursorInstance = null;
         mindevice = null;*/
 
-        joinDevices.Clear();
-        //joinDevices.Remove(device);
+        joinDevices.Remove(device);
         UpdateDeviceTexts();
        
     }

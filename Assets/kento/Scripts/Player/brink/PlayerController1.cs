@@ -1,4 +1,6 @@
-﻿using UnityEditor;
+﻿#if UNITY_EDITOR
+using UnityEditor;
+#endif
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -256,7 +258,7 @@ public class PlayerController1 : MonoBehaviour
 
         rb.AddForce(transform.forward * tackleForce, ForceMode.Impulse);
 
-        Invoke("EndTackle", tackleDuration);
+        Invoke(nameof(EndTackle), tackleDuration);
 
     }
 
@@ -303,18 +305,26 @@ public class PlayerController1 : MonoBehaviour
                         if (isTackling)
                         {
                             Reception1 p = other.gameObject.GetComponent<Reception1>();
+                            if (p == null) { return; }
                             if (p.isHit) { return; }
                             p.KnockBack(rb.linearVelocity.normalized, curentknockbackForce);
                            
 
                             //当たった時点でInvokeをキャンセルしてタックルを止める
-                            CancelInvoke("EndTackle");
+                            CancelInvoke(nameof(EndTackle));
                             EndTackle();
                         }
                     }
                 }
             }
         }
+    }
+
+    // SuddenDeathMode から呼び出すノックバック倍率適用メソッド
+    public void ApplyKnockbackMultiplier(float multiplier)
+    {
+        WeakKnockbackForce *= multiplier;
+        StrongKnockbackForce *= multiplier;
     }
 
 #if UNITY_EDITOR

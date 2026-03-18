@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections;
-using System.Runtime.CompilerServices;
-using Unity.VisualScripting;
+﻿using System.Collections;
+#if UNITY_EDITOR
 using UnityEditor;
-using UnityEditor.ShaderGraph.Internal;
-using UnityEditorInternal;
+#endif
 using UnityEngine;
 
 public class AtackController : MonoBehaviour
@@ -131,7 +128,7 @@ public class AtackController : MonoBehaviour
 
                 rb.AddForce(transform.forward * curentForce, ForceMode.Impulse);
 
-                Invoke("EndAttack", duration);
+                Invoke(nameof(EndAttack), duration);
             } 
           
         }  

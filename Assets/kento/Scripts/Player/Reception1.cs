@@ -69,6 +69,7 @@ public class Reception1 : MonoBehaviour
 
         knockbackDir = pos.normalized * force;
         rb.linearVelocity = Vector3.zero;
+        StopCoroutine(nameof(Hit));
         StartCoroutine(Hit());
     }
 

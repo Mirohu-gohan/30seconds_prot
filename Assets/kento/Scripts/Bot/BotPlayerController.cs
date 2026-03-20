@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -6,81 +6,81 @@ using UnityEngine.Rendering.Universal;
 
 public class BotPlayerController : MonoBehaviour
 {
-    [Header("ˆÚ“®İ’è")]
+    [Header("ç§»å‹•è¨­å®š")]
 
-    [SerializeField] private float speed = 5.0f; //ˆÚ“®ƒXƒs[ƒh
-    [SerializeField] private float ChargeMoveSpeedRate = 0.3f; //ƒ`ƒƒ[ƒWEd’¼’†‚Ì‘¬“x”{—¦
-    private float speed2 = 0; //ƒ`ƒƒ[ƒW’†‚ÌƒXƒs[ƒh
-    private float curentSpeed = 0;  //Œ»İ‚ÌƒXƒs[ƒh
-    [SerializeField] private float rotSpeed = 10.0f; //ù‰ñƒXƒs[ƒh
-    [SerializeField] private float ChargeRotateSpeedRate = 0.7f; //ƒ`ƒƒ[ƒWEd’¼’†‚Ìù‰ñ”{—¦
-    private float rotSpeed2 = 0;@//ƒ`ƒƒ[ƒW’†ù‰ñƒXƒs[ƒh
-    private float curentRotSpeed = 0;//Œ»İ‚Ìù‰ñƒXƒs[ƒh
+    [SerializeField] private float speed = 5.0f; //ç§»å‹•ã‚¹ãƒ”ãƒ¼ãƒ‰
+    [SerializeField] private float ChargeMoveSpeedRate = 0.3f; //ãƒãƒ£ãƒ¼ã‚¸ãƒ»ç¡¬ç›´ä¸­ã®é€Ÿåº¦å€ç‡
+    private float speed2 = 0; //ãƒãƒ£ãƒ¼ã‚¸ä¸­ã®ã‚¹ãƒ”ãƒ¼ãƒ‰
+    private float curentSpeed = 0;  //ç¾åœ¨ã®ã‚¹ãƒ”ãƒ¼ãƒ‰
+    [SerializeField] private float rotSpeed = 10.0f; //æ—‹å›ã‚¹ãƒ”ãƒ¼ãƒ‰
+    [SerializeField] private float ChargeRotateSpeedRate = 0.7f; //ãƒãƒ£ãƒ¼ã‚¸ãƒ»ç¡¬ç›´ä¸­ã®æ—‹å›å€ç‡
+    private float rotSpeed2 = 0;ã€€//ãƒãƒ£ãƒ¼ã‚¸ä¸­æ—‹å›ã‚¹ãƒ”ãƒ¼ãƒ‰
+    private float curentRotSpeed = 0;//ç¾åœ¨ã®æ—‹å›ã‚¹ãƒ”ãƒ¼ãƒ‰
 
-    [Header("UŒ‚İ’è")]
+    [Header("æ”»æ’ƒè¨­å®š")]
 
-    [SerializeField] private float tackleForce;    //ƒuƒŠƒ“ƒN—Í
-    [SerializeField] private float tackleDuration = 0.5f;//‘±ŠÔ
-    [SerializeField] private float tackleCooldown = 1.0f;//ƒN[ƒ‹ƒ_ƒEƒ“ŠÔ
+    [SerializeField] private float tackleForce;    //ãƒ–ãƒªãƒ³ã‚¯åŠ›
+    [SerializeField] private float tackleDuration = 0.5f;//æŒç¶šæ™‚é–“
+    [SerializeField] private float tackleCooldown = 1.0f;//ã‚¯ãƒ¼ãƒ«ãƒ€ã‚¦ãƒ³æ™‚é–“
 
-    //-----d’¼-----
-    [SerializeField] private float StrongRecoveryTime = 1.0f; //d’¼ŠÔ
+    //-----ç¡¬ç›´-----
+    [SerializeField] private float StrongRecoveryTime = 1.0f; //ç¡¬ç›´æ™‚é–“
     private float curentRecoveryTime;
     private bool isfinish = false;
     private float r;
 
-    private bool isPrese = false; //UŒ‚ƒL[“ü—Íƒtƒ‰ƒO
-    [HideInInspector] public bool isStrt = false;//ƒ`ƒƒ[ƒWŠJnƒtƒ‰ƒO
-    private float t = 0f; //ƒ`ƒƒ[ƒW—Ê
-    [HideInInspector] public float chargeMax = 5.0f; //ƒ`ƒƒ[ƒWãŒÀ
-    private bool isMax = false;//ƒ`ƒƒ[ƒW‚ªMax‚©‚Ìƒtƒ‰ƒO
+    private bool isPrese = false; //æ”»æ’ƒã‚­ãƒ¼å…¥åŠ›ãƒ•ãƒ©ã‚°
+    [HideInInspector] public bool isStrt = false;//ãƒãƒ£ãƒ¼ã‚¸é–‹å§‹ãƒ•ãƒ©ã‚°
+    private float t = 0f; //ãƒãƒ£ãƒ¼ã‚¸é‡
+    [HideInInspector] public float chargeMax = 5.0f; //ãƒãƒ£ãƒ¼ã‚¸ä¸Šé™
+    private bool isMax = false;//ãƒãƒ£ãƒ¼ã‚¸ãŒMaxã‹ã®ãƒ•ãƒ©ã‚°
 
     bool isAttack1 = false;
     bool isAttack2 = false;
 
-    [Header("ƒmƒbƒNƒoƒbƒN,–³“Gİ’è")]
-    [SerializeField] private float WeakKnockbackForce = 2.5f; //ãƒuƒŠƒ“ƒNƒmƒbƒNƒoƒbƒN
-    [SerializeField] private float StrongKnockbackForce = 5.0f;//‹­ƒuƒŠƒ“ƒNƒmƒbƒNƒoƒbƒN
-    private float curentknockbackForce = 0f;//Œ»İ‚ÌƒmƒbƒNƒoƒbƒN—Í
+    [Header("ãƒãƒƒã‚¯ãƒãƒƒã‚¯,ç„¡æ•µè¨­å®š")]
+    [SerializeField] private float WeakKnockbackForce = 2.5f; //å¼±ãƒ–ãƒªãƒ³ã‚¯ãƒãƒƒã‚¯ãƒãƒƒã‚¯
+    [SerializeField] private float StrongKnockbackForce = 5.0f;//å¼·ãƒ–ãƒªãƒ³ã‚¯ãƒãƒƒã‚¯ãƒãƒƒã‚¯
+    private float curentknockbackForce = 0f;//ç¾åœ¨ã®ãƒãƒƒã‚¯ãƒãƒƒã‚¯åŠ›
 
 
     private Rigidbody rb;
     private bool isTackling = false;
-    private float lastTackleTime = 0f; // ÅŒã‚Ìƒ^ƒbƒNƒ‹ŠÔ
+    private float lastTackleTime = 0f; // æœ€å¾Œã®ã‚¿ãƒƒã‚¯ãƒ«æ™‚é–“
 
-    [Header("ƒT[ƒ`İ’è")]
+    [Header("ã‚µãƒ¼ãƒè¨­å®š")]
     [SerializeField] private float searchInterval = 0.5f;
     [SerializeField] private float searchRange = 15f;
 
     private float searchTimer = 0f;
 
     //-------------------------------------
-    [Header("ƒXƒe[ƒW”ÍˆÍ")]
-    //lŠpŒ`
-    /* [SerializeField] private Vector3 stageMin; // ƒXƒe[ƒW‚ÌÅ¬À•W
-     [SerializeField] private Vector3 stageMax; // ƒXƒe[ƒW‚ÌÅ‘åÀ•W*/
-    //‰~Œ`
-    [SerializeField] private Vector3 stageCenter; // ƒXƒe[ƒW’†S
-    [SerializeField] private float stageRadius = 20f; // ƒXƒe[ƒW”¼Œa
+    [Header("ã‚¹ãƒ†ãƒ¼ã‚¸ç¯„å›²")]
+    //å››è§’å½¢
+    /* [SerializeField] private Vector3 stageMin; // ã‚¹ãƒ†ãƒ¼ã‚¸ã®æœ€å°åº§æ¨™
+     [SerializeField] private Vector3 stageMax; // ã‚¹ãƒ†ãƒ¼ã‚¸ã®æœ€å¤§åº§æ¨™*/
+    //å††å½¢
+    [SerializeField] private Vector3 stageCenter; // ã‚¹ãƒ†ãƒ¼ã‚¸ä¸­å¿ƒ
+    [SerializeField] private float stageRadius = 20f; // ã‚¹ãƒ†ãƒ¼ã‚¸åŠå¾„
     //-------------------------------------
 
-    [Header("“–‚½‚è”»’èİ’è")]
+    [Header("å½“ãŸã‚Šåˆ¤å®šè¨­å®š")]
     [SerializeField] private SphereCollider searchArea;
     [SerializeField] private float angle = 45f;
 
-    [Header("ƒGƒtƒFƒNƒg")]
+    [Header("ã‚¨ãƒ•ã‚§ã‚¯ãƒˆ")]
     [SerializeField] private ParticleSystem run;
     [SerializeField] private ParticleSystem charge;
     [SerializeField] private ParticleSystem weak;
     [SerializeField] private ParticleSystem strong;
 
-    //-----‚»‚Ì‘¼-----
-    public List<GameObject> players = new List<GameObject>();  //Player’B
-    public List<GameObject> outPlayers = new List<GameObject>();  //êŠOPlayer’B
-    private float minDistance = Mathf.Infinity; //Å’Z‹——£‚ğ‚¾‚·‚½‚ß‚Ì–ÚˆÀ’l
+    //-----ãã®ä»–-----
+    public List<GameObject> players = new List<GameObject>();  //Playeré”
+    public List<GameObject> outPlayers = new List<GameObject>();  //å ´å¤–Playeré”
+    private float minDistance = Mathf.Infinity; //æœ€çŸ­è·é›¢ã‚’ã ã™ãŸã‚ã®ç›®å®‰å€¤
 
-    public GameObject target;       //UŒ‚‘ÎÛ
-    private float distance;          //UŒ‚‘ÎÛ‚Æ‚Ì‹——£
+    public GameObject target;       //æ”»æ’ƒå¯¾è±¡
+    private float distance;          //æ”»æ’ƒå¯¾è±¡ã¨ã®è·é›¢
 
     Reception reception;
     Animator animator;
@@ -128,7 +128,7 @@ public class BotPlayerController : MonoBehaviour
         }
         if (target == null) return;
 
-        // ƒXƒe[ƒWŠOƒ`ƒFƒbƒN
+        // ã‚¹ãƒ†ãƒ¼ã‚¸å¤–ãƒã‚§ãƒƒã‚¯
         if (IsOutOfStage(transform.position) || IsOutOfStage(target.transform.position))
         {
             ResetTarget();
@@ -287,7 +287,7 @@ public class BotPlayerController : MonoBehaviour
         strong.Stop();
         weak.Stop();
 
-        //‚±‚±‚Åd’¼ˆ—
+        //ã“ã“ã§ç¡¬ç›´å‡¦ç†
         if (isMax)
         {
             isfinish = true;
@@ -321,7 +321,7 @@ public class BotPlayerController : MonoBehaviour
                             if (p.isHit) { return; }
                             p.KnockBack(rb.linearVelocity.normalized, curentknockbackForce);
 
-                            //“–‚½‚Á‚½“_‚ÅInvoke‚ğƒLƒƒƒ“ƒZƒ‹‚µ‚Äƒ^ƒbƒNƒ‹‚ğ~‚ß‚é
+                            //å½“ãŸã£ãŸæ™‚ç‚¹ã§Invokeã‚’ã‚­ãƒ£ãƒ³ã‚»ãƒ«ã—ã¦ã‚¿ãƒƒã‚¯ãƒ«ã‚’æ­¢ã‚ã‚‹
                             CancelInvoke("EndTackle");
                             EndTackle();
                         }
@@ -339,16 +339,16 @@ public class BotPlayerController : MonoBehaviour
         Handles.color = Color.red;
         Handles.DrawSolidArc(pos, Vector3.up, Quaternion.Euler(0.0f, -angle, 0f) * transform.forward, angle * 2f, searchArea.radius);
 
-        // ===== ƒXƒe[ƒW”ÍˆÍi’Ç‰Áj =====
+        // ===== ã‚¹ãƒ†ãƒ¼ã‚¸ç¯„å›²ï¼ˆè¿½åŠ ï¼‰ =====
         Handles.color = Color.green;
 
         Vector3 center = stageCenter;
-        center.y = 0f; // XZ•½–Ê‚ÉŒÅ’è
+        center.y = 0f; // XZå¹³é¢ã«å›ºå®š
 
-        // ‰~‚ÌŠO˜g
+        // å††ã®å¤–æ 
         Handles.DrawWireDisc(center, Vector3.up, stageRadius);
 
-        // ’†S“_
+        // ä¸­å¿ƒç‚¹
         Gizmos.color = Color.green;
         Gizmos.DrawSphere(center, 0.3f);
     }
@@ -360,10 +360,10 @@ public class BotPlayerController : MonoBehaviour
 
         foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Player"))
         {
-            if (obj == gameObject) continue; // ©•ª‚ÍœŠO
+            if (obj == gameObject) continue; // è‡ªåˆ†ã¯é™¤å¤–
             if (IsOutOfStage(obj.transform.position))
             {
-                // ƒXƒe[ƒWŠO‚ÌƒvƒŒƒCƒ„[‚ÍoutPlayers‚É’Ç‰Á
+                // ã‚¹ãƒ†ãƒ¼ã‚¸å¤–ã®ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¯outPlayersã«è¿½åŠ 
                 if (!outPlayers.Contains(obj))
                     outPlayers.Add(obj);
             }
@@ -395,7 +395,7 @@ public class BotPlayerController : MonoBehaviour
             }
         }
 
-        // target‚ªƒXƒe[ƒWŠO‚Éo‚½ê‡‚ÍƒŠƒZƒbƒg‚µ‚ÄoutPlayers‚É’Ç‰Á
+        // targetãŒã‚¹ãƒ†ãƒ¼ã‚¸å¤–ã«å‡ºãŸå ´åˆã¯ãƒªã‚»ãƒƒãƒˆã—ã¦outPlayersã«è¿½åŠ 
         if (target != null && IsOutOfStage(target.transform.position))
         {
             if (!outPlayers.Contains(target))
@@ -407,13 +407,13 @@ public class BotPlayerController : MonoBehaviour
 
     bool IsOutOfStage(Vector3 pos)
     {
-        /* // x,z ‚ª‚·‚×‚Ä”ÍˆÍ“à‚©ƒ`ƒFƒbƒN
+        /* // x,z ãŒã™ã¹ã¦ç¯„å›²å†…ã‹ãƒã‚§ãƒƒã‚¯
          if (pos.x < stageMin.x || pos.x > stageMax.x) return true;
          if (pos.z < stageMin.z || pos.z > stageMax.z) return true;
 
-         return false; // ‘S•””ÍˆÍ“à‚È‚çƒXƒe[ƒW“à*/
+         return false; // å…¨éƒ¨ç¯„å›²å†…ãªã‚‰ã‚¹ãƒ†ãƒ¼ã‚¸å†…*/
 
-        // Y‚Í–³‹‚µ‚ÄXZ•½–Ê‚¾‚¯‚Å”»’è
+        // Yã¯ç„¡è¦–ã—ã¦XZå¹³é¢ã ã‘ã§åˆ¤å®š
         //Vector3 centerXZ = new Vector3(stageCenter.x, 0f, stageCenter.z);
         Vector3 posXZ = new Vector3(pos.x, 0f, pos.z);
 
@@ -438,5 +438,55 @@ public class BotPlayerController : MonoBehaviour
 
         CancelInvoke(nameof(EndTackle));
         isTackling = false;
+    }
+
+
+    public void ResetBotState()
+    {
+        // 1. å…¨ã¦ã®å…¥åŠ›ãƒ»è¡Œå‹•ãƒ•ãƒ©ã‚°ã‚’æŠ˜ã‚‹
+        isPrese = false;
+        isStrt = false;
+        isTackling = false;
+        isMax = false;
+        isfinish = false;
+        isAttack1 = false;
+        isAttack2 = false;
+
+        // 2. æ•°å€¤ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®ãƒªã‚»ãƒƒãƒˆ
+        t = 0f;
+        r = 0f;
+        searchTimer = 0f;
+        lastTackleTime = 0f;
+        curentRecoveryTime = StrongRecoveryTime;
+
+        // 3. ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’ã‚¯ãƒªã‚¢
+        target = null;
+        players.Clear();
+        outPlayers.Clear();
+
+        // 4. å…¨ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã‚’å¼·åˆ¶åœæ­¢
+        if (run != null) run.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        if (charge != null) charge.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        if (weak != null) weak.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        if (strong != null) strong.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+
+        // 5. Invoke (EndTackle) ã®ã‚­ãƒ£ãƒ³ã‚»ãƒ«
+        CancelInvoke(nameof(EndTackle));
+
+        // 6. ç‰©ç†ã®ãƒªã‚»ãƒƒãƒˆ
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+        }
+
+        // 7. ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚¿ãƒ¼ã®ãƒªã‚»ãƒƒãƒˆ
+        if (animator != null)
+        {
+            animator.SetFloat("Speed", 0f);
+            animator.SetBool("IsChage", false);
+            animator.SetBool("isAttack1", false);
+            animator.SetBool("isAttack2", false);
+        }
     }
 }

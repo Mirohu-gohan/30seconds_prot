@@ -11076,6 +11076,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1321868049}
     - target: {fileID: 2767268709923846786, guid: f9f8120ec95bcbe4996755024f480fcb, type: 3}
+      propertyPath: upperDeathYCoordinate
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 2767268709923846786, guid: f9f8120ec95bcbe4996755024f480fcb, type: 3}
       propertyPath: 'SpawnPoint.Array.data[0]'
       value: 
       objectReference: {fileID: 160153226}

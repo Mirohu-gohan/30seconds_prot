@@ -384,29 +384,56 @@ public class GameManager_M : MonoBehaviour
     //スコアモードの時にリスポーンする処理
     private IEnumerator RespawnPlayer(GameObject player, int playerIndex)
     {
+        // 1. 非表示にする
         player.SetActive(false);
+
+        // Rigidbodyを取得
+        Rigidbody rb = player.GetComponent<Rigidbody>();
 
         yield return new WaitForSeconds(Spawntime);
 
-        Vector3 spawnPosition = new Vector3(0, 10, 0);
-        //randomにスポーン
-        if(SpawnPoint !=null && SpawnPoint.Length>0)
+        // 2. 位置を決定
+        Vector3 spawnPosition = new Vector3(0, 5, 0);
+        if (SpawnPoint != null && SpawnPoint.Length > 0)
         {
-            int randomIndex = Random.Range(0, SpawnPoint.Length);
-            spawnPosition = SpawnPoint[randomIndex].position;
-
+            int targetIndex = (playerIndex < SpawnPoint.Length) ? playerIndex : 0;
+            spawnPosition = SpawnPoint[targetIndex].position;
         }
 
-        player.transform.position = spawnPosition;
-        var rb = player.GetComponent<Rigidbody>();
+        // 3. 【重要】出現させる「前」に物理を強制停止・キネマティック化
         if (rb != null)
         {
-            // 落下スピードが残ったままにならないようにゼロにする
+            rb.isKinematic = true; // 物理演算を一時停止（これで勝手に飛ばなくなる）
             rb.linearVelocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
         }
+
+        // 4. 座標を移動
+        player.transform.position = spawnPosition;
+
+        // 5. 出現させる
         player.SetActive(true);
 
+        // 6. 各種スクリプトの状態をリセット
+        var pController = player.GetComponent<PlayerController1>();
+        if (pController != null) pController.ResetPlayerState();
+
+        var bController = player.GetComponent<BotPlayerController>();
+        if (bController != null) bController.ResetBotState();
+
+        var reception = player.GetComponent<Reception>();
+        if (reception != null) reception.ResetReception();
+
+        // 7. 【重要】1フレーム待ってから物理演算を再開させる
+        // これをしないとSetActiveした瞬間の古い速度が適用されることがある
+        yield return new WaitForFixedUpdate();
+
+        if (rb != null)
+        {
+            rb.isKinematic = false; // 物理演算を再開
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+        }
     }
 
     public void TimeExpiredForSurvival()

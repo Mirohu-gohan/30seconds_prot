@@ -327,6 +327,42 @@ public class PlayerController1 : MonoBehaviour
         Handles.DrawSolidArc(pos, Vector3.up, Quaternion.Euler(0.0f, -angle, 0f) * transform.forward, angle * 2f, searchArea.radius);
     }
 #endif
+
+
+    // リスポーン時などに呼び出すリセット処理
+    public void ResetPlayerState()
+    {
+        
+        inputVer = Vector2.zero;
+        isPrese = false;
+        isStrt = false;
+        isTackling = false;
+        isMax = false;
+        isfinish = false;
+        isAttack1 = false;
+        isAttack2 = false;
+        
+        t = 0f;
+
+        if (run != null) run.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        if (chage != null) chage.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        if (strong != null) strong.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        if (weak != null) weak.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+        }
+
+        if (animator != null)
+        {
+            animator.SetFloat("Speed", 0f);
+            animator.SetBool("IsChage", false);
+            animator.SetBool("IsAttack1", false);
+            animator.SetBool("IsAttack2", false);
+        }
+    }
 }
 
 

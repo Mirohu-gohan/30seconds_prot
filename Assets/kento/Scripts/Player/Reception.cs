@@ -1,9 +1,9 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 public class Reception : MonoBehaviour
 {
-    [Header("�m�b�N�o�b�N,���G�ݒ�")]
+    [Header("ノックバック,無敵設定")]
     private float knockbackTime = 0.3f;
     private float knockbackCounter;
 
@@ -13,7 +13,7 @@ public class Reception : MonoBehaviour
 
     private Collider col;
 
-    [SerializeField] private float StunInvincibleTime = 1.0f; //���G����
+    [SerializeField] private float StunInvincibleTime = 1.0f; //無敵時間
 
     [SerializeField] private ParticleSystem hit;
 
@@ -82,6 +82,34 @@ public class Reception : MonoBehaviour
         rb.useGravity = true;
         col.enabled = true;
         isHit = false;
+        if (hit != null)
+        {
+            hit.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        }
+    }
+    public void ResetReception()
+    {
+        // 全てのコルーチン（Hitコルーチンなど）を止める
+        StopAllCoroutines();
+
+        isKnockback = false;
+        isHit = false;
+        knockbackCounter = 0;
+
+        // コンポーネントの参照を再確認してリセット
+        if (rb == null) rb = GetComponent<Rigidbody>();
+        if (col == null) col = GetComponent<Collider>();
+
+        if (rb != null)
+        {
+            rb.useGravity = true;
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+        }
+
+        if (col != null) col.enabled = true; // コライダーを確実に戻す
+
+        // エフェクトを強制消去
         if (hit != null)
         {
             hit.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);

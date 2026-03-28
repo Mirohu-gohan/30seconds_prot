@@ -1,14 +1,48 @@
 ﻿using UnityEngine;
+
 public class ScoreItem : MonoBehaviour
 {
-    [SerializeField] private int _value = 100;
+    private bool isCollected = false;
+    private Rigidbody rb;
+
+    void Awake()
+    {
+        rb = GetComponent<Rigidbody>();
+    }
+
+    // このメソッドがないためにエラーが出ていました！追加します
+    public void Launch(Vector3 direction, float force)
+    {
+        if (rb == null) rb = GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.AddForce(direction * force, ForceMode.Impulse);
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        var health = other.GetComponent<PlayerHealth>();
-        if (health != null)
+        if (isCollected) return;
+
+        if (other.CompareTag("Player"))
         {
-            ScoreManager.Instance.AddScore(health.playerIndex, _value);
-            Destroy(gameObject);
+            isCollected = true;
+
+            // プレイヤーのIDを取得
+            int id = -1;
+            var health = other.GetComponent<PlayerHealth>();
+            if (health != null) id = health.playerIndex;
+
+            if (id != -1)
+            {
+                // スコア加算
+                GameManager_M.Instance.AddScore(id, 1);
+
+                // 演出（あれば）
+                // SoundManager.Instance.PlaySE(...);
+
+                Destroy(gameObject);
+            }
         }
     }
 }

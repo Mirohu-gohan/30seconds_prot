@@ -52,6 +52,10 @@ public class GameManager_M : MonoBehaviour
     public Transform[] SpawnPoint;
     public float Spawntime = 3.0f;
 
+    [Header("スコアばらまき設定")]
+    public GameObject scoreItemPrefab; // 上で作ったPrefabをセット
+    public int dropAmountPerDeath = 3;  // 死んだ時に何個出すか
+
     public enum Mode { Survival, SuddenDeath, ScoreMode,GameOver }
     public Mode CurrentModeState;
 
@@ -433,6 +437,42 @@ public class GameManager_M : MonoBehaviour
             rb.isKinematic = false; // 物理演算を再開
             rb.linearVelocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
+        }
+    }
+
+    // プレイヤーの死亡時に呼ばれる想定
+    public void DropScore(Vector3 deathPosition)
+    {
+        for (int i = 0; i < dropAmountPerDeath; i++)
+        {
+            if (scoreItemPrefab == null) break;
+
+            GameObject item = Instantiate(scoreItemPrefab, deathPosition + Vector3.up, Quaternion.identity);
+            ScoreItem script = item.GetComponent<ScoreItem>();
+
+            if (script != null)
+            {
+                // ランダムな方向を計算
+                Vector3 randomDir = new Vector3(
+                    Random.Range(-1f, 1f),
+                    1.5f, // 少し上に跳ねさせる
+                    Random.Range(-1f, 1f)
+                ).normalized;
+
+                // Launchメソッドを呼ぶ（ScoreItem側にも後で追加します）
+                script.Launch(randomDir, Random.Range(3f, 7f));
+            }
+        }
+    }
+
+    // スコア加算用（UI更新もセットで）
+    public void AddScore(int playerIndex, int amount)
+    {
+        if (playerIndex >= 0 && playerIndex < playerWins.Length)
+        {
+            playerWins[playerIndex] += amount;
+
+            PlayerUIManager.Instance.UpdatePlayerScore(playerIndex, playerWins[playerIndex]);
         }
     }
 

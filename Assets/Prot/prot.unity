@@ -5491,7 +5491,6 @@ MonoBehaviour:
   m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
-  m_Version: 2
   m_TaaSettings:
     m_Quality: 3
     m_FrameInfluence: 0.1
@@ -5499,6 +5498,7 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+  m_Version: 2
 --- !u!1 &1092058509
 GameObject:
   m_ObjectHideFlags: 0
@@ -6102,17 +6102,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Version: 3
   m_UsePipelineSettings: 1
   m_AdditionalLightsShadowResolutionTier: 2
-  m_LightLayerMask: 1
-  m_RenderingLayers: 4
   m_CustomShadowLayers: 0
-  m_ShadowLayerMask: 1
-  m_ShadowRenderingLayers: 1
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
+  m_RenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 4
+  m_ShadowRenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_Version: 4
+  m_LightLayerMask: 1
+  m_ShadowLayerMask: 1
+  m_RenderingLayers: 4
+  m_ShadowRenderingLayers: 1
 --- !u!108 &1252340009
 Light:
   m_ObjectHideFlags: 0
@@ -6121,14 +6127,14 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1252340007}
   m_Enabled: 1
-  serializedVersion: 11
+  serializedVersion: 12
   m_Type: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
-  m_CookieSize: 10
+  m_CookieSize2D: {x: 10, y: 10}
   m_Shadows:
     m_Type: 0
     m_Resolution: -1
@@ -10199,7 +10205,6 @@ MonoBehaviour:
   m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
-  m_Version: 2
   m_TaaSettings:
     m_Quality: 3
     m_FrameInfluence: 0.1
@@ -10207,6 +10212,7 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+  m_Version: 2
 --- !u!81 &1997479071
 AudioListener:
   m_ObjectHideFlags: 0
@@ -10924,14 +10930,14 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2138711211}
   m_Enabled: 1
-  serializedVersion: 11
+  serializedVersion: 12
   m_Type: 1
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
-  m_CookieSize: 10
+  m_CookieSize2D: {x: 10, y: 10}
   m_Shadows:
     m_Type: 2
     m_Resolution: -1
@@ -11008,17 +11014,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Version: 3
   m_UsePipelineSettings: 1
   m_AdditionalLightsShadowResolutionTier: 2
-  m_LightLayerMask: 1
-  m_RenderingLayers: 1
   m_CustomShadowLayers: 0
-  m_ShadowLayerMask: 1
-  m_ShadowRenderingLayers: 1
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
+  m_RenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_ShadowRenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_Version: 4
+  m_LightLayerMask: 1
+  m_ShadowLayerMask: 1
+  m_RenderingLayers: 1
+  m_ShadowRenderingLayers: 1
 --- !u!1001 &215610884867316608
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11035,6 +11047,10 @@ PrefabInstance:
       propertyPath: pausePanel
       value: 
       objectReference: {fileID: 1198649453}
+    - target: {fileID: 2767268709923846786, guid: f9f8120ec95bcbe4996755024f480fcb, type: 3}
+      propertyPath: Spawntime
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2767268709923846786, guid: f9f8120ec95bcbe4996755024f480fcb, type: 3}
       propertyPath: CountdownUI
       value: 
@@ -11068,6 +11084,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1375399080}
     - target: {fileID: 2767268709923846786, guid: f9f8120ec95bcbe4996755024f480fcb, type: 3}
+      propertyPath: scoreItemPrefab
+      value: 
+      objectReference: {fileID: 6094040380130123712, guid: 94922b95eeadf604f8181ee20f55afde, type: 3}
+    - target: {fileID: 2767268709923846786, guid: f9f8120ec95bcbe4996755024f480fcb, type: 3}
+      propertyPath: CurrentModeState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2767268709923846786, guid: f9f8120ec95bcbe4996755024f480fcb, type: 3}
       propertyPath: resultBlurVolume
       value: 
       objectReference: {fileID: 1955170447}
@@ -11075,6 +11099,10 @@ PrefabInstance:
       propertyPath: winnerNameTextUI
       value: 
       objectReference: {fileID: 1321868049}
+    - target: {fileID: 2767268709923846786, guid: f9f8120ec95bcbe4996755024f480fcb, type: 3}
+      propertyPath: dropAmountPerDeath
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2767268709923846786, guid: f9f8120ec95bcbe4996755024f480fcb, type: 3}
       propertyPath: upperDeathYCoordinate
       value: 30

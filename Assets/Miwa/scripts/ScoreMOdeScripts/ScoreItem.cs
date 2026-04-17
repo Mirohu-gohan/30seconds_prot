@@ -10,7 +10,6 @@ public class ScoreItem : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
-    // このメソッドがないためにエラーが出ていました！追加します
     public void Launch(Vector3 direction, float force)
     {
         if (rb == null) rb = GetComponent<Rigidbody>();

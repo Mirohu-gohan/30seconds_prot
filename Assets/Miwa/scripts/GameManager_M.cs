@@ -54,7 +54,7 @@ public class GameManager_M : MonoBehaviour
 
     [Header("スコアばらまき設定")]
     public GameObject scoreItemPrefab; // 上で作ったPrefabをセット
-    public int dropAmountPerDeath = 3;  // 死んだ時に何個出すか
+    public int dropAmountPerDeath = 1;  // 死んだ時に何個出すか
 
     public enum Mode { Survival, SuddenDeath, ScoreMode,GameOver }
     public Mode CurrentModeState;

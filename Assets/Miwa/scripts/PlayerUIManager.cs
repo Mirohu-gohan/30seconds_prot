@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections.Generic;
 
 public class PlayerUIManager : MonoBehaviour
@@ -37,7 +37,7 @@ public class PlayerUIManager : MonoBehaviour
             {
                 Sprite myAlive = (i < aliveSprites.Length) ? aliveSprites[i] : null;
                 Sprite myDead = (i < deadSprites.Length) ? deadSprites[i] : null;
-                statusUI.SetupUI(0, myAlive, myDead);
+                
                 
                 spawnedUIs.Add(statusUI);
             }

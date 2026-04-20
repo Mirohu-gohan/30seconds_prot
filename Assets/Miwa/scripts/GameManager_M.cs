@@ -51,6 +51,7 @@ public class GameManager_M : MonoBehaviour
     [Header("スコア")]
     public Transform[] SpawnPoint;
     public float Spawntime = 3.0f;
+    public static int[] currentScores = new int[4];//ゲーム時の現在のスコア
 
     [Header("スコアばらまき設定")]
     public GameObject scoreItemPrefab; // 上で作ったPrefabをセット
@@ -142,6 +143,7 @@ public class GameManager_M : MonoBehaviour
     }
 
 
+    //カウントダウンの演出
     private IEnumerator StartCountdown()
     {
         isGameStarted = false;
@@ -385,6 +387,11 @@ public class GameManager_M : MonoBehaviour
         }
     }
 
+    //スコアモード設定
+     
+
+
+
     //スコアモードの時にリスポーンする処理
     private IEnumerator RespawnPlayer(GameObject player, int playerIndex)
     {
@@ -464,6 +471,7 @@ public class GameManager_M : MonoBehaviour
             }
         }
     }
+
 
     // スコア加算用（UI更新もセットで）
     public void AddScore(int playerIndex, int amount)

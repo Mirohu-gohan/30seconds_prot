@@ -69,8 +69,8 @@ MonoBehaviour:
     y: 0
     width: 345.71436
     height: 768
-  m_MinSize: {x: 275, y: 50}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 276, y: 76}
+  m_MaxSize: {x: 4001, y: 4026}
   m_ActualView: {fileID: 14}
   m_Panes:
   - {fileID: 14}
@@ -301,7 +301,7 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
     x: 0
-    y: 42.285717
+    y: 0
     width: 1462.8572
     height: 36
   m_SerializedDataModeController:
@@ -523,20 +523,6 @@ MonoBehaviour:
       layout: 4
       size: {x: 0, y: 0}
       sizeOverridden: 0
-    - dockPosition: 1
-      containerId: overlay-toolbar__top
-      displayed: 0
-      id: Services/Environment
-      index: 8
-      contents: '{"m_Layout":4,"m_Collapsed":false,"m_Folded":false,"m_Floating":false,"m_FloatingSnapOffset":{"x":0.0,"y":0.0},"m_SnapOffsetDelta":{"x":0.0,"y":0.0},"m_FloatingSnapCorner":0,"m_Size":{"x":0.0,"y":0.0},"m_SizeOverridden":false}'
-      floating: 0
-      collapsed: 0
-      snapOffset: {x: 0, y: 0}
-      snapOffsetDelta: {x: 0, y: 0}
-      snapCorner: 0
-      layout: 4
-      size: {x: 0, y: 0}
-      sizeOverridden: 0
     - dockPosition: 2
       containerId: overlay-toolbar__top
       displayed: 1
@@ -551,11 +537,11 @@ MonoBehaviour:
       layout: 4
       size: {x: 0, y: 0}
       sizeOverridden: 0
-    - dockPosition: 0
+    - dockPosition: 1
       containerId: overlay-toolbar__top
-      displayed: 1
-      id: Services/Version Control
-      index: 6
+      displayed: 0
+      id: Services/Environment
+      index: 8
       contents: '{"m_Layout":4,"m_Collapsed":false,"m_Folded":false,"m_Floating":false,"m_FloatingSnapOffset":{"x":0.0,"y":0.0},"m_SnapOffsetDelta":{"x":0.0,"y":0.0},"m_FloatingSnapCorner":0,"m_Size":{"x":0.0,"y":0.0},"m_SizeOverridden":false}'
       floating: 0
       collapsed: 0
@@ -595,7 +581,7 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
     x: 0
-    y: 535.4286
+    y: 481.14285
     width: 1116.1428
     height: 284.85715
   m_SerializedDataModeController:
@@ -644,16 +630,7 @@ MonoBehaviour:
     - m_Data: 75146
     m_LastClickedID:
       m_Data: 75146
-    m_ExpandedIDs:
-    - m_Data: 0
-    - m_Data: 68660
-    - m_Data: 68980
-    - m_Data: 68982
-    - m_Data: 69086
-    - m_Data: 75146
-    - m_Data: 75210
-    - m_Data: 1000000000
-    - m_Data: 2147483647
+    m_ExpandedIDs: []
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -684,9 +661,7 @@ MonoBehaviour:
     m_SelectedIDs: []
     m_LastClickedID:
       m_Data: 0
-    m_ExpandedIDs:
-    - m_Data: 0
-    - m_Data: 68660
+    m_ExpandedIDs: []
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -768,8 +743,8 @@ MonoBehaviour:
     m_TextWithWhitespace: "Inspector\u200B"
   m_Pos:
     serializedVersion: 2
-    x: 1117.143
-    y: 78.28572
+    x: 1118.1428
+    y: 24
     width: 344.71436
     height: 742
   m_SerializedDataModeController:
@@ -820,7 +795,7 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
     x: 0
-    y: 78.28572
+    y: 24
     width: 275.57144
     height: 431.14285
   m_SerializedDataModeController:
@@ -839,10 +814,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs:
-      - m_Data: -494078
+      m_SelectedIDs: []
       m_LastClickedID:
-        m_Data: -494078
+        m_Data: 0
       m_ExpandedIDs:
       - m_Data: -493100
       - m_Data: -492876
@@ -914,8 +888,8 @@ MonoBehaviour:
     m_TextWithWhitespace: "Scene\u200B"
   m_Pos:
     serializedVersion: 2
-    x: 276.57144
-    y: 78.28572
+    x: 277.57144
+    y: 24
     width: 838.5714
     height: 431.14285
   m_SerializedDataModeController:
@@ -1580,7 +1554,7 @@ MonoBehaviour:
   m_Rotation:
     m_Target: {x: -0.16371644, y: -0.6896877, z: 0.16462561, w: -0.6858908}
     speed: 2
-    m_Value: {x: -0.1637148, y: -0.6896808, z: 0.16462396, w: -0.68588394}
+    m_Value: {x: 0.16371645, y: 0.6896878, z: -0.16462563, w: 0.6858908}
   m_Size:
     m_Target: 21.4156
     speed: 2
@@ -1714,7 +1688,7 @@ MonoBehaviour:
       height: 617.1429
     m_MinimalGUI: 1
   m_defaultScale: 0.6645833
-  m_LastWindowPixelSize: {x: 1467.5, y: 754.5}
+  m_LastWindowPixelSize: {x: 838.5714, y: 431.14285}
   m_ClearInEditMode: 1
   m_NoCameraWarning: 1
   m_LowResolutionForAspectRatios: 01000000000000000000

@@ -3,7 +3,7 @@
 public class PlayerScoreHandler : MonoBehaviour
 {
     private PlayerHealth _health;
-    [SerializeField] private GameObject _itemPrefab; // インスペクターでScoreItemをセット
+    [SerializeField] private GameObject _itemPrefab; 
     private string _lastHitTag;
 
     private void Awake()

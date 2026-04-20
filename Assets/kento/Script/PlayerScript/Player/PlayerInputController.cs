@@ -4,8 +4,11 @@ using UnityEngine.InputSystem.Users;
 
 public class PlayerInputController : MonoBehaviour
 {
-    Vector2 inputVer;
+    /*変更点あり*/
+    //Player操作反転
+    private bool isInverted = false;
 
+    Vector2 inputVer;
     public Vector2 InputVeer => inputVer; // 追加
 
 
@@ -22,7 +25,19 @@ public class PlayerInputController : MonoBehaviour
 
     public void OnMove(InputAction.CallbackContext context)
     {
+        if (stateManager.State == State.Knockback)
+        {
+            move.SetMoveInput(Vector2.zero);
+            stateManager.UpdateMoveState(Vector2.zero);
+            return;
+        }
         inputVer = context.ReadValue<Vector2>();
+
+        if (isInverted)
+        {
+            //操作反転
+            inputVer *= -1;
+        }
 
         //ステート変更のための入力受け取り
         stateManager.UpdateMoveState(inputVer);
@@ -40,5 +55,10 @@ public class PlayerInputController : MonoBehaviour
         {
             atack.Shot(1);
         }
+    }
+
+    public void SetReverse(bool value)
+    {
+        isInverted = value;
     }
 }

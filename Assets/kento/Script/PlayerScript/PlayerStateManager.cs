@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+/*変更点あり*/
 public enum MoveState
 {
     Idle,Walk
@@ -16,7 +17,7 @@ public enum AttackPower
 }
 public enum State
 {
-    None,Knockback,Hit
+    None,Knockback
 }
 //ステート管理クラス
 public class PlayerStateManager : MonoBehaviour
@@ -26,6 +27,12 @@ public class PlayerStateManager : MonoBehaviour
     public ActionState ActionState {get; private set;} = ActionState.None;
     public AttackPower AttackPower { get; private set; } = AttackPower.None;
     public State State {get; private set;} = State.None;
+
+    /* ---------
+     
+     
+     
+     ---------*/
 
     //イベント
     public event Action<MoveState> OnMoveStateChanged;
@@ -38,7 +45,7 @@ public class PlayerStateManager : MonoBehaviour
         //入力がされたらステートを変更(? = true,: = false) 
         MoveState newState = inputVere.sqrMagnitude > 0.01 ? MoveState.Walk : MoveState.Idle;
 
-        if(MoveState == newState)return;
+        if (MoveState == newState) return;
         MoveState = newState;
         OnMoveStateChanged?.Invoke(MoveState);
     }
@@ -64,8 +71,8 @@ public class PlayerStateManager : MonoBehaviour
         OnStateChanged?.Invoke(State);
     }
 
-    /* private void Update()
-     {
-         Debug.Log($"MoveState: {MoveState}, ActionState: {ActionState}");
-     }*/
+    private void Update()
+    {
+        Debug.Log($"MoveState: {MoveState}, ActionState: {ActionState}");
+    }
 }

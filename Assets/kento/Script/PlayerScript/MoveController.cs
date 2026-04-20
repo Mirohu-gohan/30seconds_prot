@@ -1,11 +1,11 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 
 
 public class MoveController : MonoBehaviour
 {
-    [Header("ˆÚ“®İ’è")]
-    [SerializeField] private float Speed = 5.0f;
+    [Header("ç§»å‹•è¨­å®š")]
+    public float Speed = 5.0f;
     private float Speed2 = 0f;
     [SerializeField] private float chargingmoveSpeedRate = 0.3f;
     private float curentSpeed = 0f;
@@ -19,7 +19,7 @@ public class MoveController : MonoBehaviour
 
     Rigidbody rb;
 
-    //-----ScriptQÆ-----
+    //-----Scriptå‚ç…§-----
     private PlayerStateManager stateManager;
     private AtackController ac;
 

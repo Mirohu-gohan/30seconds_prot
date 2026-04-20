@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class Reception : MonoBehaviour
 {
+    /*変更点あり*/
     [Header("ノックバック,無敵設定")]
     private float knockbackTime = 0.3f;
     private float knockbackCounter;
 
     private Vector3 knockbackDir;
+
+    [HideInInspector] public float smallKnockback = 1;
 
     [SerializeField] private ParticleSystem hit;
 
@@ -23,6 +26,10 @@ public class Reception : MonoBehaviour
     private ChargeSpike cs;
     private AnimatorController animeCon;
 
+    private AtackController ac;
+    private PlayerInputController playerCon;
+    private BOTController botCon;
+
     private void Start()
     {
         hit.Stop();
@@ -32,6 +39,9 @@ public class Reception : MonoBehaviour
         stateManager = GetComponent<PlayerStateManager>();
         cs = GetComponent<ChargeSpike>();
         animeCon = GetComponent<AnimatorController>();
+        ac = GetComponent<AtackController>();
+        playerCon = GetComponent<PlayerInputController>();
+        botCon = GetComponent<BOTController>();
     }
 
     private void Update()
@@ -42,7 +52,7 @@ public class Reception : MonoBehaviour
             if (knockbackCounter <= 0)
             {
                 isKonckback = false;
-                stateManager.SetState(State.None);
+                //stateManager.SetState(State.None);
                 rb.linearVelocity = Vector3.zero;
             }
         }
@@ -60,17 +70,29 @@ public class Reception : MonoBehaviour
         if (isHit) return;
         animeCon.isHit = true;
         isKonckback = true;
-        stateManager.SetState(State.Knockback);
+        if (ac != null)
+        {
+            ac.SetCharge(0);
+        }
+        if(stateManager != null)
+        {
+            stateManager.SetActionState(ActionState.None);
+        }
         knockbackCounter = knockbackTime;
-        Debug.Log("ノックバック");
-        knockbackDir = pos.normalized * force;
+        knockbackDir = pos.normalized * force * smallKnockback;
         rb.linearVelocity = Vector3.zero;
+
+        if(botCon != null)
+        {
+            //botCon.
+        }
         StartCoroutine(Hit());
     }
 
     IEnumerator Hit()
     {
         isHit = true;
+        stateManager.SetState(State.Knockback);
         if(hit && !hit.isPlaying)
         hit.Play();
         yield return new WaitForSeconds(0.05f);
@@ -83,6 +105,7 @@ public class Reception : MonoBehaviour
 
         rb.useGravity = true;
         col.enabled = true;
+        stateManager.SetState(State.None);
         isHit = false;
         if (animeCon.isHit)
             animeCon.isHit = false;

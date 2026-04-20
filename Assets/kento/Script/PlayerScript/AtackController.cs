@@ -9,6 +9,7 @@ using UnityEngine;
 
 public class AtackController : MonoBehaviour
 {
+    /*変更点あり*/
     [SerializeField] private float curentForce = 15f;
     private float duration = 0.5f;
     private float cooldown = 1.0f; //攻撃クールダウン
@@ -24,13 +25,15 @@ public class AtackController : MonoBehaviour
     [HideInInspector] public bool isRigid = false;
 
     [Header("ノックバック,無敵設定")]
-    [SerializeField] private float WeakKnockbackForce = 15.0f; //弱ノックバック
-    [SerializeField] private float StrongKnockbackForce = 30.0f;//強ノックバック
+    public float WeakKnockbackForce = 15.0f; //弱ノックバック
+    public float StrongKnockbackForce = 30.0f;//強ノックバック
     private float curentknockbackForce = 0f;//現在のノックバック力
 
     [Header("当たり判定設定")]
     [SerializeField] private SphereCollider searchArea;
     [SerializeField] private float angle = 45f;
+
+    bool hasHit = false;
 
     Rigidbody rb;
     PlayerStateManager stateManager;
@@ -65,16 +68,16 @@ public class AtackController : MonoBehaviour
         }
         if(stateManager.State == State.Knockback)
         {
-            t = 0f;
+            SetCharge(0);
             animeCon.isStart = false;
             CancelInvoke("EndAttack");
             EndAttack();
         }
-        else
+        /*else
         {
             t = 0f;
             //stateManager.SetAttackPower(AttackPower.None);
-        }
+        }*/
         if (isRigid)
         {
             if(curentRecoveryTime > 0f)
@@ -117,14 +120,14 @@ public class AtackController : MonoBehaviour
                 if (isMax)
                 {
                     curentknockbackForce = StrongKnockbackForce;
-                    stateManager.SetAttackPower(AttackPower.Strong);
+                    //stateManager.SetAttackPower(AttackPower.Strong);
                     animeCon.isAttack2 = true;
                     Debug.Log("強");
                 }
                 else
                 {
                     curentknockbackForce = WeakKnockbackForce;
-                    stateManager.SetAttackPower(AttackPower.Weak);
+                    //stateManager.SetAttackPower(AttackPower.Weak);
                     animeCon.isAttack1 = true;
                     Debug.Log("弱");
                 }
@@ -143,6 +146,8 @@ public class AtackController : MonoBehaviour
         //ステートをNoneに
         stateManager.SetActionState(ActionState.None);
         
+        hasHit = false;
+
         if (isMax)
         {
             isRigid = true;
@@ -151,7 +156,7 @@ public class AtackController : MonoBehaviour
         isMax = false;
         animeCon.isAttack1 = false;
         animeCon.isAttack2 = false;
-        stateManager.SetAttackPower(AttackPower.None);
+        //stateManager.SetAttackPower(AttackPower.None);
         t = 0f;
 
         StartCoroutine(CooldownCount());
@@ -166,6 +171,10 @@ public class AtackController : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
+        if (hasHit) { return; }
+        if(stateManager == null || rb == null) { return; }
+
+        if(stateManager.ActionState != ActionState.Attack) { return; }
         if (other.gameObject.CompareTag("Player"))
         {
             Vector3 posDir = other.transform.position - this.transform.position;
@@ -174,27 +183,16 @@ public class AtackController : MonoBehaviour
             var dist = Vector3.Distance(other.transform.position, transform.position);
 
             if (target_angle > angle) { return; }
-
-            if (target_angle <= angle)
+            float radius = searchArea.radius * transform.localScale.x;
+            if (target_angle <= angle && Vector3.Distance(transform.position,other.transform.position) <= radius)
             {
-                if (Physics.Raycast(this.transform.position + Vector3.up * 0.5f, posDir, out RaycastHit hit))
-                {
-                    if (hit.collider == other)
-                    {
-                        //Debug.Log("Hit");
-                        if (stateManager.ActionState == ActionState.Attack)
-                        {
-                            Reception p = other.gameObject.GetComponent<Reception>();
-                            if (p == null) { return; }
-                            p.KnockBack(rb.linearVelocity.normalized, curentknockbackForce);
-                            //当たった時点でInvokeをキャンセルしてタックルを止める
-                            CancelInvoke("EndAttack");
-                            EndAttack();
-                            animeCon.isAttack1 = false;
-                            animeCon.isAttack2 = false;
-                        }
-                    }
-                }
+                hasHit = true;
+
+                Reception p = other.GetComponent<Reception>();
+                if (p == null) { return; }
+                p.KnockBack(rb.linearVelocity.normalized, curentknockbackForce);
+                CancelInvoke("EndAttack");
+                EndAttack();
             }
         }
     }

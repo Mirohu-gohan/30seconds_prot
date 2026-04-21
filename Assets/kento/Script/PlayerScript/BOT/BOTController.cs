@@ -12,6 +12,10 @@ public class BOTController : MonoBehaviour
     GameObject near = null;
     float minDist;
 
+/*    //Player操作反転
+    public int playerID;
+    private bool isInverted = false;*/
+
     Vector2 moveInput;
     public Vector2 MoveInput => moveInput;
 
@@ -48,6 +52,7 @@ public class BOTController : MonoBehaviour
 
     void Update()
     {
+        if(stateManager.State == State.Knockback) { return; }
         //false
         if (!sencer.CheckLayer())
         {
@@ -117,7 +122,12 @@ public class BOTController : MonoBehaviour
 
         Vector3 dir = target.transform.position - transform.position;
         moveInput = new Vector2(dir.normalized.x, dir.normalized.z);
-
+       
+        /*if (isInverted)
+        {
+            //操作反転
+            moveInput *= -1;
+        }*/
         OnMove(moveInput);
     }
 
@@ -215,11 +225,15 @@ public class BOTController : MonoBehaviour
         }
     }
 
-    void OnMove(Vector2 context)
+    public void OnMove(Vector2 context)
     {
         stateManager.UpdateMoveState(context);
         move.SetMoveInput(context);
     }
+ /*   public void SetReverse(bool value)
+    {
+        isInverted = value;
+    }*/
 
     IEnumerator RestTime()
     {

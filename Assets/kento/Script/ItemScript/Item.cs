@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -12,14 +12,16 @@ public class Item : ScriptableObject
         RandomBox,
         BigBox,
         SmallBox,
+        ReverseBox,
+        PaintBox,
     }
 
-    public Type type;      //Œø‰Ê“à—e
-    public Sprite icon;    //‘±’†‚Ì•\¦ƒAƒCƒRƒ“i‰¼j
-    public String itemName;//–¼‘O
-    //public GameObject Obj; //ƒIƒuƒWƒFƒNƒg‚ÌŒ©‚½–Ú
-    public float duration; //‘±ŠÔ
-    public int effectValue;//Œø‰Ê’l
+    public Type type;      //åŠ¹æœå†…å®¹
+    //public Sprite icon;    //æŒç¶šä¸­ã®è¡¨ç¤ºã‚¢ã‚¤ã‚³ãƒ³ï¼ˆä»®ï¼‰
+    public String itemName;//åå‰
+    //public GameObject Obj; //ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®è¦‹ãŸç›®
+    public float duration; //æŒç¶šæ™‚é–“
+    public int effectValue;//åŠ¹æœå€¤
 
 /*    public Item(Item item)
     {

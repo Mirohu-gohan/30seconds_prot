@@ -84,8 +84,9 @@ public class Reception : MonoBehaviour
 
         if(botCon != null)
         {
-            //botCon.
+            botCon.OnMove(Vector2.zero);
         }
+
         StartCoroutine(Hit());
     }
 

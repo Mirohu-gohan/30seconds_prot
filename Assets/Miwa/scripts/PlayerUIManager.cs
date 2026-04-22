@@ -1,5 +1,6 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Unity.Burst.CompilerServices;
+using UnityEngine;
 
 public class PlayerUIManager : MonoBehaviour
 {
@@ -21,7 +22,7 @@ public class PlayerUIManager : MonoBehaviour
         else Destroy(gameObject);
     }
 
-    public void InitializePlayerUI(int playerCount)
+    public void InitializePlayerUI(int playerCount, bool isScoreMode)
     {
         foreach (var ui in spawnedUIs) if (ui != null) Destroy(ui.gameObject);
         spawnedUIs.Clear();
@@ -38,27 +39,19 @@ public class PlayerUIManager : MonoBehaviour
                 Sprite myAlive = (i < aliveSprites.Length) ? aliveSprites[i] : null;
                 Sprite myDead = (i < deadSprites.Length) ? deadSprites[i] : null;
                 
-                
+                int intialValue =isScoreMode ? GameManager_M.currentScores[i]:GameManager_M.playerWins[i];
+                statusUI.SetupUI(intialValue, myAlive, myDead, isScoreMode);
+
                 spawnedUIs.Add(statusUI);
             }
         }
     }
 
-    public void SetPlayerDead(int playerIndex)
-    {
-        if (playerIndex >= 0 && playerIndex < spawnedUIs.Count)
-        {
-            spawnedUIs[playerIndex].SetEliminated(true);
-        }
-    }
+    public void SetPlayerDead(int index) => spawnedUIs[index].SetEliminated(true);
 
-    public void UpdatePlayerScore(int playerIndex, int score)
-    {
-        if (playerIndex >= 0 && playerIndex < spawnedUIs.Count)
-        {
-            spawnedUIs[playerIndex].UpdateStars(score);
-        }
-    }
+    public void UpdatePlayerScore(int index, int score) => spawnedUIs[index].UpdateScore(score);
+
+    public void UpdatePlayerStars(int index, int stars) => spawnedUIs[index].UpdateStars(stars);
 
     public void ResetAllUIState()
     {

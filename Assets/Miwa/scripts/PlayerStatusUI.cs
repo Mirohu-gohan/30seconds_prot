@@ -16,11 +16,11 @@ public class PlayerStatusUI : MonoBehaviour
     public Color starOffColor = Color.gray;
 
     [Header("スコア表示用")]
-    public Text scoretext;
+    public Text scoreText;
 
 
     
-    public void SetupUI(int currentScore, Sprite alive, Sprite dead,bool isScoreMode)
+    public void SetupUI(int initialValue, Sprite alive, Sprite dead,bool isScoreMode)
     {
         myAliveSprite = alive;
         myDeadSprite = dead;
@@ -37,9 +37,9 @@ public class PlayerStatusUI : MonoBehaviour
                 if(star != null) star.gameObject.SetActive(!isScoreMode);
             }
         }
-        if(scoretext  != null)
+        if(scoreText  != null)
         {
-            scoretext.gameObject.SetActive(isScoreMode);
+            scoreText.gameObject.SetActive(isScoreMode);
         }
         if(isScoreMode)
         {
@@ -49,7 +49,6 @@ public class PlayerStatusUI : MonoBehaviour
         {
             UpdateStars(initialValue);
         }
-        UpdateStars(currentScore);
     }
 
     public void UpdateStars(int score)
@@ -64,21 +63,14 @@ public class PlayerStatusUI : MonoBehaviour
 
     public void UpdateScore(int score)
     {
-        if(scoretext != null)
+        if(scoreText != null)
         {
-            scoretext.text = score.ToString();
+            scoreText.text = score.ToString();
         }
     }
 
     public void SetEliminated(bool isDead)
     {
-        if (backgroundPanel != null)
-        {
-            Sprite targetSprite = isDead ? myDeadSprite : myAliveSprite;
-            if (targetSprite != null)
-            {
-                backgroundPanel.sprite = targetSprite;
-            }
-        }
+        backgroundPanel.sprite = isDead ? myDeadSprite : myAliveSprite;
     }
 }

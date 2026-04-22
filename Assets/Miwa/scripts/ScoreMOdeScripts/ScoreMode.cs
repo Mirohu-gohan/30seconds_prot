@@ -20,10 +20,7 @@ public class ScoreMode : IGameMode
         _isActive = true;
 
         // ラウンド開始時に全員のスコアを0にする
-        if (ScoreManager.Instance != null)
-        {
-            ScoreManager.Instance.ResetAllScores();
-        }
+        for (int i = 0; i < 4; i++) GameManager_M.currentScores[i] = 0;
     }
 
     public void OnUpdate()
@@ -41,16 +38,13 @@ public class ScoreMode : IGameMode
         // 時間切れになったら
         if (_timer <= 0)
         {
-            _timer = 0;
             _isActive = false;
-            if (_timerTextUI != null) _timerTextUI.text = "0";
-
             GameManager_M.Instance.NextRound(true);
         }
     }
 
     public void OnExit()
     {
-        _isActive = false;
+      
     }
 }

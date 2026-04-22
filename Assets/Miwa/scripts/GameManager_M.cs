@@ -250,7 +250,9 @@ public class GameManager_M : MonoBehaviour
         
         if (PlayerUIManager.Instance != null)
         {
-            PlayerUIManager.Instance.InitializePlayerUI(playerWins.Length);
+            bool isScoreMode =(CurrentModeState ==Mode.ScoreMode);
+
+            PlayerUIManager.Instance.InitializePlayerUI(playerWins.Length,CurrentModeState == Mode.ScoreMode);
 
             if (CurrentModeState == Mode.SuddenDeath)
             {
@@ -265,7 +267,23 @@ public class GameManager_M : MonoBehaviour
         }
         for (int i = 0; i < playerWins.Length; i++)
         {
-            PlayerUIManager.Instance.UpdatePlayerScore(i, playerWins[i]);
+
+            if (CurrentModeState ==Mode.ScoreMode)
+                PlayerUIManager.Instance.UpdatePlayerScore(i, currentScores[i]);
+            else
+                PlayerUIManager.Instance.UpdatePlayerStars(i, playerWins[i]);
+        }
+    }
+
+    public void AddScore(int playerIndex, int amount)
+    {
+        if (playerIndex < 0 || playerIndex >= 4) return;
+
+        // スコアモード時は数値を更新
+        if (CurrentModeState == Mode.ScoreMode)
+        {
+            currentScores[playerIndex] = Mathf.Max(0, currentScores[playerIndex] + amount);
+            PlayerUIManager.Instance.UpdatePlayerScore(playerIndex, currentScores[playerIndex]);
         }
     }
 
@@ -311,7 +329,7 @@ public class GameManager_M : MonoBehaviour
         }
         if (PlayerUIManager.Instance != null)
         {
-            PlayerUIManager.Instance.InitializePlayerUI(playerWins.Length);
+            PlayerUIManager.Instance.InitializePlayerUI(playerWins.Length,CurrentModeState ==Mode.ScoreMode);
         }
     }
 
@@ -473,16 +491,6 @@ public class GameManager_M : MonoBehaviour
     }
 
 
-    // スコア加算用（UI更新もセットで）
-    public void AddScore(int playerIndex, int amount)
-    {
-        if (playerIndex >= 0 && playerIndex < playerWins.Length)
-        {
-            playerWins[playerIndex] += amount;
-
-            PlayerUIManager.Instance.UpdatePlayerScore(playerIndex, playerWins[playerIndex]);
-        }
-    }
 
     public void TimeExpiredForSurvival()
     {

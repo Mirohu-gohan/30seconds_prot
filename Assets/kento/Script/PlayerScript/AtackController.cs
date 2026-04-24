@@ -72,6 +72,7 @@ public class AtackController : MonoBehaviour
             animeCon.isStart = false;
             CancelInvoke("EndAttack");
             EndAttack();
+            stateManager.SetAttackPower(AttackPower.None);
         }
         /*else
         {
@@ -120,14 +121,14 @@ public class AtackController : MonoBehaviour
                 if (isMax)
                 {
                     curentknockbackForce = StrongKnockbackForce;
-                    //stateManager.SetAttackPower(AttackPower.Strong);
+                    stateManager.SetAttackPower(AttackPower.Strong);
                     animeCon.isAttack2 = true;
                     Debug.Log("強");
                 }
                 else
                 {
                     curentknockbackForce = WeakKnockbackForce;
-                    //stateManager.SetAttackPower(AttackPower.Weak);
+                    stateManager.SetAttackPower(AttackPower.Weak);
                     animeCon.isAttack1 = true;
                     Debug.Log("弱");
                 }
@@ -156,7 +157,7 @@ public class AtackController : MonoBehaviour
         isMax = false;
         animeCon.isAttack1 = false;
         animeCon.isAttack2 = false;
-        //stateManager.SetAttackPower(AttackPower.None);
+        stateManager.SetAttackPower(AttackPower.None);
         t = 0f;
 
         StartCoroutine(CooldownCount());

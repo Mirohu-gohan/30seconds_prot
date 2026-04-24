@@ -23,8 +23,6 @@ public class EfectController : MonoBehaviour
         chage.Stop();
         strong.Stop();
         weak.Stop();
-
-        
     }
 
     void MoveEffect(MoveState state)

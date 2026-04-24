@@ -149,9 +149,11 @@ public class PlayerItemEffect : MonoBehaviour
     }
     IEnumerator PaintEfect(Item item)
     {
+        isEffectActive = true;
         paint.enabled = true;
         yield return new WaitForSeconds(item.duration);
         paint.enabled = false;
+        isEffectActive = false ;
     }
     void DecalScale(int i, Item item)
     {

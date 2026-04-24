@@ -7,7 +7,8 @@ using UnityEngine.UI;
 public class PlayerItemEffect : MonoBehaviour
 {
     [SerializeField] private DecalProjector circle;
-    [SerializeField] private DecalProjector arraw;
+    //[SerializeField] private DecalProjector arraw;
+    [SerializeField] private GameObject arraw;
 
     Vector3 defaultScale;
     float defaultSpeed;
@@ -37,7 +38,7 @@ public class PlayerItemEffect : MonoBehaviour
         defaultSpeed = mc.Speed;
         defaultStrongKnockbackForce = ac.StrongKnockbackForce;
         defaltCircleSize = circle.size;
-        defaltArrawSize = arraw.size;
+        defaltArrawSize = arraw.transform.localScale;
         GameObject obj = GameObject.Find("PaintImage");
         paint = obj.GetComponent<Image>();
     }
@@ -165,7 +166,7 @@ public class PlayerItemEffect : MonoBehaviour
             circle.size = circleSize;
             arrawSize = defaltArrawSize * item.effectValue;
             arrawSize.z = defaltArrawSize.z;
-            arraw.size = arrawSize;
+            arraw.transform.localScale = arrawSize;
             //攻撃力アップ
             ac.WeakKnockbackForce = defaultWeakKnockbackForce * item.effectValue;
             ac.StrongKnockbackForce = defaultStrongKnockbackForce * item.effectValue;
@@ -174,7 +175,7 @@ public class PlayerItemEffect : MonoBehaviour
         {
             //デカールノーマル
             circle.size = defaltCircleSize;
-            arraw.size = defaltArrawSize;
+            arraw.transform.localScale = defaltArrawSize;
             //攻撃力ノーマル
             ac.WeakKnockbackForce = defaultWeakKnockbackForce;
             ac.StrongKnockbackForce = defaultStrongKnockbackForce;
@@ -187,7 +188,7 @@ public class PlayerItemEffect : MonoBehaviour
             circle.size = circleSize;
             arrawSize = defaltArrawSize / item.effectValue;
             arrawSize.z = defaltArrawSize.z;
-            arraw.size = arrawSize;
+            arraw.transform.localScale = arrawSize;
             //攻撃力ダウン
             ac.WeakKnockbackForce = defaultWeakKnockbackForce / item.effectValue;
             ac.StrongKnockbackForce = defaultStrongKnockbackForce / item.effectValue;

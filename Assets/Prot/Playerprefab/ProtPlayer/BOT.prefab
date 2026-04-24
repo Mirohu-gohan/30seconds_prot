@@ -140,6 +140,7 @@ GameObject:
   - component: {fileID: 4724594101662965974}
   - component: {fileID: 3235345564559622036}
   - component: {fileID: 2869247752789430783}
+  - component: {fileID: 2159161534913404200}
   m_Layer: 0
   m_Name: BOT
   m_TagString: Player
@@ -372,6 +373,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerIndex: 0
+--- !u!114 &2159161534913404200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8904983594604811599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 276638e4cbbd6b54b9d82fbdcfb5d9c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerScoreHandler
+  _itemPrefab: {fileID: 6094040380130123712, guid: 94922b95eeadf604f8181ee20f55afde, type: 3}
 --- !u!1001 &2330654097640590715
 PrefabInstance:
   m_ObjectHideFlags: 0

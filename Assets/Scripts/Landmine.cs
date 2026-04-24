@@ -6,10 +6,13 @@ public class Landmine : MonoBehaviour
     public float explosionForce = 10.0f;
     public float explosionRadius = 3.0f;
 
+    public GameObject Effect;
+    public GameObject Model;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        Effect.SetActive(false);
     }
 
     // Update is called once per frame
@@ -24,6 +27,8 @@ public class Landmine : MonoBehaviour
         {
             Debug.Log("ãNîöÅI");
             Explosion();
+
+
         }
     }
 
@@ -43,6 +48,8 @@ public class Landmine : MonoBehaviour
             }
         }
 
-        Destroy(gameObject);
+        Effect.SetActive(true);
+
+        Destroy(gameObject, 5f);
     }
 }

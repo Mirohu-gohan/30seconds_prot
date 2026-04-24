@@ -87,4 +87,32 @@ public class Reception1 : MonoBehaviour
             hit.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
         }
     }
+    public void ResetReception()
+    {
+        // 全てのコルーチン（Hitコルーチンなど）を止める
+        StopAllCoroutines();
+
+        isKnockback = false;
+        isHit = false;
+        knockbackCounter = 0;
+
+        // コンポーネントの参照を再確認してリセット
+        if (rb == null) rb = GetComponent<Rigidbody>();
+        if (col == null) col = GetComponent<Collider>();
+
+        if (rb != null)
+        {
+            rb.useGravity = true;
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+        }
+
+        if (col != null) col.enabled = true; // コライダーを確実に戻す
+
+        // エフェクトを強制消去
+        if (hit != null)
+        {
+            hit.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        }
+    }
 }

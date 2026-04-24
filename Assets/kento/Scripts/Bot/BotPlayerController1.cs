@@ -439,4 +439,54 @@ public class BotPlayerController1 : MonoBehaviour
         CancelInvoke(nameof(EndTackle));
         isTackling = false;
     }
+
+
+    public void ResetBotState()
+    {
+        // 1. 全ての入力・行動フラグを折る
+        isPrese = false;
+        isStrt = false;
+        isTackling = false;
+        isMax = false;
+        isfinish = false;
+        isAttack1 = false;
+        isAttack2 = false;
+
+        // 2. 数値パラメータのリセット
+        t = 0f;
+        r = 0f;
+        searchTimer = 0f;
+        lastTackleTime = 0f;
+        curentRecoveryTime = StrongRecoveryTime;
+
+        // 3. ターゲットをクリア
+        target = null;
+        players.Clear();
+        outPlayers.Clear();
+
+        // 4. 全エフェクトを強制停止
+        if (run != null) run.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        if (charge != null) charge.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        if (weak != null) weak.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        if (strong != null) strong.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+
+        // 5. Invoke (EndTackle) のキャンセル
+        CancelInvoke(nameof(EndTackle));
+
+        // 6. 物理のリセット
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+        }
+
+        // 7. アニメーターのリセット
+        if (animator != null)
+        {
+            animator.SetFloat("Speed", 0f);
+            animator.SetBool("IsChage", false);
+            animator.SetBool("isAttack1", false);
+            animator.SetBool("isAttack2", false);
+        }
+    }
 }

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
@@ -39,6 +40,10 @@ public class SoundManager : MonoBehaviour
     public AudioClip cursorMoveSE;   // 決定ボタンを押す49
     public AudioClip decideSE;       // 決定13
 
+
+    [Header("SE重なり防止設定")]
+    [SerializeField] private float defaultSeInterval = 0.1f;
+    private Dictionary<AudioClip, float> lastPlayTimes = new Dictionary<AudioClip, float>();
     void Awake()
     {
         if (Instance == null)
@@ -74,6 +79,30 @@ public class SoundManager : MonoBehaviour
     //  SE再生 ロジック
     public void PlaySE(AudioClip clip)
     {
-        if (clip != null) seSource.PlayOneShot(clip, seVolume);
+        if (clip == null) return;
+
+        if (lastPlayTimes.ContainsKey(clip))
+        {
+            if (Time.time - lastPlayTimes[clip] < defaultSeInterval)
+            {
+                return;
+            }
+        }
+
+        seSource.PlayOneShot(clip, seVolume);
+        lastPlayTimes[clip] = Time.time;
+    }
+
+    public void PlaySE(AudioClip clip, float customInterval)
+    {
+        if (clip == null) return;
+
+        if (lastPlayTimes.ContainsKey(clip))
+        {
+            if (Time.time - lastPlayTimes[clip] < customInterval) return;
+        }
+
+        seSource.PlayOneShot(clip, seVolume);
+        lastPlayTimes[clip] = Time.time;
     }
 }

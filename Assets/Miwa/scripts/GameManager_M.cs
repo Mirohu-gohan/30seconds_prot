@@ -465,11 +465,6 @@ if (CurrentModeState == Mode.SuddenDeath)
         var pController = player.GetComponent<PlayerController1>();
         if (pController != null) pController.ResetPlayerState();
 
-        var bController = player.GetComponent<BotPlayerController>();
-        if (bController != null) bController.ResetBotState();
-
-        var reception = player.GetComponent<Reception>();
-        if (reception != null) reception.ResetReception();
 
         if (PlayerUIManager.Instance != null)
         {

@@ -2756,6 +2756,7 @@ GameObject:
   m_Component:
   - component: {fileID: 310675198}
   - component: {fileID: 310675199}
+  - component: {fileID: 310675201}
   - component: {fileID: 310675200}
   m_Layer: 0
   m_Name: Timebox
@@ -2791,6 +2792,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7aec95ec35374bf45b079381a91fecf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useDebugMode: 1
+  debugGameMode: 2
+  scoreModeTimeLimit: 40
   timerTextUI: {fileID: 1064052069}
   resultCanvas: {fileID: 198276233}
   CountdownUI: {fileID: 853361184}
@@ -2804,7 +2808,15 @@ MonoBehaviour:
   ResultCanvas: {fileID: 484457289}
   resultRibbon: {fileID: 198276234}
   resultBlurVolume: {fileID: 1955170447}
-  CurrentModeState: 0
+  SpawnPoint:
+  - {fileID: 1092058510}
+  - {fileID: 1512492562}
+  - {fileID: 1153352480}
+  - {fileID: 1756519972}
+  Spawntime: 3
+  scoreItemPrefab: {fileID: 6094040380130123712, guid: 94922b95eeadf604f8181ee20f55afde, type: 3}
+  dropAmountPerDeath: 1
+  CurrentModeState: 2
   suddenDeathKnockbackMultiplier: 10
   currentKnockbackMultiplier: 5
 --- !u!114 &310675200
@@ -2821,6 +2833,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pausePanel: {fileID: 1198649453}
   blurVolume: {fileID: 1955170447}
+--- !u!114 &310675201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 310675196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbc94dc7579a9d047bc7291c75bdbfc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ScoreManager
 --- !u!114 &310970695
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3692,8 +3716,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a066dc3bca91add4a8372991b4b35aac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 3736281241373610117, guid: d4a6348dea067154fac4fe701b89656e, type: 3}
-  botPrefab: {fileID: 8904983594604811599, guid: dbfa3887d190c8c4d89e17fe4c22506e, type: 3}
+  playerPrefab: {fileID: 3736281241373610117, guid: 003a9b5f3e2ab974d82cb0babe5ec6e2, type: 3}
+  botPrefab: {fileID: 8904983594604811599, guid: eaa94da8264a37f409428450f4cfa358, type: 3}
   pos:
   - {fileID: 1092058510}
   - {fileID: 1512492562}
@@ -4050,6 +4074,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 889001546436464104, guid: 9c5c2c8928a930e42993d90988e78894, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 1849224445937342789, guid: 9c5c2c8928a930e42993d90988e78894, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -4090,13 +4118,85 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1930539564756793964, guid: 9c5c2c8928a930e42993d90988e78894, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2078360177725201303, guid: 9c5c2c8928a930e42993d90988e78894, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3404367462531160636, guid: 9c5c2c8928a930e42993d90988e78894, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4079893654525115912, guid: 9c5c2c8928a930e42993d90988e78894, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4082872832059487641, guid: 9c5c2c8928a930e42993d90988e78894, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4869447518146268187, guid: 9c5c2c8928a930e42993d90988e78894, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5280831761791613107, guid: 9c5c2c8928a930e42993d90988e78894, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5588327926768873291, guid: 9c5c2c8928a930e42993d90988e78894, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5588488802386050159, guid: 9c5c2c8928a930e42993d90988e78894, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5704765989979125355, guid: 9c5c2c8928a930e42993d90988e78894, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6040125733600496730, guid: 9c5c2c8928a930e42993d90988e78894, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6750444977973784534, guid: 9c5c2c8928a930e42993d90988e78894, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6961120559114643419, guid: 9c5c2c8928a930e42993d90988e78894, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7305037026370359271, guid: 9c5c2c8928a930e42993d90988e78894, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 7544933142302262366, guid: 9c5c2c8928a930e42993d90988e78894, type: 3}
       propertyPath: m_Name
       value: Stage_Island_prot
       objectReference: {fileID: 0}
     - target: {fileID: 7544933142302262366, guid: 9c5c2c8928a930e42993d90988e78894, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7544933142302262366, guid: 9c5c2c8928a930e42993d90988e78894, type: 3}
       propertyPath: m_TagString
       value: Stage
+      objectReference: {fileID: 0}
+    - target: {fileID: 7613841326682472120, guid: 9c5c2c8928a930e42993d90988e78894, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7685261053436032779, guid: 9c5c2c8928a930e42993d90988e78894, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 9086059094853229556, guid: 9c5c2c8928a930e42993d90988e78894, type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5550,7 +5650,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 767
+    m_Bits: 1791
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0

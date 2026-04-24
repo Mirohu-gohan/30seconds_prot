@@ -2707,7 +2707,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2767268709923846786, guid: f9f8120ec95bcbe4996755024f480fcb, type: 3}
   m_PrefabInstance: {fileID: 215610884867316608}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 215610884867316609}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7aec95ec35374bf45b079381a91fecf8, type: 3}
@@ -11104,6 +11104,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2767268709923846786, guid: f9f8120ec95bcbe4996755024f480fcb, type: 3}
+      propertyPath: scoreModeTimeLimit
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 2767268709923846786, guid: f9f8120ec95bcbe4996755024f480fcb, type: 3}
       propertyPath: upperDeathYCoordinate
       value: 30
       objectReference: {fileID: 0}
@@ -11170,8 +11174,28 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8526940267425819374, guid: f9f8120ec95bcbe4996755024f480fcb, type: 3}
+      insertIndex: 2
+      addedObject: {fileID: 215610884867316610}
   m_SourcePrefab: {fileID: 100100000, guid: f9f8120ec95bcbe4996755024f480fcb, type: 3}
+--- !u!1 &215610884867316609 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8526940267425819374, guid: f9f8120ec95bcbe4996755024f480fcb, type: 3}
+  m_PrefabInstance: {fileID: 215610884867316608}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &215610884867316610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 215610884867316609}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbc94dc7579a9d047bc7291c75bdbfc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ScoreManager
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

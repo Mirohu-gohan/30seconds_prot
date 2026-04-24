@@ -22,6 +22,8 @@ public class GameManager_M : MonoBehaviour
     public bool useDebugMode = true; // trueなら下のモードを強制適用
     public Mode debugGameMode = Mode.ScoreMode;
 
+    [Header("タイマー設定")]
+    public float scoreModeTimeLimit = 40f; // スコアモード用 (奪い合いなので少し長めなど)
 
     [Header("UI設定")]
     public Text timerTextUI;
@@ -130,7 +132,7 @@ public class GameManager_M : MonoBehaviour
             _qualifiedIndices.Clear();
             if (selectedGameMode == Mode.ScoreMode)
             {
-                ChangeMode(new ScoreMode(timerTextUI, survivalTimeLimit));
+                ChangeMode(new ScoreMode(timerTextUI, scoreModeTimeLimit));
             }
             else
             {
@@ -277,13 +279,17 @@ public class GameManager_M : MonoBehaviour
 
     public void AddScore(int playerIndex, int amount)
     {
-        if (playerIndex < 0 || playerIndex >= 4) return;
+        if (playerIndex < 0 || playerIndex >= currentScores.Length) return;
 
-        // スコアモード時は数値を更新
         if (CurrentModeState == Mode.ScoreMode)
         {
+            
             currentScores[playerIndex] = Mathf.Max(0, currentScores[playerIndex] + amount);
-            PlayerUIManager.Instance.UpdatePlayerScore(playerIndex, currentScores[playerIndex]);
+            
+            if (PlayerUIManager.Instance != null)
+            {
+                PlayerUIManager.Instance.UpdatePlayerScore(playerIndex, currentScores[playerIndex]);
+            }
         }
     }
 
@@ -295,11 +301,19 @@ public class GameManager_M : MonoBehaviour
         CheckPlayersFalling();
     }
 
+    //現在のラウンド数を表示
     public void UpdateRoundDisplay()
     {
         if (roundTextUI != null)
         {
-            if (CurrentModeState == Mode.SuddenDeath)
+            if (selectedGameMode == Mode.ScoreMode)
+            {
+                roundTextUI.gameObject.SetActive(false);
+                return;
+            }
+            else
+            {
+if (CurrentModeState == Mode.SuddenDeath)
             {
                 roundTextUI.text = "SUDDEN DEATH";
                 roundTextUI.color = Color.red;
@@ -308,6 +322,7 @@ public class GameManager_M : MonoBehaviour
             {
                 roundTextUI.text = "Round " + CurrentRound;
                 // roundTextUI.color = Color.white; 
+            }
             }
             roundTextUI.gameObject.SetActive(true);
         }
@@ -418,7 +433,7 @@ public class GameManager_M : MonoBehaviour
         yield return new WaitForSeconds(Spawntime);
 
         // 2. 位置を決定
-        Vector3 spawnPosition = new Vector3(0, 5, 0);
+        Vector3 spawnPosition = Vector3.zero;
         if (SpawnPoint != null && SpawnPoint.Length > 0)
         {
             int targetIndex = (playerIndex < SpawnPoint.Length) ? playerIndex : 0;
@@ -436,6 +451,13 @@ public class GameManager_M : MonoBehaviour
         // 4. 座標を移動
         player.transform.position = spawnPosition;
 
+        var scoreHandler =player.GetComponent<PlayerScoreHandler>();
+        if (scoreHandler != null)
+        {
+            scoreHandler.HandleDeath();
+        }
+
+
         // 5. 出現させる
         player.SetActive(true);
 
@@ -449,8 +471,12 @@ public class GameManager_M : MonoBehaviour
         var reception = player.GetComponent<Reception>();
         if (reception != null) reception.ResetReception();
 
+        if (PlayerUIManager.Instance != null)
+        {
+            PlayerUIManager.Instance.ResetPlayerStatus(playerIndex);
+        }
+
         // 7. 【重要】1フレーム待ってから物理演算を再開させる
-        // これをしないとSetActiveした瞬間の古い速度が適用されることがある
         yield return new WaitForFixedUpdate();
 
         if (rb != null)

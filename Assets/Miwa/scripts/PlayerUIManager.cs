@@ -47,6 +47,14 @@ public class PlayerUIManager : MonoBehaviour
         }
     }
 
+    public void ResetPlayerStatus(int index)
+    {
+        if (index >= 0 && index < spawnedUIs.Count)
+        {
+            spawnedUIs[index].SetEliminated(false); // 生存スプライトに戻す
+        }
+    }
+
     public void SetPlayerDead(int index) => spawnedUIs[index].SetEliminated(true);
 
     public void UpdatePlayerScore(int index, int score) => spawnedUIs[index].UpdateScore(score);

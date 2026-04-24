@@ -405,10 +405,6 @@ public class GameManager_M : MonoBehaviour
         }
     }
 
-    //スコアモード設定
-     
-
-
 
     //スコアモードの時にリスポーンする処理
     private IEnumerator RespawnPlayer(GameObject player, int playerIndex)

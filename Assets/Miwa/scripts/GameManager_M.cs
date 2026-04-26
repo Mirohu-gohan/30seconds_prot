@@ -13,10 +13,13 @@ public class GameManager_M : MonoBehaviour
 
     // --- 静的変数 ---
     private static bool _isSuddenDeathNext = false;
-    private static List<int> _qualifiedIndices = new List<int>(); 
+    private static List<int> _qualifiedIndices = new List<int>();
     public static int CurrentRound = 1;
     public static int[] playerWins = new int[4];
     public static Mode selectedGameMode = Mode.Survival;
+    // プレイヤーごとにリスポーン中かどうかを管理する（4人分）
+    private bool[] isRespawning = new bool[4];
+
 
     [Header("【デバッグ用】直接シーン再生時のモード指定")]
     public bool useDebugMode = true; // trueなら下のモードを強制適用
@@ -29,7 +32,7 @@ public class GameManager_M : MonoBehaviour
     public Text timerTextUI;
     public GameObject resultCanvas;
     public Text CountdownUI;
-    
+
     [Header("ラウンド表示用")]
     public Text roundTextUI;
 
@@ -59,13 +62,14 @@ public class GameManager_M : MonoBehaviour
     public GameObject scoreItemPrefab; // 上で作ったPrefabをセット
     public int dropAmountPerDeath = 1;  // 死んだ時に何個出すか
 
-    public enum Mode { Survival, SuddenDeath, ScoreMode,GameOver }
+    public enum Mode { Survival, SuddenDeath, ScoreMode, GameOver }
     public Mode CurrentModeState;
+
 
     private IGameMode _currentMode;
     private List<GameObject> activePlayers = new List<GameObject>();
 
-    public float suddenDeathKnockbackMultiplier = 2.0f; 
+    public float suddenDeathKnockbackMultiplier = 2.0f;
     public float currentKnockbackMultiplier = 1.0f;
 
     private List<int> _lastActiveIndices = new List<int>();//同時にデスした時のため直前に生きていたPlayerを格納
@@ -94,33 +98,24 @@ public class GameManager_M : MonoBehaviour
     void Start()
     {
         Time.timeScale = 1.0f;
-        
+
         if (resultCanvas != null) resultCanvas.SetActive(false);
         if (timerTextUI != null) timerTextUI.gameObject.SetActive(true);
 
         UpdateRoundDisplay();
 
-　　　　//ここにBGM再生の処理を追加したよ～ん
+        // BGM再生
         if (SoundManager.Instance != null)
         {
             if (_isSuddenDeathNext)
-            {
-                // サドンデス用BGM
                 SoundManager.Instance.PlayBGM(SoundManager.Instance.suddenDeathBGM);
-            }
             else
-            {
-                // 通常バトル用BGM
                 SoundManager.Instance.PlayBGM(SoundManager.Instance.normalBattleBGM);
-            }
         }
-#if UNITY_EDITOR
-        if (useDebugMode)
-        {
-            selectedGameMode = debugGameMode;
-            Debug.Log($"【デバッグ】強制的に {selectedGameMode} で開始します！");
-        }
-#endif
+
+        // ★ ここが重要！ ★
+        // タイトルで選んだ「staticな値」を、現在の動的な状態（CurrentModeState）に反映させる
+        CurrentModeState = selectedGameMode;
 
         if (_isSuddenDeathNext)
         {
@@ -130,7 +125,8 @@ public class GameManager_M : MonoBehaviour
         else
         {
             _qualifiedIndices.Clear();
-            if (selectedGameMode == Mode.ScoreMode)
+            // CurrentModeState（反映済みの値）を見てモードを確定させる
+            if (CurrentModeState == Mode.ScoreMode)
             {
                 ChangeMode(new ScoreMode(timerTextUI, scoreModeTimeLimit));
             }
@@ -142,6 +138,7 @@ public class GameManager_M : MonoBehaviour
 
         join = GameObject.Find("JoinedManager");
         StartCoroutine(InitializeUIWithDelay());
+        SetupUIForMode();
     }
 
 
@@ -248,13 +245,13 @@ public class GameManager_M : MonoBehaviour
     //現在の参加人数を取得してUIを作るロジックです
     private IEnumerator InitializeUIWithDelay()
     {
-        yield return null; 
-        
+        yield return null;
+
         if (PlayerUIManager.Instance != null)
         {
-            bool isScoreMode =(CurrentModeState ==Mode.ScoreMode);
+            bool isScoreMode = (CurrentModeState == Mode.ScoreMode);
 
-            PlayerUIManager.Instance.InitializePlayerUI(playerWins.Length,CurrentModeState == Mode.ScoreMode);
+            PlayerUIManager.Instance.InitializePlayerUI(playerWins.Length, CurrentModeState == Mode.ScoreMode);
 
             if (CurrentModeState == Mode.SuddenDeath)
             {
@@ -270,7 +267,7 @@ public class GameManager_M : MonoBehaviour
         for (int i = 0; i < playerWins.Length; i++)
         {
 
-            if (CurrentModeState ==Mode.ScoreMode)
+            if (CurrentModeState == Mode.ScoreMode)
                 PlayerUIManager.Instance.UpdatePlayerScore(i, currentScores[i]);
             else
                 PlayerUIManager.Instance.UpdatePlayerStars(i, playerWins[i]);
@@ -283,9 +280,9 @@ public class GameManager_M : MonoBehaviour
 
         if (CurrentModeState == Mode.ScoreMode)
         {
-            
+
             currentScores[playerIndex] = Mathf.Max(0, currentScores[playerIndex] + amount);
-            
+
             if (PlayerUIManager.Instance != null)
             {
                 PlayerUIManager.Instance.UpdatePlayerScore(playerIndex, currentScores[playerIndex]);
@@ -313,16 +310,15 @@ public class GameManager_M : MonoBehaviour
             }
             else
             {
-if (CurrentModeState == Mode.SuddenDeath)
-            {
-                roundTextUI.text = "SUDDEN DEATH";
-                roundTextUI.color = Color.red;
-            }
-            else
-            {
-                roundTextUI.text = "Round " + CurrentRound;
-                // roundTextUI.color = Color.white; 
-            }
+                if (CurrentModeState == Mode.SuddenDeath)
+                {
+                    roundTextUI.gameObject.SetActive(false);
+                }
+                else
+                {
+                    roundTextUI.text = "Round " + CurrentRound;
+                    // roundTextUI.color = Color.white; 
+                }
             }
             roundTextUI.gameObject.SetActive(true);
         }
@@ -336,7 +332,7 @@ if (CurrentModeState == Mode.SuddenDeath)
             return;
         }
 
-        if(!activePlayers.Contains(p)){ activePlayers.Add(p);}
+        if (!activePlayers.Contains(p)) { activePlayers.Add(p); }
 
         if (CurrentModeState == Mode.SuddenDeath && _currentMode is SuddenDeathMode suddenMode)
         {
@@ -344,7 +340,7 @@ if (CurrentModeState == Mode.SuddenDeath)
         }
         if (PlayerUIManager.Instance != null)
         {
-            PlayerUIManager.Instance.InitializePlayerUI(playerWins.Length,CurrentModeState ==Mode.ScoreMode);
+            PlayerUIManager.Instance.InitializePlayerUI(playerWins.Length, CurrentModeState == Mode.ScoreMode);
         }
     }
 
@@ -362,9 +358,9 @@ if (CurrentModeState == Mode.SuddenDeath)
     //落下、吹っ飛び時にDeathする処理
     private void CheckPlayersFalling()
     {
-        //同時に落ちた場合の処理
         if (CurrentModeState == Mode.GameOver) return;
 
+        // 生存チェック（既存の処理）
         List<int> currentLiving = new List<int>();
         foreach (var p in activePlayers)
         {
@@ -374,42 +370,45 @@ if (CurrentModeState == Mode.SuddenDeath)
                 if (h != null) currentLiving.Add(h.playerIndex);
             }
         }
+        if (currentLiving.Count > 0) _lastActiveIndices = new List<int>(currentLiving);
 
-        if(currentLiving.Count > 0)
-        {
-            _lastActiveIndices =new List<int>(currentLiving);
-        }
-
+        // 落下判定ループ
         for (int i = activePlayers.Count - 1; i >= 0; i--)
         {
             GameObject player = activePlayers[i];
             if (player == null) { activePlayers.RemoveAt(i); continue; }
 
-            if (player.transform.position.y < deathYCoordinate|| player.transform.position.y>upperDeathYCoordinate)
+            var health = player.GetComponent<PlayerHealth>();
+            if (health == null) continue;
+            int pIndex = health.playerIndex;
+
+            // 【ここが重要！】すでに復活処理中なら無視する
+            if (isRespawning[pIndex]) continue;
+
+            // 落下判定
+            if (player.transform.position.y < deathYCoordinate || player.transform.position.y > upperDeathYCoordinate)
             {
-                if (player.transform.position.y < deathYCoordinate || player.transform.position.y > upperDeathYCoordinate)
+                // ★二重呼び出し防止：ここで「リスポーン中」にする
+                isRespawning[pIndex] = true;
+
+                // 1. スコア減算（PlayerScoreHandler側）
+                var scoreHandler = player.GetComponent<PlayerScoreHandler>();
+                if (scoreHandler != null)
                 {
-                    var scoreHandler = player.GetComponent<PlayerScoreHandler>();
-                    if (scoreHandler != null)
-                    {
-                        scoreHandler.HandleDeath();
-                    }
+                    scoreHandler.HandleDeath();
                 }
 
-                    if (SoundManager.Instance != null)
-                {
-                     SoundManager.Instance.PlaySE(SoundManager.Instance.groundBreakSE); 
-                }
+                // 2. 演出（音・UI）
+                if (SoundManager.Instance != null)
+                    SoundManager.Instance.PlaySE(SoundManager.Instance.groundBreakSE);
 
-                var health = player.GetComponent<PlayerHealth>(); 
-                if (health != null && PlayerUIManager.Instance != null)
-                {
-                    PlayerUIManager.Instance.SetPlayerDead(health.playerIndex);
-                }
+                if (PlayerUIManager.Instance != null)
+                    PlayerUIManager.Instance.SetPlayerDead(pIndex);
 
+                // 3. モード別の処理
                 if (CurrentModeState == Mode.ScoreMode)
                 {
-                    StartCoroutine(RespawnPlayer(player, health.playerIndex));
+                    StartCoroutine(RespawnPlayer(player, pIndex));
                 }
                 else
                 {
@@ -424,6 +423,11 @@ if (CurrentModeState == Mode.SuddenDeath)
     //スコアモードの時にリスポーンする処理
     private IEnumerator RespawnPlayer(GameObject player, int playerIndex)
     {
+        // --- A. 死亡時のスコアから放出数を計算 (減点される前のスコアを元にする場合) ---
+        // 現在のスコアの半分を放出アイテム数にする（例：10点持ってたら5個出す）
+        int currentTotalScore = currentScores[playerIndex];
+        int dropCount = 3;
+
         // 1. 非表示にする
         player.SetActive(false);
 
@@ -440,46 +444,46 @@ if (CurrentModeState == Mode.SuddenDeath)
             spawnPosition = SpawnPoint[targetIndex].position;
         }
 
-        // 3. 【重要】出現させる「前」に物理を強制停止・キネマティック化
+        // 3. 出現させる「前」に物理を強制停止
         if (rb != null)
         {
-            rb.isKinematic = true; // 物理演算を一時停止（これで勝手に飛ばなくなる）
+            rb.isKinematic = true;
             rb.linearVelocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
         }
 
-        // 4. 座標を移動
+        // 4. 座標を移動して再出現
         player.transform.position = spawnPosition;
-
-        var scoreHandler =player.GetComponent<PlayerScoreHandler>();
-        if (scoreHandler != null)
-        {
-            scoreHandler.HandleDeath();
-        }
-
-
-        // 5. 出現させる
         player.SetActive(true);
 
-        // 6. 各種スクリプトの状態をリセット
+        // ★ 5. リスポーン地点でアイテムを放出！
+        var scoreHandler = player.GetComponent<PlayerScoreHandler>();
+        if (scoreHandler != null)
+        {
+            // PlayerScoreHandler側で作った関数を呼び出す
+            scoreHandler.DropItemsAtRespawn(dropCount);
+        }
+
+        // 6. 各種状態のリセット
         var pController = player.GetComponent<PlayerController1>();
         if (pController != null) pController.ResetPlayerState();
-
 
         if (PlayerUIManager.Instance != null)
         {
             PlayerUIManager.Instance.ResetPlayerStatus(playerIndex);
         }
 
-        // 7. 【重要】1フレーム待ってから物理演算を再開させる
+        // 7. 1フレーム待ってから物理演算を再開
         yield return new WaitForFixedUpdate();
 
         if (rb != null)
         {
-            rb.isKinematic = false; // 物理演算を再開
+            rb.isKinematic = false;
             rb.linearVelocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
         }
+
+        isRespawning[playerIndex] = false;
     }
 
     // プレイヤーの死亡時に呼ばれる想定
@@ -516,7 +520,7 @@ if (CurrentModeState == Mode.SuddenDeath)
 
     public void NextRound(bool isTimeUp = false)
     {
-        // ① スコアモードの場合の勝敗判定
+        // --- 1. スコアモードの場合 ---
         if (CurrentModeState == Mode.ScoreMode)
         {
             if (isTimeUp)
@@ -525,94 +529,87 @@ if (CurrentModeState == Mode.SuddenDeath)
                 int winnerIndex = -1;
                 bool isDraw = false;
 
-                if (ScoreManager.Instance != null)
+                for (int i = 0; i < currentScores.Length; i++)
                 {
-                    for (int i = 0; i < 4; i++)
-                    {
-                        int currentScore = ScoreManager.Instance.GetScore(i);
-                        if (currentScore > maxScore)
-                        {
-                            maxScore = currentScore;
-                            winnerIndex = i;
-                            isDraw = false;
-                        }
-                        else if (currentScore == maxScore)
-                        {
-                            isDraw = true; // 同点
-                        }
-                    }
+                    if (currentScores[i] > maxScore) { maxScore = currentScores[i]; winnerIndex = i; isDraw = false; }
+                    else if (currentScores[i] == maxScore && maxScore != -1) { isDraw = true; }
                 }
 
-                if (!isDraw && winnerIndex != -1)
-                {
-                    playerWins[winnerIndex]++;
-                    Debug.Log($"Player {winnerIndex + 1} がスコア {maxScore} で勝利 現在の勝ち星: {playerWins[winnerIndex]}");
-                }
-                else
-                {
-                    Debug.Log("同点 勝者なし");
-                }
+                if (!isDraw && winnerIndex != -1) playerWins[winnerIndex]++;
             }
+            isGameStarted = false;
+            StartCoroutine(WaitAndShowResult());
+            return;
         }
+
+        // --- 2. サバイバル・サドンデスモードの場合 ---
         else
         {
-            // 1. 1人だけ生き残っている場合、そのプレイヤーに勝ち星を付与
-            if (GetActivePlayersCount() == 1)
+            // ★重要：リストを掃除してから人数を数える
+            activePlayers.RemoveAll(p => p == null);
+            int survivorCount = activePlayers.Count;
+
+            // 【勝利判定】生き残りがちょうど1人なら、その人に星をあげる
+            if (survivorCount == 1)
             {
-                var winner = activePlayers[0];
+                GameObject winner = activePlayers[0];
                 var health = winner.GetComponent<PlayerHealth>();
                 if (health != null)
                 {
-                    playerWins[health.playerIndex]++;
-                    Debug.Log($"Player {health.playerIndex + 1} が勝利！ 現在の勝ち星: {playerWins[health.playerIndex]}");
+                    playerWins[health.playerIndex]++; // ここで星が増える
+                    Debug.Log($"Player {health.playerIndex + 1} に星を追加！ 現在の星: {playerWins[health.playerIndex]}");
                 }
             }
-
-            // 2. タイムアップまたは全員死亡の場合、サドンデスへ
-            if (isTimeUp || GetActivePlayersCount() == 0)
+            // 【サドンデス判定】タイムアップ、または全員同時に落ちた場合
+            else if (isTimeUp || survivorCount == 0)
             {
                 List<int> survivors = new List<int>();
-                foreach (var p in GetActivePlayers())
+                foreach (var p in activePlayers)
                 {
-                    var health = p.GetComponent<PlayerHealth>();
-                    if (health != null) survivors.Add(health.playerIndex);
+                    if (p != null) survivors.Add(p.GetComponent<PlayerHealth>().playerIndex);
                 }
-                if (survivors.Count == 0)
-                {
-                    survivors = (_lastActiveIndices.Count > 0) ? _lastActiveIndices : new List<int> { 0, 1, 2, 3 };
-                }
+                if (survivors.Count == 0) survivors = _lastActiveIndices;
+
                 TriggerSuddenDeath(survivors);
                 return;
             }
-
-            // 誰かが3勝したかどうかをチェック
-            bool someoneReachedThreeWins = false;
-            for (int i = 0; i < playerWins.Length; i++)
-            {
-                if (playerWins[i] >= 3) // 3勝に到達したか
-                {
-                    someoneReachedThreeWins = true;
-                    break;
-                }
-            }
-
-            //  判定結果による分岐
-            if (someoneReachedThreeWins)
-            {
-                // 誰かが3勝したらリザルト画面へ
-                StartCoroutine(WaitAndShowResult());
-            }
-            else
-            {
-                // まだ3勝した人がいなければ、次のラウンドへ（リロード）
-                CurrentRound++; // 表示上のラウンド数をカウントアップ
-                RestartGame();
-            }
         }
+
+        // --- 3. 共通：ゲーム全体の決着がついたかチェック ---
+        CheckForGameWinner();
     }
 
+    private void CheckForGameWinner()
+    {
+        bool someoneReachedThreeWins = false;
+        for (int i = 0; i < playerWins.Length; i++)
+        {
+            if (playerWins[i] >= 3) { someoneReachedThreeWins = true; break; }
+        }
+
+        if (someoneReachedThreeWins)
+        {
+            StartCoroutine(WaitAndShowResult());
+        }
+        else
+        {
+            // まだ誰も3勝してなければ次のラウンドへリロード
+            CurrentRound++;
+            RestartGame();
+        }
+    }
     private IEnumerator WaitAndShowResult()
     {
+        if (SoundManager.Instance != null)
+        {
+            // 1. 今のバトルBGMを止める
+            SoundManager.Instance.StopBGM();
+
+            // 2. リザルト用の音を鳴らす
+            // resultBGMが短いジングルならPlaySE、長い曲ならPlayBGM
+            SoundManager.Instance.PlayBGM(SoundManager.Instance.resultBGM);
+        }
+
         if (PlayerUIManager.Instance != null)
         {
             for (int i = 0; i < playerWins.Length; i++)
@@ -623,6 +620,16 @@ if (CurrentModeState == Mode.SuddenDeath)
         yield return new WaitForSeconds(1.0f);
 
         string finalwinner = GetWinnerName();
+
+        if (CurrentModeState == Mode.ScoreMode)
+        {
+            finalwinner = GetScoreWinnerName(); // スコアで判定
+        }
+        else
+        {
+            finalwinner = GetWinnerName(); // 3勝したかで判定
+        }
+
         CurrentRound = 1;
         ChangeMode(new GameOverMode(finalwinner));
     }
@@ -648,20 +655,20 @@ if (CurrentModeState == Mode.SuddenDeath)
 
     public void ShowResultUI(string resultText)
     {
-        
+
         if (resultCanvas != null)
         {
             resultCanvas.SetActive(true);
         }
 
-       
+
         var pm = Object.FindFirstObjectByType<PauseManager>();
         if (pm != null && pm.pausePanel != null)
         {
             pm.pausePanel.SetActive(false);
         }
 
-        
+
         if (resultBlurVolume != null)
         {
             resultBlurVolume.SetActive(true);
@@ -673,21 +680,21 @@ if (CurrentModeState == Mode.SuddenDeath)
             winnerNameTextUI.gameObject.SetActive(true);
         }
 
-       
+
         if (resultTextUI != null)
         {
             resultTextUI.text = "Result";
             resultTextUI.gameObject.SetActive(true);
         }
 
-       
+
         if (resultRibbon != null)
         {
             resultRibbon.gameObject.SetActive(true);
             StartCoroutine(AnimateButtonsSwipe());
         }
 
-       
+
         Button firstButton = resultCanvas.GetComponentInChildren<Button>();
         if (firstButton != null)
         {
@@ -699,34 +706,34 @@ if (CurrentModeState == Mode.SuddenDeath)
     {
         if (resultRibbon == null) yield break;
 
-        
+
         Vector2 endPos = Vector2.zero;
-       
+
         Vector2 startPos = new Vector2(2000, 0);
 
-      
+
         resultRibbon.anchoredPosition = startPos;
 
         float duration = 0.3f;
         float elapsed = 0f;
 
-        
+
         Time.timeScale = 0f;
 
         while (elapsed < duration)
         {
-            
+
             elapsed += Time.unscaledDeltaTime;
             float t = elapsed / duration;
 
-           
+
             t = 1f - Mathf.Pow(1f - t, 5f);
 
             resultRibbon.anchoredPosition = Vector2.Lerp(startPos, endPos, t);
             yield return null;
         }
 
-      
+
         resultRibbon.anchoredPosition = endPos;
     }
 
@@ -734,8 +741,8 @@ if (CurrentModeState == Mode.SuddenDeath)
 
     public void BackToJoinScene(string s)
     {
-        CurrentRound = 1;         
-        _isSuddenDeathNext = false;  
+        CurrentRound = 1;
+        _isSuddenDeathNext = false;
         _qualifiedIndices.Clear();
 
         for (int i = 0; i < playerWins.Length; i++)  // 全プレイヤーの勝利数を0にする
@@ -752,7 +759,7 @@ if (CurrentModeState == Mode.SuddenDeath)
     private IEnumerator HideUIRoutine(float delay) { yield break; }
 
     public List<GameObject> GetActivePlayers() { activePlayers.RemoveAll(p => p == null); return activePlayers; }
-    
+
     public int GetActivePlayersCount()
     {
         int count = 0;
@@ -786,5 +793,51 @@ if (CurrentModeState == Mode.SuddenDeath)
         }
 
         return string.Join(" & ", winners);
+    }
+
+
+    // スコアモード用の勝者判定（ポイントが一番多い人）
+    public string GetScoreWinnerName()
+    {
+        int maxScore = -1;
+        List<string> winners = new List<string>();
+
+        // 最大スコアを探す
+        for (int i = 0; i < currentScores.Length; i++)
+        {
+            if (currentScores[i] > maxScore)
+            {
+                maxScore = currentScores[i];
+            }
+        }
+
+        // 同点の場合も考えてリストアップ
+        for (int i = 0; i < currentScores.Length; i++)
+        {
+            if (currentScores[i] == maxScore && maxScore != -1)
+            {
+                winners.Add("Player " + (i + 1));
+            }
+        }
+
+        if (winners.Count == 0) return "No Winner";
+        return string.Join(" & ", winners);
+    }
+
+    // モードによってUIを出し分ける
+    private void SetupUIForMode()
+    {
+        UpdateRoundDisplay();
+
+        bool isScore = (CurrentModeState == Mode.ScoreMode);
+
+        if (PlayerUIManager.Instance != null)
+        {
+            for (int i = 0; i < playerWins.Length; i++)
+            {
+                // 名前を UpdatePlayerUI に合わせて呼び出す
+                PlayerUIManager.Instance.UpdatePlayerUI(i, isScore);
+            }
+        }
     }
 }

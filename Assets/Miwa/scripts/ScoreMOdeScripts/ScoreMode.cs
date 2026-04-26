@@ -4,51 +4,53 @@ using static GameMode;
 
 public class ScoreMode : IGameMode
 {
-    private float _timer;
-    private bool _isActive;
-    private Text _timerTextUI;
-    private float _initialTime; // モード開始時の時間を保持
+    private Text _timerText;
+    private float _timeLimit;
 
-    public ScoreMode(Text timerTextUI, float timeLimit)
+    // ここで変数を定義（これが「存在しません」というエラーの解決策）
+    private float remainingTime;
+    private bool isTimerActive;
+
+    public ScoreMode(Text timerText, float timeLimit)
     {
-        this._timerTextUI = timerTextUI;
-        this._initialTime = timeLimit; // GameManagerから渡されたスコアモード専用時間を保持
+        _timerText = timerText;
+        _timeLimit = timeLimit;
     }
 
     public void OnEnter()
     {
-        _isActive = true;
-        _timer = _initialTime; // 開始時にタイマーをセット
-
-        // ラウンド開始時に全員のスコアを0にする
-        for (int i = 0; i < 4; i++)
-        {
-            if (i < GameManager_M.currentScores.Length)
-                GameManager_M.currentScores[i] = 0;
-        }
+        remainingTime = _timeLimit;
+        isTimerActive = true;
+        Debug.Log("Score Mode Started!");
     }
 
     public void OnUpdate()
     {
-        if (!_isActive) return;
+        if (!isTimerActive) return;
 
-        _timer -= Time.deltaTime;
+        // タイマーを減らす
+        remainingTime -= Time.deltaTime;
 
-        if (_timerTextUI != null)
+        // UIの更新（分:秒 の形式など）
+        if (_timerText != null)
         {
-            _timerTextUI.text = Mathf.CeilToInt(_timer).ToString();
+            int seconds = Mathf.CeilToInt(remainingTime);
+            _timerText.text = seconds.ToString();
         }
 
-        if (_timer <= 0)
+        // 0秒になった時の判定
+        if (remainingTime <= 0)
         {
-            _isActive = false;
-            // 時間切れ：trueを渡してリザルト（勝敗判定）へ
+            remainingTime = 0;
+            isTimerActive = false;
+
+            // GameManagerにタイムアップを知らせる
             GameManager_M.Instance.NextRound(true);
         }
     }
 
     public void OnExit()
     {
-        _isActive = false;
+        isTimerActive = false;
     }
 }

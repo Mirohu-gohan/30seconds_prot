@@ -53,14 +53,22 @@ public class PlayerStatusUI : MonoBehaviour
 
     public void UpdateStars(int score)
     {
-        if (stars != null) return;
+        // ここが null だと色を変えられない
+        if (stars == null || stars.Length == 0)
+        {
+            Debug.LogWarning("UIの星(stars)がセットされていません！");
+            return;
+        }
 
         for (int i = 0; i < stars.Length; i++)
         {
-            stars[i].color = (i < score) ? starOnColor : starOffColor;
+            if (stars[i] != null)
+            {
+                // i=0(1つ目)の星は、勝利数(score)が1以上の時に色が付く
+                stars[i].color = (i < score) ? starOnColor : starOffColor;
+            }
         }
     }
-
     public void UpdateScore(int score)
     {
         if(scoreText != null)

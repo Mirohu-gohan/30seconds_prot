@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class PlayerScoreHandler : MonoBehaviour
@@ -38,46 +39,56 @@ public class PlayerScoreHandler : MonoBehaviour
     public void HandleDeath()
     {
         int playerIndex = _health.playerIndex;
-        // currentScores から今回のスコアを取得
         int currentScore = GameManager_M.currentScores[playerIndex];
 
-        // 1. 【ボーナス加点】自分を落とした相手がいれば、その人に加点
+        //加点（落とした相手へのプレゼント）
         if (lastAttackerIndex != -1 && lastAttackerIndex != playerIndex)
         {
-            Debug.Log($"Player {lastAttackerIndex} がボーナス獲得！");
             GameManager_M.Instance.AddScore(lastAttackerIndex, 3);
-            lastAttackerIndex = -1; // IDリセット
+            lastAttackerIndex = -1;
         }
 
-        // 2. 【アイテム放出判定】所持スコアが0ならここで終了
         if (currentScore <= 0) return;
 
-        // 3. 【ペナルティ計算】ここで初めて宣言する（1回だけ！）
+        //スコアを減らす（これは「落ちた瞬間」に即座に実行）
         int penalty = Mathf.Max(1, currentScore / 2);
-
-        // 自分のスコアを減らす
         GameManager_M.Instance.AddScore(playerIndex, -penalty);
 
-        // 4. 【アイテム生成】penalty の数だけループ
+
+        _lastHitTag = "";
+    }
+
+    public void DropItemsAtRespawn(int currentPenalty)
+    {
+        // リスポーン地点にポイントをばらまく
+        StartCoroutine(DropItemsWithDelay(currentPenalty));
+    }
+
+    // アイテムを時間差で出すためのコルーチン
+    private IEnumerator DropItemsWithDelay(int penalty)
+    {
+        // スポーンしてすぐ出す
+        yield return new WaitForSeconds(0.1f);
+
         for (int i = 0; i < penalty; i++)
         {
             if (_itemPrefab == null) break;
 
-            GameObject itemObj = Instantiate(_itemPrefab, transform.position + Vector3.up * 2f, Quaternion.identity);
+            // キャラクターの頭より上
+            Vector3 spawnPos = transform.position + Vector3.up * 1.5f;
+
+            GameObject itemObj = Instantiate(_itemPrefab, spawnPos, Quaternion.identity);
             ScoreItem itemScript = itemObj.GetComponent<ScoreItem>();
 
             if (itemScript != null)
             {
                 Vector3 randomDir = new Vector3(
-                    UnityEngine.Random.Range(-1.0f, 1.0f),
+                    UnityEngine.Random.Range(-1f, 1f),
                     1.5f,
-                    UnityEngine.Random.Range(-1.0f, 1.0f)
+                    UnityEngine.Random.Range(-1f, 1f)
                 ).normalized;
-
                 itemScript.Launch(randomDir, 5f);
             }
         }
-
-        _lastHitTag = "";
     }
 }

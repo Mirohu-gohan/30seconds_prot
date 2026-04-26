@@ -14,7 +14,7 @@ public class SoundManager : MonoBehaviour
     [Range(0f, 1f)] public float seVolume = 0.4f;
 
     [Header("■ 参加画面")]
-    public AudioClip titleBGM;       
+    public AudioClip titleBGM;
     public AudioClip playerJoinSE;   // 決定ボタンを押す14
     public AudioClip gameStartBtnSE; // 決定15
 
@@ -25,7 +25,7 @@ public class SoundManager : MonoBehaviour
     [Header("■ ゲーム画面：SE")]
     public AudioClip gameStartGongSE; // 試合開始のゴング
     public AudioClip gameEndGongSE;   // 試合終了のゴング
-    
+
     [Header("■ アクションSE（攻撃・隕石など）")]
     public AudioClip weakHitSE;       // 軽いパンチ１
     public AudioClip chargeSE;        // energycharge_kantai2
@@ -104,5 +104,14 @@ public class SoundManager : MonoBehaviour
 
         seSource.PlayOneShot(clip, seVolume);
         lastPlayTimes[clip] = Time.time;
+    }
+
+    public void StopBGM()
+    {
+        if (bgmSource != null)
+        {
+            bgmSource.Stop();
+            bgmSource.clip = null; // クリップを空にすることで、次に同じ曲を流せるようにする
+        }
     }
 }

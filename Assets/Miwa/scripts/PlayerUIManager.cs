@@ -55,6 +55,25 @@ public class PlayerUIManager : MonoBehaviour
         }
     }
 
+    public void UpdatePlayerUI(int playerIndex, bool isScoreMode)
+    {
+        // エラー修正1: 'playerStatusUIs' を 'spawnedUIs' に変更
+        if (spawnedUIs == null || playerIndex >= spawnedUIs.Count)return;
+
+        var ui = spawnedUIs[playerIndex];
+        if (ui != null)
+        {
+            // エラー修正2: GameManager_M.Instance.playerWins ではなく GameManager_M.playerWins (static参照)
+            int value = isScoreMode ?
+                GameManager_M.currentScores[playerIndex] :
+                GameManager_M.playerWins[playerIndex];
+
+            // UIの見た目と値を更新
+            ui.SetupUI(value, null, null, isScoreMode);
+        }
+    }
+
+
     public void SetPlayerDead(int index) => spawnedUIs[index].SetEliminated(true);
 
     public void UpdatePlayerScore(int index, int score) => spawnedUIs[index].UpdateScore(score);

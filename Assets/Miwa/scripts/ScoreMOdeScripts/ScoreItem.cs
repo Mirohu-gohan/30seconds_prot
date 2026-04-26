@@ -5,9 +5,22 @@ public class ScoreItem : MonoBehaviour
     private bool isCollected = false;
     private Rigidbody rb;
 
+    private bool canCollect = false; // 最初はfalse
+    private float collectDelay = 0.5f; // 0.5秒間は拾えない
+    private float timer = 0f;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
+    }
+
+   void Update()
+    {
+        if (!canCollect)
+        {
+            timer += Time.deltaTime;
+            if (timer >= collectDelay) canCollect = true;
+        }
     }
 
     public void Launch(Vector3 direction, float force)

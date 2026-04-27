@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerStatusUI : MonoBehaviour
@@ -13,9 +13,14 @@ public class PlayerStatusUI : MonoBehaviour
     public Image[] stars; 
     [Header("星の色設定")]
     public Color starOnColor = Color.yellow; 
-    public Color starOffColor = Color.gray;  
+    public Color starOffColor = Color.gray;
+
+    [Header("スコア表示用")]
+    public Text scoreText;
+
+
     
-    public void SetupUI(int currentScore, Sprite alive, Sprite dead)
+    public void SetupUI(int initialValue, Sprite alive, Sprite dead,bool isScoreMode)
     {
         myAliveSprite = alive;
         myDeadSprite = dead;
@@ -25,27 +30,55 @@ public class PlayerStatusUI : MonoBehaviour
             backgroundPanel.sprite = myAliveSprite;
             backgroundPanel.color = Color.white; 
         }
-        
-        UpdateStars(currentScore);
+        if (stars != null)
+        {
+            foreach(var star in stars)
+            {
+                if(star != null) star.gameObject.SetActive(!isScoreMode);
+            }
+        }
+        if(scoreText  != null)
+        {
+            scoreText.gameObject.SetActive(isScoreMode);
+        }
+        if(isScoreMode)
+        {
+            UpdateScore(initialValue);
+        }
+        else
+        {
+            UpdateStars(initialValue);
+        }
     }
 
     public void UpdateStars(int score)
     {
+        // ここが null だと色を変えられない
+        if (stars == null || stars.Length == 0)
+        {
+            Debug.LogWarning("UIの星(stars)がセットされていません！");
+            return;
+        }
+
         for (int i = 0; i < stars.Length; i++)
         {
-            stars[i].color = (i < score) ? starOnColor : starOffColor;
+            if (stars[i] != null)
+            {
+                // i=0(1つ目)の星は、勝利数(score)が1以上の時に色が付く
+                stars[i].color = (i < score) ? starOnColor : starOffColor;
+            }
+        }
+    }
+    public void UpdateScore(int score)
+    {
+        if(scoreText != null)
+        {
+            scoreText.text = score.ToString();
         }
     }
 
     public void SetEliminated(bool isDead)
     {
-        if (backgroundPanel != null)
-        {
-            Sprite targetSprite = isDead ? myDeadSprite : myAliveSprite;
-            if (targetSprite != null)
-            {
-                backgroundPanel.sprite = targetSprite;
-            }
-        }
+        backgroundPanel.sprite = isDead ? myDeadSprite : myAliveSprite;
     }
 }

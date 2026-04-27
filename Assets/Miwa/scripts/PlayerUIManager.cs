@@ -1,5 +1,6 @@
+﻿using System.Collections.Generic;
+using Unity.Burst.CompilerServices;
 using UnityEngine;
-using System.Collections.Generic;
 
 public class PlayerUIManager : MonoBehaviour
 {
@@ -21,7 +22,7 @@ public class PlayerUIManager : MonoBehaviour
         else Destroy(gameObject);
     }
 
-    public void InitializePlayerUI(int playerCount)
+    public void InitializePlayerUI(int playerCount, bool isScoreMode)
     {
         foreach (var ui in spawnedUIs) if (ui != null) Destroy(ui.gameObject);
         spawnedUIs.Clear();
@@ -37,28 +38,47 @@ public class PlayerUIManager : MonoBehaviour
             {
                 Sprite myAlive = (i < aliveSprites.Length) ? aliveSprites[i] : null;
                 Sprite myDead = (i < deadSprites.Length) ? deadSprites[i] : null;
-                statusUI.SetupUI(0, myAlive, myDead);
                 
+                int intialValue =isScoreMode ? GameManager_M.currentScores[i]:GameManager_M.playerWins[i];
+                statusUI.SetupUI(intialValue, myAlive, myDead, isScoreMode);
+
                 spawnedUIs.Add(statusUI);
             }
         }
     }
 
-    public void SetPlayerDead(int playerIndex)
+    public void ResetPlayerStatus(int index)
     {
-        if (playerIndex >= 0 && playerIndex < spawnedUIs.Count)
+        if (index >= 0 && index < spawnedUIs.Count)
         {
-            spawnedUIs[playerIndex].SetEliminated(true);
+            spawnedUIs[index].SetEliminated(false); // 生存スプライトに戻す
         }
     }
 
-    public void UpdatePlayerScore(int playerIndex, int score)
+    public void UpdatePlayerUI(int playerIndex, bool isScoreMode)
     {
-        if (playerIndex >= 0 && playerIndex < spawnedUIs.Count)
+        // エラー修正1: 'playerStatusUIs' を 'spawnedUIs' に変更
+        if (spawnedUIs == null || playerIndex >= spawnedUIs.Count)return;
+
+        var ui = spawnedUIs[playerIndex];
+        if (ui != null)
         {
-            spawnedUIs[playerIndex].UpdateStars(score);
+            // エラー修正2: GameManager_M.Instance.playerWins ではなく GameManager_M.playerWins (static参照)
+            int value = isScoreMode ?
+                GameManager_M.currentScores[playerIndex] :
+                GameManager_M.playerWins[playerIndex];
+
+            // UIの見た目と値を更新
+            ui.SetupUI(value, null, null, isScoreMode);
         }
     }
+
+
+    public void SetPlayerDead(int index) => spawnedUIs[index].SetEliminated(true);
+
+    public void UpdatePlayerScore(int index, int score) => spawnedUIs[index].UpdateScore(score);
+
+    public void UpdatePlayerStars(int index, int stars) => spawnedUIs[index].UpdateStars(stars);
 
     public void ResetAllUIState()
     {

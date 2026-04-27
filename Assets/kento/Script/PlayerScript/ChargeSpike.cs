@@ -14,7 +14,8 @@ public class ChargeSpike : MonoBehaviour
     private PlayerStateManager stateManager;
     //-----------------
     [SerializeField] private Image MeterImage;
-
+    //[SerializeField] private Image[] MeterImage;
+   
     private float meterSpeed = 1.0f;
     private Coroutine meter;
     //---------------

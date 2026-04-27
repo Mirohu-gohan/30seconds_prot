@@ -133,6 +133,7 @@ public class AtackController : MonoBehaviour
                     Debug.Log("弱");
                 }
 
+                rb.linearVelocity = Vector3.zero;
                 rb.AddForce(transform.forward * curentForce, ForceMode.Impulse);
 
                 Invoke("EndAttack", duration);

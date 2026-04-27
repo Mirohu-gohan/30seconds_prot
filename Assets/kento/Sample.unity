@@ -661,10 +661,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 508868495203666293, guid: eaa94da8264a37f409428450f4cfa358, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1467972556991973160, guid: eaa94da8264a37f409428450f4cfa358, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -705,33 +701,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3701824436705099764, guid: eaa94da8264a37f409428450f4cfa358, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6555609868049815766, guid: eaa94da8264a37f409428450f4cfa358, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6555609868049815766, guid: eaa94da8264a37f409428450f4cfa358, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6555609868049815766, guid: eaa94da8264a37f409428450f4cfa358, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6555609868049815766, guid: eaa94da8264a37f409428450f4cfa358, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -2.17
-      objectReference: {fileID: 0}
-    - target: {fileID: 6555609868049815766, guid: eaa94da8264a37f409428450f4cfa358, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 7264872610586248956, guid: eaa94da8264a37f409428450f4cfa358, type: 3}
-      propertyPath: m_IsActive
-      value: 1
+    - target: {fileID: 3385145087971103294, guid: eaa94da8264a37f409428450f4cfa358, type: 3}
+      propertyPath: MeterImage
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8904983594604811599, guid: eaa94da8264a37f409428450f4cfa358, type: 3}
       propertyPath: m_Name
@@ -1301,10 +1273,6 @@ PrefabInstance:
     - target: {fileID: 5128585452599055210, guid: 003a9b5f3e2ab974d82cb0babe5ec6e2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8876845605541246574, guid: 003a9b5f3e2ab974d82cb0babe5ec6e2, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

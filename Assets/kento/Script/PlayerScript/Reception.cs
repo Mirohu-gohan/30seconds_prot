@@ -106,6 +106,7 @@ public class Reception : MonoBehaviour
         col.enabled = false;
         rb.useGravity = false;
         knock.Play();
+        
         yield return new WaitForSeconds(StunInvincibleTime);
 
         rb.useGravity = true;

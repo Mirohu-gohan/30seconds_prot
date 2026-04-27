@@ -33,6 +33,7 @@ public class ItemSpawn : MonoBehaviour
 
     void SpawnItem()
     {
+        if (itemPrefabes == null || itemPrefabes.Length == 0) { return; }
         //Playerの取得したアイテムのList除外
         items.RemoveAll(item => item == null);
         //アイテム生成制限

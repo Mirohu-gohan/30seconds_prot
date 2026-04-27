@@ -14,6 +14,7 @@ public class Reception : MonoBehaviour
     [HideInInspector] public float smallKnockback = 1;
 
     [SerializeField] private ParticleSystem hit;
+    [SerializeField] private ParticleSystem knock;
 
     [SerializeField] private float StunInvincibleTime = 1.0f; //無敵時間
     bool isKonckback = false;
@@ -33,6 +34,8 @@ public class Reception : MonoBehaviour
     private void Start()
     {
         hit.Stop();
+        knock.Stop();
+
         rb = GetComponent<Rigidbody>();
         //animator = GetComponent<Animator>();
         col = GetComponent<Collider>();
@@ -99,13 +102,15 @@ public class Reception : MonoBehaviour
         yield return new WaitForSeconds(0.05f);
      
         if(hit &&  hit.isPlaying)
-            hit.Stop();
+        hit.Stop();
         col.enabled = false;
         rb.useGravity = false;
+        knock.Play();
         yield return new WaitForSeconds(StunInvincibleTime);
 
         rb.useGravity = true;
         col.enabled = true;
+        knock.Stop();
         stateManager.SetState(State.None);
         isHit = false;
         if (animeCon.isHit)

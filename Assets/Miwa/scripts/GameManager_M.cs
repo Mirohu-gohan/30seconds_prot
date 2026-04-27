@@ -145,6 +145,8 @@ public class GameManager_M : MonoBehaviour
     //カウントダウンの演出
     private IEnumerator StartCountdown()
     {
+        yield return null;
+
         isGameStarted = false;
         SetAllPlayersControl(false);
         if (_currentMode is SurvivalMode survival) survival.isTimerActive = false;
@@ -230,11 +232,14 @@ public class GameManager_M : MonoBehaviour
                 }
             }
 
-            var moveScrit = player.GetComponent<PlayerController1>();
+            var moveScrit = player.GetComponent<MoveController>();
             if (moveScrit != null) moveScrit.enabled = enabled;
 
-            var moveBotScript = player.GetComponent<BotPlayerController1>();
-            if (moveBotScript != null) moveBotScript.enabled = enabled;
+            /*            var moveScrit = player.GetComponent<PlayerController1>();
+                        if (moveScrit != null) moveScrit.enabled = enabled;
+
+                        var moveBotScript = player.GetComponent<BotPlayerController1>();
+                        if (moveBotScript != null) moveBotScript.enabled = enabled;*/
 
         }
 
@@ -603,7 +608,7 @@ public class GameManager_M : MonoBehaviour
         if (SoundManager.Instance != null)
         {
             // 1. 今のバトルBGMを止める
-            SoundManager.Instance.StopBGM();
+            //SoundManager.Instance.StopBGM();
 
             // 2. リザルト用の音を鳴らす
             // resultBGMが短いジングルならPlaySE、長い曲ならPlayBGM

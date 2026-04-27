@@ -105,4 +105,19 @@ public class SoundManager : MonoBehaviour
         seSource.PlayOneShot(clip, seVolume);
         lastPlayTimes[clip] = Time.time;
     }
+
+    public void SEtBGMVolume(float volume)
+    {
+        bgmVolume = volume;
+        if(bgmSource !=null)bgmSource.volume =bgmVolume;
+    }
+
+    public void SetSEVolume(float volume)
+    {
+        seVolume = volume;
+        if(seSource != null) seSource.volume = seVolume;
+    }
+
+
+
 }

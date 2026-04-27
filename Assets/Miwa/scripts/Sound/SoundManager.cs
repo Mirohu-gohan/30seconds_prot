@@ -118,6 +118,13 @@ public class SoundManager : MonoBehaviour
         if(seSource != null) seSource.volume = seVolume;
     }
 
-
+    public void StopBGM()
+    {
+        if (bgmSource != null)
+        {
+            bgmSource.Stop();
+            bgmSource.clip = null;
+        }
+    }
 
 }

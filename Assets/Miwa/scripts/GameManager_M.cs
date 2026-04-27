@@ -608,7 +608,7 @@ public class GameManager_M : MonoBehaviour
         if (SoundManager.Instance != null)
         {
             // 1. 今のバトルBGMを止める
-            //SoundManager.Instance.StopBGM();
+            SoundManager.Instance.StopBGM();
 
             // 2. リザルト用の音を鳴らす
             // resultBGMが短いジングルならPlaySE、長い曲ならPlayBGM

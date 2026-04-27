@@ -7,31 +7,42 @@ public class ChargeSpike : MonoBehaviour
 {
     //[SerializeField] private DecalProjector targetRender;
     [SerializeField] private float MaxChargeTime = 1.5f;
-   
+
+    private static int nextID = 0;
+    public int ID { get;private set; }
+
     //private float charge;
     private Material mat;
     private AtackController ac;
     private PlayerStateManager stateManager;
     //-----------------
-    [SerializeField] private Image MeterImage;
-    //[SerializeField] private Image[] MeterImage;
+    //[SerializeField] private Image MeterImage;
+    [SerializeField] private Image[] MeterImage;
+    private Image image;
    
     private float meterSpeed = 1.0f;
     private Coroutine meter;
     //---------------
 
-  /*  private void OnEnable()
+    /*  private void OnEnable()
+      {
+          mat = new Material(targetRender.material);
+          targetRender.material = mat;
+      }*/
+
+    private void Awake()
     {
-        mat = new Material(targetRender.material);
-        targetRender.material = mat;
-    }*/
+        ID = nextID;
+        nextID++;
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         ac = GetComponent<AtackController>();
         stateManager = GetComponent<PlayerStateManager>();
-        MeterImage.fillAmount = 0;
+        image = MeterImage[ID];
+        image.fillAmount = 0;
     }
 
     // Update is called once per frame
@@ -41,32 +52,24 @@ public class ChargeSpike : MonoBehaviour
         if (stateManager.ActionState == ActionState.Charge)
         {
             //charge += Time.deltaTime / MaxChargeTime;
-            MeterImage.fillAmount += speed * Time.deltaTime;
+            image.fillAmount += speed * Time.deltaTime;
         }
         else
         {
             //charge = 0f;
-            MeterImage.fillAmount = 0;
+            image.fillAmount = 0;
         }
 
-        if(stateManager.State == State.Knockback)
+        if (stateManager.State == State.Knockback)
         {
             //charge = 0f;
-            MeterImage.fillAmount = 0;
+            image.fillAmount = 0;
         }
 
         // 0〜1 の範囲に制限
-        MeterImage.fillAmount = Mathf.Clamp01(MeterImage.fillAmount);
+        image.fillAmount = Mathf.Clamp01(image.fillAmount);
 
         // Player のタックル力 (t) に反映
-        ac.SetCharge(MeterImage.fillAmount * ac.chargeMax);
-
-      /*  // 0〜1 の範囲に制限
-        charge = Mathf.Clamp01(charge);
-
-        mat.SetFloat("_Charge", charge);
-
-        // Player のタックル力 (t) に反映
-        ac.SetCharge(charge * ac.chargeMax);*/
+        ac.SetCharge(image.fillAmount * ac.chargeMax);
     }
 }

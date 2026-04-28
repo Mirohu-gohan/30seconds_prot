@@ -64,7 +64,7 @@ public class PlayerItemEffect : MonoBehaviour
 
     void RandomEfect(Item item)
     {
-        int r = Random.Range(0, 2);
+        int r = Random.Range(0, 3);
 
         if (r == 0)
         {

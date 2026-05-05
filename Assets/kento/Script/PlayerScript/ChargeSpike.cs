@@ -1,4 +1,6 @@
-﻿using UnityEditor.Profiling;
+﻿#if UNITY_EDITOR
+using UnityEditor.Profiling;
+#endif
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;

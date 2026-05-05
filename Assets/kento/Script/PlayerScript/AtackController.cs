@@ -2,9 +2,11 @@
 using System.Collections;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.ShaderGraph.Internal;
 using UnityEditorInternal;
+#endif
 using UnityEngine;
 
 public class AtackController : MonoBehaviour

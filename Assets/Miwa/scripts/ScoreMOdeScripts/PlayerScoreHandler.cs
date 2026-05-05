@@ -1,93 +1,79 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 public class PlayerScoreHandler : MonoBehaviour
 {
     private PlayerHealth _health;
     [SerializeField] private GameObject _itemPrefab;
-    private string _lastHitTag;
     private int lastAttackerIndex = -1;
+    private float lastHitTime;
 
-    private void Awake()
-    {
-        _health = GetComponent<PlayerHealth>();
-    }
+    private void Awake() => _health = GetComponent<PlayerHealth>();
 
-    private void OnCollisionEnter(Collision collision)
+    // ぶつかっている間、常に「最後に触った人」を更新し続ける
+    private void OnCollisionStay(Collision collision)
     {
-        // 自分が他のプレイヤーにぶつかった時
         if (collision.gameObject.CompareTag("Player"))
         {
-            // 相手のScoreHandlerを取得して、自分（this）のIDを「攻撃者」として登録する
-            var targetHandler = collision.gameObject.GetComponent<PlayerScoreHandler>();
-            if (targetHandler != null)
+            var attackerHealth = collision.gameObject.GetComponent<PlayerHealth>();
+            if (attackerHealth != null)
             {
-                // _health.playerIndex は自分のID
-                targetHandler.SetLastAttacker(_health.playerIndex);
-                Debug.Log($"Player {targetHandler._health.playerIndex} に攻撃を記録！ 攻撃者: {_health.playerIndex}");
+                SetLastAttacker(attackerHealth.playerIndex);
             }
         }
     }
 
-    // 外部から攻撃者IDをセットする場合（弾丸などから呼ぶ用）
     public void SetLastAttacker(int index)
     {
+        // 自分で自分を落としたことにならないようチェック
+        if (index == _health.playerIndex) return;
+
         lastAttackerIndex = index;
+        lastHitTime = Time.time;
     }
 
     public void HandleDeath()
     {
-        int playerIndex = _health.playerIndex;
-        int currentScore = GameManager_M.currentScores[playerIndex];
+        int myIndex = _health.playerIndex;
+        int currentScore = GameManager_M.currentScores[myIndex];
 
-        //加点（落とした相手へのプレゼント）
-        if (lastAttackerIndex != -1 && lastAttackerIndex != playerIndex)
+        // 1. 相手への加点
+        if (lastAttackerIndex != -1)
         {
             GameManager_M.Instance.AddScore(lastAttackerIndex, 3);
-            lastAttackerIndex = -1;
         }
 
-        if (currentScore <= 0) return;
+        // 2. 自分の減点とアイテム放出
+        if (currentScore > 0)
+        {
+            int penalty = Mathf.Max(1, currentScore / 2);
+            GameManager_M.Instance.AddScore(myIndex, -penalty);
+        }
 
-        //スコアを減らす（これは「落ちた瞬間」に即座に実行）
-        int penalty = Mathf.Max(1, currentScore / 2);
-        GameManager_M.Instance.AddScore(playerIndex, -penalty);
-
-
-        _lastHitTag = "";
+        lastAttackerIndex = -1;
     }
 
-    public void DropItemsAtRespawn(int currentPenalty)
+    public void DropItemsAtRespawn(int count)
     {
-        // リスポーン地点にポイントをばらまく
-        StartCoroutine(DropItemsWithDelay(currentPenalty));
+        StartCoroutine(DropItemsWithDelay(count));
     }
 
-    // アイテムを時間差で出すためのコルーチン
-    private IEnumerator DropItemsWithDelay(int penalty)
+    private IEnumerator DropItemsWithDelay(int count)
     {
-        // スポーンしてすぐ出す
-        yield return new WaitForSeconds(0.1f);
-
-        for (int i = 0; i < penalty; i++)
+        yield return new WaitForSeconds(0.2f); // 少し待ってから放出
+        for (int i = 0; i < count; i++)
         {
             if (_itemPrefab == null) break;
 
-            // キャラクターの頭より上
-            Vector3 spawnPos = transform.position + Vector3.up * 1.5f;
-
+            // 少しバラけるようにランダムな位置から生成
+            Vector3 spawnPos = transform.position + Vector3.up * 1.0f + Random.insideUnitSphere * 0.5f;
             GameObject itemObj = Instantiate(_itemPrefab, spawnPos, Quaternion.identity);
-            ScoreItem itemScript = itemObj.GetComponent<ScoreItem>();
 
+            ScoreItem itemScript = itemObj.GetComponent<ScoreItem>();
             if (itemScript != null)
             {
-                Vector3 randomDir = new Vector3(
-                    UnityEngine.Random.Range(-1f, 1f),
-                    1.5f,
-                    UnityEngine.Random.Range(-1f, 1f)
-                ).normalized;
-                itemScript.Launch(randomDir, 5f);
+                Vector3 launchDir = new Vector3(Random.Range(-1f, 1f), 2f, Random.Range(-1f, 1f)).normalized;
+                itemScript.Launch(launchDir, 4f);
             }
         }
     }

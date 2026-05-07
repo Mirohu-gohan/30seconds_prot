@@ -116,20 +116,27 @@ public class AtackController : MonoBehaviour
             {
                 //チャージを止め攻撃,ステート変更
                 stateManager.SetActionState(ActionState.Attack);
-
                 //? = true , : = false
                 //curentknockbackForce = isMax ? StrongKnockbackForce : WeakKnockbackForce;
 
+                float multiplier = 1.0f;
+                if (GameManager_M.Instance != null &&
+        GameManager_M.Instance.CurrentModeState == GameManager_M.Mode.SuddenDeath)
+                {
+                    multiplier = GameManager_M.Instance.suddenDeathKnockbackMultiplier;
+                }
+
                 if (isMax)
                 {
-                    curentknockbackForce = StrongKnockbackForce;
+
+                    curentknockbackForce = StrongKnockbackForce * multiplier;
                     stateManager.SetAttackPower(AttackPower.Strong);
                     animeCon.isAttack2 = true;
                     Debug.Log("強");
                 }
                 else
                 {
-                    curentknockbackForce = WeakKnockbackForce;
+                    curentknockbackForce = WeakKnockbackForce * multiplier;
                     stateManager.SetAttackPower(AttackPower.Weak);
                     animeCon.isAttack1 = true;
                     Debug.Log("弱");

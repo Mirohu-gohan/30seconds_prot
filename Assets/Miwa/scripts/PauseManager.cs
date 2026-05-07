@@ -7,7 +7,6 @@ public class PauseManager : MonoBehaviour
     [Header("ポーズ画面のパネル")]
     public GameObject pausePanel;
 
-    // ぼかし用のGlobal Volume
     [Header("ぼかし演出用のVolume")]
     public GameObject blurVolume;
 
@@ -16,7 +15,6 @@ public class PauseManager : MonoBehaviour
     void Start()
     {
         if (pausePanel != null) pausePanel.SetActive(false);
-        // ★開始時はぼかしをOFFにしておく
         if (blurVolume != null) blurVolume.SetActive(false);
     }
 
@@ -49,12 +47,12 @@ public class PauseManager : MonoBehaviour
         AudioListener.pause = isPaused;
     }
 
-
     public void OnRestartButton()
     {
         ResetPauseState();
         if (GameManager_M.Instance != null)
         {
+            GameManager_M.Instance.ResetScores();
             GameManager_M.Instance.RestartGame();
         }
         else
@@ -69,7 +67,6 @@ public class PauseManager : MonoBehaviour
         SceneManager.LoadScene("TitleScene");
     }
 
-   //シーン遷移前にぼかしや時間を確実にリセットする用
     private void ResetPauseState()
     {
         Time.timeScale = 1f;

@@ -438,7 +438,7 @@ public class GameManager_M : MonoBehaviour
         }
     }
 
-   
+
 
     //スコアモードの時にリスポーンする処理
     private IEnumerator RespawnPlayer(GameObject player, int playerIndex)
@@ -536,7 +536,7 @@ public class GameManager_M : MonoBehaviour
         }
     }
 
- //スコアモードの時にアイテムを生成する処理
+    //スコアモードの時にアイテムを生成する処理
 
     public void SpawnScoreItems(Vector3 position, int count)
     {
@@ -557,12 +557,38 @@ public class GameManager_M : MonoBehaviour
             ScoreItem script = item.GetComponent<ScoreItem>();
             if (script != null)
             {
+                // ランダムな放出方向
                 Vector3 dir = new Vector3(Random.Range(-1f, 1f), 2f, Random.Range(-1f, 1f)).normalized;
                 script.Launch(dir, 5f);
             }
             yield return new WaitForSeconds(0.05f); // 連続生成の負荷軽減
         }
     }
+
+
+    //スコアのリセット
+    public void ResetScores()
+    {
+        for (int i = 0; i < currentScores.Length; i++)
+        {
+            currentScores[i] = 0;
+        }
+
+        for (int i = 0; i < pendingDropCounts.Length; i++)
+        {
+            pendingDropCounts[i] = 0;
+        }
+
+        if (PlayerUIManager.Instance != null)
+        {
+            for (int i = 0; i < currentScores.Length; i++)
+            {
+                PlayerUIManager.Instance.UpdatePlayerScore(i, 0);
+            }
+        }
+    }
+
+
 
     public void TimeExpiredForSurvival()
     {
@@ -657,7 +683,6 @@ public class GameManager_M : MonoBehaviour
             SoundManager.Instance.StopBGM();
 
             // 2. リザルト用の音を鳴らす
-            // resultBGMが短いジングルならPlaySE、長い曲ならPlayBGM
             SoundManager.Instance.PlayBGM(SoundManager.Instance.resultBGM);
         }
 

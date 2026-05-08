@@ -71,4 +71,16 @@ public class PlayerStateManager : MonoBehaviour
         OnStateChanged?.Invoke(State);
     }
 
+    public void ResetState()
+    {
+        MoveState = MoveState.Idle;
+        ActionState = ActionState.None;
+        AttackPower = AttackPower.None;
+        State = State.None;
+
+        OnMoveStateChanged?.Invoke(MoveState);
+        OnActionStateChanged?.Invoke(ActionState);
+        OnAttackPowerChanged?.Invoke(AttackPower);
+        OnStateChanged?.Invoke(State);
+    }
 }

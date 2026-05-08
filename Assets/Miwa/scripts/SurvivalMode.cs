@@ -7,6 +7,8 @@ public class SurvivalMode : IGameMode
     private float currentTime;
     private Text timerText;
     public bool isTimerActive=false;
+    private int _lastDisplayedTenths = int.MinValue;
+
     public SurvivalMode(Text uiText, float timeLimit)
     {
         timerText = uiText;
@@ -25,12 +27,15 @@ public class SurvivalMode : IGameMode
         // 1. 時間の計算（GameManagerのUpdateから呼ばれる）
         currentTime -= Time.deltaTime;
 
-        // 2. 秒数を画面に出す（表示文字列が変わった時だけ更新）
+        // 2. 0.1秒単位の整数で比較し、変化した時だけ文字列生成して更新
         if (timerText != null)
         {
-            string newText = Mathf.Max(0, currentTime).ToString("F1");
-            if (timerText.text != newText)
-                timerText.text = newText;
+            int tenths = Mathf.RoundToInt(Mathf.Max(0f, currentTime) * 10f);
+            if (tenths != _lastDisplayedTenths)
+            {
+                _lastDisplayedTenths = tenths;
+                timerText.text = $"{tenths / 10}.{tenths % 10}";
+            }
         }
 
         // 3. 時間切れ判定

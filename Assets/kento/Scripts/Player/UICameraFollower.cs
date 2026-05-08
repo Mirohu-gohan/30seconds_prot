@@ -1,5 +1,3 @@
-using NUnit.Framework;
-using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
 
@@ -24,8 +22,9 @@ public class UICameraFollower : MonoBehaviour
 
         Quaternion camRot = _cam.transform.rotation;
 
-        for (int i = 0; i < uiList.Count; i++)
+        for (int i = uiList.Count - 1; i >= 0; i--)
         {
+            if (uiList[i] == null) { uiList.RemoveAt(i); continue; }
             uiList[i].rotation = camRot;
         }
     }

@@ -490,6 +490,9 @@ public class GameManager_M : MonoBehaviour
 
 
         // 6. 各種状態のリセット
+        var stateManager = player.GetComponent<PlayerStateManager>();
+        if (stateManager != null) stateManager.ResetState();
+
         var pController = player.GetComponent<PlayerController1>();
         if (pController != null) pController.ResetPlayerState();
 

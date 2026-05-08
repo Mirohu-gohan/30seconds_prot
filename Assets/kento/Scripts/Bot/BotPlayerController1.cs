@@ -372,7 +372,7 @@ public class BotPlayerController1 : MonoBehaviour
     void SearchTarget()
     {
         target = null;
-        minDistance = Mathf.Infinity;
+        float minSqrDistance = Mathf.Infinity;
         float searchRangeSqr = searchRange * searchRange;
 
         foreach (GameObject obj in players)
@@ -382,8 +382,9 @@ public class BotPlayerController1 : MonoBehaviour
             float sqrDist = (transform.position - obj.transform.position).sqrMagnitude;
             if (sqrDist > searchRangeSqr) continue;
 
-            if (sqrDist < minDistance * minDistance)
+            if (sqrDist < minSqrDistance)
             {
+                minSqrDistance = sqrDist;
                 minDistance = Mathf.Sqrt(sqrDist);
                 target = obj;
             }

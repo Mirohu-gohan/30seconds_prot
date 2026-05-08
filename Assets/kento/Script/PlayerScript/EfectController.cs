@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+[RequireComponent(typeof(PlayerStateManager))]
 public class EfectController : MonoBehaviour
 {
     [Header("エフェクト設定")]
@@ -13,15 +14,16 @@ public class EfectController : MonoBehaviour
     private void OnEnable()
     {
         stateManager = GetComponent<PlayerStateManager>();
+        if (stateManager == null) return;
 
         stateManager.OnMoveStateChanged += MoveEffect;
         stateManager.OnActionStateChanged += ChargeEffect;
         stateManager.OnAttackPowerChanged += AttackEffect;
 
-        run.Stop();
-        chage.Stop();
-        strong.Stop();
-        weak.Stop();
+        run?.Stop();
+        chage?.Stop();
+        strong?.Stop();
+        weak?.Stop();
     }
 
     private void OnDisable()

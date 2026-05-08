@@ -1,62 +1,77 @@
-//using Unity.Services.Authentication;
+ï»¿//using Unity.Services.Authentication;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Users;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
-using System.Collections;
 
 public class MainGameManger : MonoBehaviour
 {
     [SerializeField] private GameObject playerPrefab = default; //Player
     [SerializeField] private GameObject botPrefab = default;    //Bot
-    [SerializeField] private Transform[] pos = default;         //¶¬ˆÊ’u
+    [SerializeField] private Transform[] pos = default;         //ç”Ÿæˆä½ç½®
     [SerializeField] private GameObject timeUpPanel;
 
     IEnumerator Start()
     {
-        yield return null; // 1ƒtƒŒ[ƒ€‘Ò‚Â
+        yield return null; // 1ãƒ•ãƒ¬ãƒ¼ãƒ å¾…ã¤
         timeUpPanel.gameObject.SetActive(false);
     }
 
     void Awake()
     {
-        //ƒCƒ“ƒXƒ^ƒ“ƒX‚ª‚È‚¢ê‡‚Íreturn
+        //ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãŒãªã„å ´åˆã¯return
         if(PlayerDataHolder.Instance == null) { return; }
 
-        //ƒCƒ“ƒXƒ^ƒ“ƒX‚Å•Û‚µ‚Ä‚¢‚éƒfƒoƒCƒXî•ñ‚Æl”‚ğæ“¾
+        //ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã§ä¿æŒã—ã¦ã„ã‚‹ãƒ‡ãƒã‚¤ã‚¹æƒ…å ±ã¨äººæ•°ã‚’å–å¾—
         var devices = PlayerDataHolder.Instance.GetDevices();
         int count   = PlayerDataHolder.Instance.GetPlayerCount();
 
-        //l”•ªPlayer‚Ì¶¬,PlayerID
+        //äººæ•°åˆ†Playerã®ç”Ÿæˆ,PlayerID
         for (int i = 0; i < pos.Length; i++)
         {
             if (i < count && devices[i] != null)
             {
-                // w’èƒfƒoƒCƒX‚Å PlayerInput ‚ğ‚ÂƒvƒŒƒCƒ„[‚ğ¶¬
+                /*// æŒ‡å®šãƒ‡ãƒã‚¤ã‚¹ã§ PlayerInput ã‚’æŒã¤ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’ç”Ÿæˆ
                 var obj = PlayerInput.Instantiate(
                     prefab: playerPrefab,
                     playerIndex: i,
                     pairWithDevice: devices[i]
                  );
-                //¶¬Œã‚±‚ÌˆÊ’u‚ÉƒZƒbƒg
+                //ç”Ÿæˆå¾Œã“ã®ä½ç½®ã«ã‚»ãƒƒãƒˆ
                 obj.transform.position = pos[i].position;
-                obj.transform.rotation = pos[i].rotation;
+                obj.transform.rotation = pos[i].rotation;*/
+                var obj = Instantiate(
+                    playerPrefab,
+                    pos[i].position,
+                    pos[i].rotation
+                 );
+
+                // PlayerInputå–å¾—
+                PlayerInput input = obj.GetComponent<PlayerInput>();
+
+                // ãƒ‡ãƒã‚¤ã‚¹ã‚’æ˜ç¤ºçš„ã«ãƒšã‚¢ãƒªãƒ³ã‚°
+                input.user.UnpairDevices();
+                InputUser.PerformPairingWithDevice(devices[i], input.user);
+
+                Debug.Log($"Player{i + 1} : {devices[i].displayName}");
 
             }
             else
             {
-                // --- ‚±‚±‚©‚ç‘‚«Š·‚¦ ---
-                // 1. Bot‚ğ¶¬‚µ‚ÄA•Ï”ubotObjv‚É“ü‚ê‚é
+                // --- ã“ã“ã‹ã‚‰æ›¸ãæ›ãˆ ---
+                // 1. Botã‚’ç”Ÿæˆã—ã¦ã€å¤‰æ•°ã€ŒbotObjã€ã«å…¥ã‚Œã‚‹
                 GameObject botObj = Instantiate(botPrefab, pos[i].position, pos[i].rotation);
 
-                // 2. ¶¬‚µ‚½Bot‚©‚ç PlayerHealth ƒXƒNƒŠƒvƒg‚ğ’T‚·
+                // 2. ç”Ÿæˆã—ãŸBotã‹ã‚‰ PlayerHealth ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚’æ¢ã™
                 PlayerHealth health = botObj.GetComponent<PlayerHealth>();
                 if (health != null)
                 {
-                    // 3. Bot‚Éu‚¨‘O‚Í i ”Ô–Úi0, 1, 2, 3...j‚¾‚æv‚Æ‹³‚¦‚Ş
+                    // 3. Botã«ã€ŒãŠå‰ã¯ i ç•ªç›®ï¼ˆ0, 1, 2, 3...ï¼‰ã ã‚ˆã€ã¨æ•™ãˆè¾¼ã‚€
                     health.playerIndex = i;
                 }
-                // --- ‚±‚±‚Ü‚Å ---
+                // --- ã“ã“ã¾ã§ ---
             }
             //else
             //{

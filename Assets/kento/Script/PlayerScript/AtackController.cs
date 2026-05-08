@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections;
-using System.Runtime.CompilerServices;
-using Unity.VisualScripting;
+﻿using System.Collections;
 #if UNITY_EDITOR
 using UnityEditor;
-using UnityEditor.ShaderGraph.Internal;
-using UnityEditorInternal;
 #endif
 using UnityEngine;
 
 public class AtackController : MonoBehaviour
 {
-    /*変更点あり*/
     [SerializeField] private float curentForce = 15f;
     private float duration = 0.5f;
     private float cooldown = 1.0f; //攻撃クールダウン
@@ -76,11 +70,6 @@ public class AtackController : MonoBehaviour
             EndAttack();
             stateManager.SetAttackPower(AttackPower.None);
         }
-        /*else
-        {
-            t = 0f;
-            //stateManager.SetAttackPower(AttackPower.None);
-        }*/
         if (isRigid)
         {
             if(curentRecoveryTime > 0f)
@@ -116,8 +105,6 @@ public class AtackController : MonoBehaviour
             {
                 //チャージを止め攻撃,ステート変更
                 stateManager.SetActionState(ActionState.Attack);
-                //? = true , : = false
-                //curentknockbackForce = isMax ? StrongKnockbackForce : WeakKnockbackForce;
 
                 float multiplier = 1.0f;
                 if (GameManager_M.Instance != null &&
@@ -128,18 +115,15 @@ public class AtackController : MonoBehaviour
 
                 if (isMax)
                 {
-
                     curentknockbackForce = StrongKnockbackForce * multiplier;
                     stateManager.SetAttackPower(AttackPower.Strong);
                     animeCon.isAttack2 = true;
-                    Debug.Log("強");
                 }
                 else
                 {
                     curentknockbackForce = WeakKnockbackForce * multiplier;
                     stateManager.SetAttackPower(AttackPower.Weak);
                     animeCon.isAttack1 = true;
-                    Debug.Log("弱");
                 }
 
                 rb.linearVelocity = Vector3.zero;
@@ -190,8 +174,6 @@ public class AtackController : MonoBehaviour
         {
             Vector3 posDir = other.transform.position - this.transform.position;
             float target_angle = Vector3.Angle(this.transform.forward, posDir);
-
-            var dist = Vector3.Distance(other.transform.position, transform.position);
 
             if (target_angle > angle) { return; }
             float radius = searchArea.radius * transform.localScale.x;

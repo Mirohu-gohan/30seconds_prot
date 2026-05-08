@@ -11,9 +11,6 @@ public class BouncyWall : MonoBehaviour
     [Tooltip("プレイヤーを跳ね返す力")]
     [SerializeField] private float playerBounceForce = 10f;
 
-    [Header("Debug")]
-    [SerializeField] private bool showDebugLogs = true;
-
     // ボールの速度を記録する辞書
     private Dictionary<Rigidbody, Vector3> ballVelocities = new Dictionary<Rigidbody, Vector3>();
 
@@ -68,20 +65,8 @@ public class BouncyWall : MonoBehaviour
         // 入射速度の大きさ
         float speed = incomingVelocity.magnitude;
 
-        if (showDebugLogs)
-        {
-            Debug.Log($"衝突前速度: {speed}, 法線: {normal}");
-        }
-
         // 速度がほぼ0の場合は処理しない
-        if (speed < 0.01f)
-        {
-            if (showDebugLogs)
-            {
-                Debug.Log("速度が0に近いため反射をスキップ");
-            }
-            return;
-        }
+        if (speed < 0.01f) return;
 
         // 反射方向を計算
         Vector3 reflectDirection = Vector3.Reflect(incomingVelocity.normalized, normal);
@@ -91,11 +76,6 @@ public class BouncyWall : MonoBehaviour
 
         // 速度を直接設定
         rb.linearVelocity = reflectVelocity;
-
-        if (showDebugLogs)
-        {
-            Debug.Log($"反射後速度: {reflectVelocity.magnitude}, 方向: {reflectDirection}");
-        }
     }
 
     private void HandlePlayerCollision(Collision collision)
@@ -108,10 +88,5 @@ public class BouncyWall : MonoBehaviour
 
         // 法線方向に力を加える
         rb.AddForce(normal * playerBounceForce, ForceMode.Impulse);
-
-        if (showDebugLogs)
-        {
-            Debug.Log($"プレイヤー跳ね返し - 力: {playerBounceForce}, 方向: {normal}");
-        }
     }
 }

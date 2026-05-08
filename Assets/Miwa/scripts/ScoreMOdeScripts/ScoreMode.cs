@@ -21,7 +21,6 @@ public class ScoreMode : IGameMode
     {
         remainingTime = _timeLimit;
         isTimerActive = true;
-        Debug.Log("Score Mode Started!");
     }
 
     public void OnUpdate()

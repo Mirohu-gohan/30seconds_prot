@@ -15,12 +15,6 @@ public class Loop : MonoBehaviour
 #endif
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void LoopScene()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);

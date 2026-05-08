@@ -1,4 +1,3 @@
-using Unity.Services.Authentication;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,7 +10,6 @@ public class CloroChange : MonoBehaviour
     [SerializeField] private Material yellow;
 
     private SkinnedMeshRenderer render;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         render =GetComponent<SkinnedMeshRenderer>();
@@ -33,9 +31,4 @@ public class CloroChange : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

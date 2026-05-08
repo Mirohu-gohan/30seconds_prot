@@ -7,18 +7,6 @@ public class knockback : MonoBehaviour
     [SerializeField] private float minAngle = -45f;
     [SerializeField] private float maxAngle = 45f;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player"))

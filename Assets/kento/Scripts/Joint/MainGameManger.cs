@@ -1,10 +1,7 @@
-﻿//using Unity.Services.Authentication;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Users;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
 
 public class MainGameManger : MonoBehaviour
 {
@@ -33,15 +30,6 @@ public class MainGameManger : MonoBehaviour
         {
             if (i < count && devices[i] != null)
             {
-                /*// 指定デバイスで PlayerInput を持つプレイヤーを生成
-                var obj = PlayerInput.Instantiate(
-                    prefab: playerPrefab,
-                    playerIndex: i,
-                    pairWithDevice: devices[i]
-                 );
-                //生成後この位置にセット
-                obj.transform.position = pos[i].position;
-                obj.transform.rotation = pos[i].rotation;*/
                 var obj = Instantiate(
                     playerPrefab,
                     pos[i].position,
@@ -54,8 +42,6 @@ public class MainGameManger : MonoBehaviour
                 // デバイスを明示的にペアリング
                 input.user.UnpairDevices();
                 InputUser.PerformPairingWithDevice(devices[i], input.user);
-
-                Debug.Log($"Player{i + 1} : {devices[i].displayName}");
 
             }
             else
@@ -73,18 +59,6 @@ public class MainGameManger : MonoBehaviour
                 }
                 // --- ここまで ---
             }
-            //else
-            //{
-            //    Instantiate(botPrefab, pos[i].position, pos[i].rotation);
-            //}
         }
-
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

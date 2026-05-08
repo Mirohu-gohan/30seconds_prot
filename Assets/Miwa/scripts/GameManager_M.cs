@@ -637,7 +637,6 @@ public class GameManager_M : MonoBehaviour
                 if (health != null)
                 {
                     playerWins[health.playerIndex]++; // ここで星が増える
-                    Debug.Log($"Player {health.playerIndex + 1} に星を追加！ 現在の星: {playerWins[health.playerIndex]}");
                 }
             }
             // 【サドンデス判定】タイムアップ、または全員同時に落ちた場合

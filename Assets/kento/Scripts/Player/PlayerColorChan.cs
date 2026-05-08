@@ -11,7 +11,6 @@ public class PlayerColorChan : MonoBehaviour
 
     private Material material;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         material = GetComponent<Material>();
@@ -34,9 +33,4 @@ public class PlayerColorChan : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

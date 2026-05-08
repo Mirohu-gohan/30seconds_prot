@@ -15,17 +15,10 @@ public class Landmine : MonoBehaviour
         Effect.SetActive(false);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void OnCollisionEnter(Collision other)
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            Debug.Log("ãNîöÅI");
             Explosion();
 
 

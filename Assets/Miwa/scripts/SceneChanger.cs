@@ -12,11 +12,6 @@ public class SceneChanger : MonoBehaviour
         // もでにロード中なら、二回目以降の命令は無視する
         if (isLoading) return;
         isLoading = true;
-
-        Debug.Log("シーン切り替えを開始します: " + sceneName);
-
-        // 【修正ポイント】元のコードで2回呼ばれていた LoadScene を 1回に整理
-        // これにより、遷移中の不安定な状態で入力が走るリスクを減らします
         SceneManager.LoadScene(sceneName);
     }
 

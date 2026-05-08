@@ -2,13 +2,6 @@ using UnityEngine;
 
 public class TimedDestroy : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
     [SerializeField] public float lifetime = 5f; // 何秒後に消えるか
 
     private float timer = 0f; // 経過時間をカウント

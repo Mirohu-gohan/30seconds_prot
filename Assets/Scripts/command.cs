@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
@@ -23,8 +22,6 @@ public class Command : MonoBehaviour
         Key.B,
         Key.A
     };
-
-    private int kcnt = 0;
 
     // UIの入力を優先するかどうか
     [SerializeField] private bool ignoreWhenUIFocused = false;
@@ -85,22 +82,15 @@ public class Command : MonoBehaviour
         if (key == CommandKeys[cmdSeq])
         {
             cmdSeq++;
-            Debug.Log($"コマンド進行: {cmdSeq}/{CommandKeys.Length}");
 
             if (cmdSeq >= CommandKeys.Length)
             {
-                kcnt++;
-                Debug.Log("隠しコマンド成功!");
                 ActivateHiddenContent();
                 cmdSeq = 0;
             }
         }
         else
         {
-            if (cmdSeq > 0)
-            {
-                Debug.Log("コマンドリセット");
-            }
             cmdSeq = 0;
         }
     }

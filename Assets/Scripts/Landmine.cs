@@ -25,6 +25,7 @@ public class Landmine : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
+            Destroy(Model);
             Debug.Log("‹N”šI");
             Explosion();
 

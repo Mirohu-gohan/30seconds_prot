@@ -52,6 +52,7 @@ public class OptionUIManager : MonoBehaviour
             if (panels[i].isModal && panels[i].panel.activeSelf && i != panelIndex)
             {
                 // 処理をここで終了し、ボタン入力を完全に無視する
+                Debug.Log($"{panels[i].panelName} が開いているため、別のパネルは開けません！");
                 return;
             }
         }

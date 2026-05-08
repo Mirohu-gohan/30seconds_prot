@@ -16,15 +16,23 @@ public class PlayerInputController : MonoBehaviour
     private MoveController move;
     private AtackController atack;
 
+    private InputDevice myDevice;
+
     private void Awake()
     {
         stateManager = GetComponent<PlayerStateManager>();
         move = GetComponent<MoveController>();
         atack = GetComponent<AtackController>();
     }
+    void Start()
+    {
+        myDevice = GetComponent<PlayerInput>().devices[0];
+    }
 
     public void OnMove(InputAction.CallbackContext context)
     {
+        if (context.control.device != myDevice)
+            return;
         if (stateManager.State == State.Knockback)
         {
             move.SetMoveInput(Vector2.zero);
@@ -47,6 +55,8 @@ public class PlayerInputController : MonoBehaviour
 
     public void OnAtatck(InputAction.CallbackContext context)
     {
+        if (context.control.device != myDevice)
+            return;
         if (context.performed)
         {
             atack.Shot(0);

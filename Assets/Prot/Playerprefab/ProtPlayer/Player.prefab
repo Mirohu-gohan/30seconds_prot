@@ -321,8 +321,8 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 6e307aed-21c0-463a-bac3-822cf96e6df2
     m_ActionName: 'Player/Enter[/Keyboard/enter]'
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
+  m_NeverAutoSwitchControlSchemes: 1
+  m_DefaultControlScheme: Gamepad
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}

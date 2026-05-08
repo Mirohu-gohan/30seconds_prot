@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class Landmine : MonoBehaviour
 {
@@ -8,6 +9,9 @@ public class Landmine : MonoBehaviour
 
     public GameObject Effect;
     public GameObject Model;
+
+    [SerializeField]
+    private AudioSource SE;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -33,7 +37,7 @@ public class Landmine : MonoBehaviour
         }
     }
 
-    void Explosion()
+        void Explosion()
     {
         Collider[] hits = Physics.OverlapSphere(transform.position, explosionRadius);
         foreach(Collider hit in hits)
@@ -43,6 +47,8 @@ public class Landmine : MonoBehaviour
                 Rigidbody rb = hit.GetComponent<Rigidbody>();
                 if (rb != null)
                 {
+                    SE.PlayOneShot(SE.clip);
+
                     rb.linearVelocity = Vector3.zero;
                     rb.AddForce(Vector3.up * explosionForce, ForceMode.VelocityChange);
                 }

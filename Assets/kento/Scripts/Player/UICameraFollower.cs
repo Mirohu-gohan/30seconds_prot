@@ -7,11 +7,22 @@ public class UICameraFollower : MonoBehaviour
 {
     public static readonly List<Transform> uiList = new();
 
+    private Camera _cam;
+
+    void Start()
+    {
+        _cam = Camera.main;
+    }
+
     void LateUpdate()
     {
-        if(Camera.main == null) { return; }
-        
-        Quaternion camRot = Camera.main.transform.rotation;
+        if (_cam == null)
+        {
+            _cam = Camera.main;
+            if (_cam == null) return;
+        }
+
+        Quaternion camRot = _cam.transform.rotation;
 
         for (int i = 0; i < uiList.Count; i++)
         {

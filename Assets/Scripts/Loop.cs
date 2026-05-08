@@ -5,10 +5,14 @@ public class Loop : MonoBehaviour
 {
     [SerializeField] private float loopInterval = 3f; // ループ間隔（秒）
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [SerializeField] private bool enableLoop = false;
+
     void Start()
     {
-        InvokeRepeating(nameof(LoopScene), loopInterval, loopInterval);
+#if UNITY_EDITOR
+        if (enableLoop)
+            InvokeRepeating(nameof(LoopScene), loopInterval, loopInterval);
+#endif
     }
 
     // Update is called once per frame

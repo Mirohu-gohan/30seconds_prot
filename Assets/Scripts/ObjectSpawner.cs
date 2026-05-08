@@ -88,13 +88,19 @@ public class MoveObject : MonoBehaviour
     [HideInInspector]
     public Vector3 direction = Vector3.down;
 
+    private Vector3 _spawnPosition;
+    private const float DestroyDistanceSqr = 50f * 50f;
+
+    void Start()
+    {
+        _spawnPosition = transform.position;
+    }
+
     void Update()
     {
-        // 指定方向に移動
         transform.position += direction * speed * Time.deltaTime;
 
-        // 遠くに行ったら削除（メモリ節約）
-        if (Vector3.Distance(Vector3.zero, transform.position) > 50f)
+        if ((transform.position - _spawnPosition).sqrMagnitude > DestroyDistanceSqr)
         {
             Destroy(gameObject);
         }

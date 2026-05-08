@@ -47,7 +47,9 @@ public class AcceleratingBall : MonoBehaviour
                 velocity = velocity.normalized * maxSpeed;
             }
 
+#if UNITY_EDITOR
             Debug.Log($"反射！現在の速度: {velocity.magnitude}");
+#endif
         }
     }
 }

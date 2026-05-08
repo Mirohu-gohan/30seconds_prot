@@ -300,33 +300,24 @@ public class BotPlayerController1 : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (!isTackling) return;
+        if (!other.gameObject.CompareTag("Player")) return;
+
+        Vector3 posDir = other.transform.position - this.transform.position;
+        float target_angle = Vector3.Angle(this.transform.forward, posDir);
+
+        if (target_angle > angle) return;
+
+        if (Physics.Raycast(this.transform.position + Vector3.up * 0.5f, posDir, out RaycastHit hit))
         {
-            Vector3 posDir = other.transform.position - this.transform.position;
-            float target_angle = Vector3.Angle(this.transform.forward, posDir);
-
-            var dist = Vector3.Distance(other.transform.position, transform.position);
-
-            if (target_angle > angle) { return; }
-
-            if (target_angle <= angle)
+            if (hit.collider == other)
             {
-                if (Physics.Raycast(this.transform.position + Vector3.up * 0.5f, posDir, out RaycastHit hit))
-                {
-                    if (hit.collider == other)
-                    {
-                        if (isTackling)
-                        {
-                            Reception1 p = other.gameObject.GetComponent<Reception1>();
-                            if (p.isHit) { return; }
-                            p.KnockBack(rb.linearVelocity.normalized, curentknockbackForce);
+                Reception1 p = other.gameObject.GetComponent<Reception1>();
+                if (p == null || p.isHit) return;
+                p.KnockBack(rb.linearVelocity.normalized, curentknockbackForce);
 
-                            //当たった時点でInvokeをキャンセルしてタックルを止める
-                            CancelInvoke("EndTackle");
-                            EndTackle();
-                        }
-                    }
-                }
+                CancelInvoke("EndTackle");
+                EndTackle();
             }
         }
     }
@@ -358,12 +349,16 @@ public class BotPlayerController1 : MonoBehaviour
     {
         players.Clear();
 
-        foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Player"))
+        var activePlayers = GameManager_M.Instance != null
+            ? GameManager_M.Instance.GetActivePlayers()
+            : null;
+        if (activePlayers == null) return;
+
+        foreach (GameObject obj in activePlayers)
         {
-            if (obj == gameObject) continue; // 自分は除外
+            if (obj == null || obj == gameObject) continue;
             if (IsOutOfStage(obj.transform.position))
             {
-                // ステージ外のプレイヤーはoutPlayersに追加
                 if (!outPlayers.Contains(obj))
                     outPlayers.Add(obj);
             }
@@ -376,21 +371,20 @@ public class BotPlayerController1 : MonoBehaviour
 
     void SearchTarget()
     {
-        //if (isTackling || isStrt) return;
-
         target = null;
         minDistance = Mathf.Infinity;
+        float searchRangeSqr = searchRange * searchRange;
 
         foreach (GameObject obj in players)
         {
             if (obj == null) continue;
 
-            float dist = Vector3.Distance(transform.position, obj.transform.position);
-            if (dist > searchRange) continue;
+            float sqrDist = (transform.position - obj.transform.position).sqrMagnitude;
+            if (sqrDist > searchRangeSqr) continue;
 
-            if (dist < minDistance)
+            if (sqrDist < minDistance * minDistance)
             {
-                minDistance = dist;
+                minDistance = Mathf.Sqrt(sqrDist);
                 target = obj;
             }
         }

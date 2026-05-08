@@ -71,8 +71,4 @@ public class PlayerStateManager : MonoBehaviour
         OnStateChanged?.Invoke(State);
     }
 
-    private void Update()
-    {
-        Debug.Log($"MoveState: {MoveState}, ActionState: {ActionState}");
-    }
 }

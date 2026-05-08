@@ -285,34 +285,24 @@ public class PlayerController1 : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (!isTackling) return;
+        if (!other.gameObject.CompareTag("Player")) return;
+
+        Vector3 posDir = other.transform.position - this.transform.position;
+        float target_angle = Vector3.Angle(this.transform.forward, posDir);
+
+        if (target_angle > angle) return;
+
+        if (Physics.Raycast(this.transform.position + Vector3.up * 1.2f, posDir, out RaycastHit hit))
         {
-            Vector3 posDir = other.transform.position - this.transform.position;
-            float target_angle = Vector3.Angle(this.transform.forward, posDir);
-
-            var dist = Vector3.Distance(other.transform.position, transform.position);
-
-            if (target_angle > angle) { return; }
-
-            if (target_angle <= angle)
+            if (hit.collider == other)
             {
-                if (Physics.Raycast(this.transform.position + Vector3.up * 1.2f, posDir, out RaycastHit hit))
-                {
-                    if (hit.collider == other)
-                    {
-                        if (isTackling)
-                        {
-                            Reception1 p = other.gameObject.GetComponent<Reception1>();
-                            if (p.isHit) { return; }
-                            p.KnockBack(rb.linearVelocity.normalized, curentknockbackForce);
-                           
+                Reception1 p = other.gameObject.GetComponent<Reception1>();
+                if (p == null || p.isHit) return;
+                p.KnockBack(rb.linearVelocity.normalized, curentknockbackForce);
 
-                            //当たった時点でInvokeをキャンセルしてタックルを止める
-                            CancelInvoke("EndTackle");
-                            EndTackle();
-                        }
-                    }
-                }
+                CancelInvoke("EndTackle");
+                EndTackle();
             }
         }
     }

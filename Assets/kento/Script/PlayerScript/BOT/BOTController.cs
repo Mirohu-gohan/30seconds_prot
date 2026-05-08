@@ -207,19 +207,21 @@ public class BOTController : MonoBehaviour
     void Serch()
     {
         near = null;
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-
+        var players = GameManager_M.Instance != null
+            ? GameManager_M.Instance.GetActivePlayers()
+            : null;
+        if (players == null) return;
 
         minDist = Mathf.Infinity;
 
         foreach (var player in players)
         {
-            if (player == gameObject) continue;
+            if (player == null || player == gameObject) continue;
 
-            float dist = Vector3.Distance(transform.position, player.transform.position);
-            if(dist < minDist)
+            float sqrDist = (transform.position - player.transform.position).sqrMagnitude;
+            if (sqrDist < minDist * minDist)
             {
-                minDist = dist;
+                minDist = Mathf.Sqrt(sqrDist);
                 near = player;
             }
         }

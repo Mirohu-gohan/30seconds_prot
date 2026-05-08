@@ -7,14 +7,13 @@ public class SurvivalMode : IGameMode
     private float currentTime;
     private Text timerText;
     public bool isTimerActive=false;
-
     public SurvivalMode(Text uiText, float timeLimit)
     {
         timerText = uiText;
         currentTime = timeLimit;
     }
 
-    public void OnEnter() 
+    public void OnEnter()
     {
 
     }
@@ -26,10 +25,12 @@ public class SurvivalMode : IGameMode
         // 1. 時間の計算（GameManagerのUpdateから呼ばれる）
         currentTime -= Time.deltaTime;
 
-        // 2. 秒数を画面に出す
+        // 2. 秒数を画面に出す（表示文字列が変わった時だけ更新）
         if (timerText != null)
         {
-            timerText.text = Mathf.Max(0, currentTime).ToString("F1");
+            string newText = Mathf.Max(0, currentTime).ToString("F1");
+            if (timerText.text != newText)
+                timerText.text = newText;
         }
 
         // 3. 時間切れ判定

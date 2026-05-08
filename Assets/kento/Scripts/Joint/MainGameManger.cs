@@ -21,12 +21,6 @@ public class MainGameManger : MonoBehaviour
 
     void Awake()
     {
-        // シーンに事前配置されたテスト用Playerオブジェクトを削除（増殖バグ防止）
-        foreach (var existing in GameObject.FindGameObjectsWithTag("Player"))
-        {
-            Destroy(existing);
-        }
-
         //インスタンスがない場合はreturn
         if(PlayerDataHolder.Instance == null) { return; }
 

@@ -27,6 +27,14 @@ public class PlayerItemEffect : MonoBehaviour
     MoveController mc;
     Reception reception;
 
+    private void OnEnable()
+    {
+        GameObject obj = GameObject.Find("PaintImage");
+        paint = obj.GetComponent<Image>();
+
+        paint.enabled = false;
+    }
+
     private void Start()
     {
         ac = GetComponent<AtackController>();
@@ -39,8 +47,7 @@ public class PlayerItemEffect : MonoBehaviour
         defaultStrongKnockbackForce = ac.StrongKnockbackForce;
         defaltCircleSize = circle.size;
         defaltArrawSize = arraw.transform.localScale;
-        GameObject obj = GameObject.Find("PaintImage");
-        paint = obj.GetComponent<Image>();
+       
     }
 
     public void ApplyItem(Item item)

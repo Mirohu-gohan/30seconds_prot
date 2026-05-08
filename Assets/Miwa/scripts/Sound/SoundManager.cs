@@ -40,6 +40,8 @@ public class SoundManager : MonoBehaviour
     public AudioClip cursorMoveSE;   // 決定ボタンを押す49
     public AudioClip decideSE;       // 決定13
 
+    [Header("■ タイトル画面")]
+    public AudioClip TitelBGM;
 
     [Header("SE重なり防止設定")]
     [SerializeField] private float defaultSeInterval = 0.1f;

@@ -27,11 +27,11 @@ public class Next : MonoBehaviour
 
     public void NextScene()
     {
-        if (Ms.isMode == 1)
+        if (Ms.currentMode == ModeSetting.GameMode.Survival)
         {
             Scene = Ss.Survive_stages[Ss.currentIndex].sceneName;
         }
-        else if (Ms.isMode == 2)
+        else if (Ms.currentMode == ModeSetting.GameMode.Score)
         {
             Scene = Ss.Score_stages[Ss.currentIndex].sceneName;
         }

@@ -1147,9 +1147,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   currentMode: 0
-  isMode: 0
   modeName: {fileID: 372614883655689661}
   modeDescription: {fileID: 2800048764246738998}
+  Ms: {fileID: 6038340043614296882}
   Ss: {fileID: 3540357096790573848}
 --- !u!1 &5172563008657572249
 GameObject:
@@ -1415,7 +1415,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 1
+        m_CallState: 2
 --- !u!114 &4058781921208975082
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1973,9 +1973,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ModeSetting
   currentMode: 0
-  isMode: 0
   modeName: {fileID: 372614883655689661}
   modeDescription: {fileID: 2800048764246738998}
+  Ms: {fileID: 3365964015857923546}
   Ss: {fileID: 4058781921208975082}
 --- !u!1 &7860842371817464676
 GameObject:

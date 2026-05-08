@@ -1,4 +1,3 @@
-using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEditor;
@@ -37,27 +36,27 @@ public class StageSetting : MonoBehaviour
 
     public void NextStage()
     {
-        if (Ms.isMode == 1)
+        if (Ms.currentMode == ModeSetting.GameMode.Survival)
         {
             currentIndex = (currentIndex + 1) % Survive_stages.Length;
             UpdatePreview();
         }
-        else if (Ms.isMode == 2)
+        else if (Ms.currentMode == ModeSetting.GameMode.Score)
         {
             currentIndex = ( currentIndex + 1 ) % Score_stages.Length;
             UpdatePreview();
         }
-            
+
     }
 
     public void PreviousStage()
     {
-        if (Ms.isMode == 1)
+        if (Ms.currentMode == ModeSetting.GameMode.Survival)
         {
             currentIndex = (currentIndex + Survive_stages.Length - 1) % Survive_stages.Length;
             UpdatePreview();
         }
-        else if(Ms.isMode == 2)
+        else if(Ms.currentMode == ModeSetting.GameMode.Score)
         {
             currentIndex = (currentIndex + Score_stages.Length - 1) % Score_stages.Length;
             UpdatePreview();
@@ -66,13 +65,18 @@ public class StageSetting : MonoBehaviour
 
     public void UpdatePreview()
     {
-        if (Ms.isMode == 1)
+        if (Survive_stages == null || Survive_stages.Length == 0 || Score_stages == null || Score_stages.Length == 0)
+        {
+            return;
+        }
+
+        if (Ms.currentMode == ModeSetting.GameMode.Survival)
         {
             stageName.text              = Survive_stages[currentIndex].stageName;
             stagePreviewImage.sprite    = Survive_stages[currentIndex].previewSprite;
             stageDescriptionText.text   = Survive_stages[currentIndex].description;
         }
-        else if(Ms.isMode == 2)
+        else if(Ms.currentMode == ModeSetting.GameMode.Score)
         {
             stageName.text              = Score_stages[currentIndex].stageName;
             stagePreviewImage.sprite    = Score_stages[currentIndex].previewSprite;

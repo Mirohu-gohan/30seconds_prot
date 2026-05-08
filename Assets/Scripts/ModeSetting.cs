@@ -4,12 +4,11 @@ using UnityEngine.UI;
 public class ModeSetting : MonoBehaviour
 {
     public enum GameMode { Survival, Score}
-    public GameMode currentMode;
+    public GameMode currentMode = 0;
 
     public Text modeName;
     public Text modeDescription;
 
-    public ModeSetting Ms;
     public StageSetting Ss;
 
     public void Awake()
@@ -19,13 +18,13 @@ public class ModeSetting : MonoBehaviour
 
     public void NextMode()
     {
-        currentMode = (GameMode)(((int)currentMode + 1) % 2);
+        currentMode = (GameMode)(Mathf.CeilToInt((int)currentMode + 1) % 2);
         UpdateModeText();
     }
 
     public void PreviousMode()
     {
-        currentMode = (GameMode)(((int)currentMode + 2 - 1) % 2);
+        currentMode = (GameMode)(Mathf.CeilToInt((int)currentMode + 1) % 2);
         UpdateModeText();
     }
 
@@ -48,7 +47,7 @@ public class ModeSetting : MonoBehaviour
 
         if (Ss != null)
         {
-            int newLength = (Ms.currentMode == ModeSetting.GameMode.Survival) ? Ss.Survive_stages.Length : Ss.Score_stages.Length;
+            int newLength = (currentMode == GameMode.Survival) ? Ss.Survive_stages.Length : Ss.Score_stages.Length;
             Ss.currentIndex = Mathf.Min(Ss.currentIndex, newLength - 1);
             Ss.UpdatePreview();
         }

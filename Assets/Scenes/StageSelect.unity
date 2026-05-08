@@ -214,6 +214,10 @@ PrefabInstance:
       propertyPath: m_Text
       value: "\u5BFE\u6226\u30E2\u30FC\u30C9\u30B9\u30C6\u30FC\u30B8\uFF11\u306E\u8AAC\u660E"
       objectReference: {fileID: 0}
+    - target: {fileID: 3540357096790573848, guid: 101b9d24e71b5da4eaf576ec87a35d4f, type: 3}
+      propertyPath: Survive_stages.Array.data[1].description
+      value: "\u5BFE\u6226\u30E2\u30FC\u30C9\u306E\u30B9\u30C6\u30FC\u30B82\u306E\u8AAC\u660E"
+      objectReference: {fileID: 0}
     - target: {fileID: 4602467073100189155, guid: 101b9d24e71b5da4eaf576ec87a35d4f, type: 3}
       propertyPath: m_Pivot.x
       value: 0

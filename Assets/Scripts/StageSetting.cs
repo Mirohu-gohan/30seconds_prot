@@ -39,13 +39,12 @@ public class StageSetting : MonoBehaviour
         if (Ms.currentMode == ModeSetting.GameMode.Survival)
         {
             currentIndex = (currentIndex + 1) % Survive_stages.Length;
-            UpdatePreview();
         }
         else if (Ms.currentMode == ModeSetting.GameMode.Score)
         {
-            currentIndex = ( currentIndex + 1 ) % Score_stages.Length;
-            UpdatePreview();
+            currentIndex = (currentIndex + 1) % Score_stages.Length;
         }
+        UpdatePreview();
 
     }
 
@@ -54,13 +53,13 @@ public class StageSetting : MonoBehaviour
         if (Ms.currentMode == ModeSetting.GameMode.Survival)
         {
             currentIndex = (currentIndex + Survive_stages.Length - 1) % Survive_stages.Length;
-            UpdatePreview();
         }
         else if(Ms.currentMode == ModeSetting.GameMode.Score)
         {
             currentIndex = (currentIndex + Score_stages.Length - 1) % Score_stages.Length;
-            UpdatePreview();
         }
+        UpdatePreview();
+
     }
 
     public void UpdatePreview()

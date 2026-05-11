@@ -1,13 +1,14 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class ModeSetting : MonoBehaviour
 {
     public enum GameMode { Survival, Score}
     public GameMode currentMode = 0;
 
-    public Text modeName;
-    public Text modeDescription;
+    public TMP_Text modeName;
+    public TMP_Text modeDescription;
 
     public StageSetting Ss;
 
@@ -33,14 +34,14 @@ public class ModeSetting : MonoBehaviour
         switch(currentMode)
         {
             case GameMode.Survival: 
-                modeName.text = "‘Îíƒ‚[ƒh";
-                modeDescription.text = "‘Îíƒ‚[ƒh‚Ìà–¾";
+                modeName.text = "å¯¾æˆ¦ãƒ¢ãƒ¼ãƒ‰";
+                modeDescription.text = "å¯¾æˆ¦ãƒ¢ãƒ¼ãƒ‰ã®èª¬æ˜";
                 
                 break;
 
             case GameMode.Score:    
-                modeName.text = "ƒXƒRƒAƒ‚[ƒh";
-                modeDescription.text = "ƒXƒRƒAƒ‚[ƒh‚Ìà–¾";
+                modeName.text = "ã‚¹ã‚³ã‚¢ãƒ¢ãƒ¼ãƒ‰";
+                modeDescription.text = "ã‚¹ã‚³ã‚¢ãƒ¢ãƒ¼ãƒ‰ã®èª¬æ˜";
 
                 break;
         }

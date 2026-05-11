@@ -34,7 +34,19 @@ public class OptionUIManager : MonoBehaviour
         {
             if (data.animator != null)
             {
-                data.animator.keepAnimatorStateOnDisable = true;
+                data.animator.keepAnimatorStateOnDisable = false;
+
+                if(!string.IsNullOrEmpty(data.parameterName))
+                {
+                    data.animator.SetBool(data.parameterName, false);
+                }
+
+                data.animator.Play("StartAnim", 0,0f);
+
+                if (data.panel.activeSelf)
+                {
+                    data.panel.SetActive(false);
+                }
             }
         }
     }

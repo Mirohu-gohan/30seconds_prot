@@ -25,7 +25,7 @@ public class ModeSetting : MonoBehaviour
 
     public void PreviousMode()
     {
-        currentMode = (GameMode)(((int)currentMode - 1) % 2);
+        currentMode = (GameMode)(((int)currentMode + 1) % 2);
         UpdateModeText();
     }
 
@@ -34,13 +34,13 @@ public class ModeSetting : MonoBehaviour
         switch(currentMode)
         {
             case GameMode.Survival: 
-                modeName.text = "対戦モード";
+                modeName.text = "対戦";
                 modeDescription.text = "対戦モードの説明";
                 
                 break;
 
             case GameMode.Score:    
-                modeName.text = "スコアモード";
+                modeName.text = "スコア";
                 modeDescription.text = "スコアモードの説明";
 
                 break;

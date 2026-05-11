@@ -19,13 +19,13 @@ public class ModeSetting : MonoBehaviour
 
     public void NextMode()
     {
-        currentMode = (GameMode)(Mathf.CeilToInt((int)currentMode + 1) % 2);
+        currentMode = (GameMode)(((int)currentMode + 1) % 2);
         UpdateModeText();
     }
 
     public void PreviousMode()
     {
-        currentMode = (GameMode)(Mathf.CeilToInt((int)currentMode + 1) % 2);
+        currentMode = (GameMode)(((int)currentMode - 1) % 2);
         UpdateModeText();
     }
 

@@ -9,22 +9,30 @@ using UnityEngine.UIElements;
 
 public class MainGameManger : MonoBehaviour
 {
-  /*  [SerializeField] private GameObject playerPrefab = default;
+    [SerializeField] private GameObject playerPrefab = default;
     [SerializeField] private GameObject botPrefab = default;
 
     [SerializeField] private Transform[] pos = default;
+    [SerializeField] private GameObject timeUpPanel;
+
     private GameObject joinObj;
 
     int i = 0;
 
-    private void Start()
+    IEnumerator Start()
+    {
+        yield return null; // 1フレーム待つ
+        timeUpPanel.gameObject.SetActive(false);
+    }
+
+    private void Awake()
     {
         joinObj = GameObject.Find("JoinedManager");
         //インスタンスがない場合はreturn
         if (PlayerDataHolder.Instance == null) { return; }
 
         //インスタンスで保持しているデバイス情報を取得
-        var devices = PlayerDataHolder.Instance.GetDevices();
+        var devices = JoinData.Instance.GetDevices();
 
         //人数分Playerの生成
         foreach (var device in devices)
@@ -53,5 +61,5 @@ public class MainGameManger : MonoBehaviour
     {
         SceneManager.LoadScene("Start");
         Destroy(joinObj);
-    }*/
+    }
 }

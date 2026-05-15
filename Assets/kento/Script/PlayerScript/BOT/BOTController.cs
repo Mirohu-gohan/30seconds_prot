@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem.Users;
 using UnityEngine.Rendering;
@@ -11,6 +12,14 @@ public class BOTController : MonoBehaviour
     GameObject playerTarget;
     GameObject near = null;
     float minDist;
+
+    [Header("ターゲット選択")]
+    [SerializeField] private float minHoldTime = 2f;   // ターゲット保持の最短時間（秒）
+    [SerializeField] private float maxHoldTime = 4f;   // ターゲット保持の最長時間（秒）
+    [SerializeField] private float penaltyRate = 0.15f; // 同じ相手を狙い続けると加算されるペナルティ/秒
+    private float targetHoldTimer = 0f;
+    private float fairnessPenalty = 0f;
+
 
 /*    //Player操作反転
     public int playerID;
@@ -206,23 +215,52 @@ public class BOTController : MonoBehaviour
 
     void Serch()
     {
-        near = null;
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-
-
-        minDist = Mathf.Infinity;
-
-        foreach (var player in players)
+        // 保持タイマー中は現ターゲットをそのまま使う
+        if (targetHoldTimer > 0f && near != null)
         {
-            if (player == gameObject) continue;
-
-            float dist = Vector3.Distance(transform.position, player.transform.position);
-            if(dist < minDist)
-            {
-                minDist = dist;
-                near = player;
-            }
+            targetHoldTimer -= Time.deltaTime;
+            fairnessPenalty = Mathf.Min(fairnessPenalty + penaltyRate * Time.deltaTime, 1f);
+            minDist = Vector3.Distance(transform.position, near.transform.position);
+            return;
         }
+
+        // 候補リストを作成（自分以外の全プレイヤー）
+        var candidates = new List<GameObject>();
+        foreach (var p in GameObject.FindGameObjectsWithTag("Player"))
+        {
+            if (p != gameObject && p != null)
+                candidates.Add(p);
+        }
+
+        if (candidates.Count == 0) { near = null; minDist = Mathf.Infinity; return; }
+
+        // 距離の逆数で重み付け。現ターゲットは公平ペナルティを引く
+        float totalWeight = 0f;
+        float[] weights = new float[candidates.Count];
+        for (int i = 0; i < candidates.Count; i++)
+        {
+            float d = Vector3.Distance(transform.position, candidates[i].transform.position);
+            float w = 1f / Mathf.Max(d, 0.1f);
+            if (candidates[i] == near) w = Mathf.Max(0.01f, w - fairnessPenalty);
+            weights[i] = w;
+            totalWeight += w;
+        }
+
+        // 重み付きランダムで選択
+        float rnd = Random.Range(0f, totalWeight);
+        float cumulative = 0f;
+        GameObject newTarget = null;
+        for (int i = 0; i < candidates.Count; i++)
+        {
+            cumulative += weights[i];
+            if (rnd <= cumulative) { newTarget = candidates[i]; break; }
+        }
+
+        // ターゲットが変わったらペナルティをリセット
+        if (newTarget != near) fairnessPenalty = 0f;
+        near = newTarget;
+        minDist = near != null ? Vector3.Distance(transform.position, near.transform.position) : Mathf.Infinity;
+        targetHoldTimer = Random.Range(minHoldTime, maxHoldTime);
     }
 
     public void OnMove(Vector2 context)
@@ -240,6 +278,7 @@ public class BOTController : MonoBehaviour
         attackRest = true;
 
         playerTarget = null;
+        targetHoldTimer = 0f; // 攻撃後は必ず再評価（ペナルティが積んでいるので自然に分散する）
         CreatePoint();
         yield return new WaitForSeconds(restTime);
 

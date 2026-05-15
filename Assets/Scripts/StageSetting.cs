@@ -1,13 +1,14 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using UnityEditor;
 
 public class StageSetting : MonoBehaviour
 {
     public ModeSetting Ms;
 
-    public Text stageName;
-    public Text stageDescriptionText;
+    public TMP_Text stageName;
+    public TMP_Text stageDescriptionText;
     public Image stagePreviewImage;
     public Stage[] Survive_stages;
     public Stage[] Score_stages;
@@ -17,7 +18,7 @@ public class StageSetting : MonoBehaviour
 #if UNITY_EDITOR
     private void OnValidate()
     {
-        // Inspector‚ÅSceneAsset‚ğƒZƒbƒg‚µ‚½‚Æ‚«©“®‚ÅsceneName‚É“]Ê
+        // Inspectorã§SceneAssetã‚’ã‚»ãƒƒãƒˆã—ãŸã¨ãè‡ªå‹•ã§sceneNameã«è»¢å†™
         foreach (var s in Survive_stages)
             if (s.sceneAsset != null)
                 s.sceneName = s.sceneAsset.name;

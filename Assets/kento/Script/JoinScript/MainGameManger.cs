@@ -41,6 +41,7 @@ public class MainGameManger : MonoBehaviour
             {
                 var obj = PlayerInput.Instantiate(
                      prefab: playerPrefab,
+                     playerIndex: i,
                      pairWithDevice: device
                 );
                 obj.transform.position = pos[i].position;

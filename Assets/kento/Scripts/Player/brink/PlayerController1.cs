@@ -84,7 +84,7 @@ public class PlayerController1 : MonoBehaviour
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        if (!PlayerDataHolder.Instance.devices.Contains(context.control.device))
+        if (!JoinData.Instance.GetDevices().Contains(context.control.device))
             return;
 
 
@@ -105,7 +105,7 @@ public class PlayerController1 : MonoBehaviour
 
     public void OnTackle(InputAction.CallbackContext context)
     {
-        if (!PlayerDataHolder.Instance.devices.Contains(context.control.device))
+        if (!JoinData.Instance.GetDevices().Contains(context.control.device))
             return;
 
         if (GameManager_M.Instance != null && !GameManager_M.Instance.IsGameStartedProperty) return;

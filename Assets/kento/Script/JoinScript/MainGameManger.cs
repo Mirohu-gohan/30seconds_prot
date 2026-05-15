@@ -29,7 +29,7 @@ public class MainGameManger : MonoBehaviour
     {
         joinObj = GameObject.Find("JoinedManager");
         //インスタンスがない場合はreturn
-        if (PlayerDataHolder.Instance == null) { return; }
+        if (JoinData.Instance == null) { return; }
 
         //インスタンスで保持しているデバイス情報を取得
         var devices = JoinData.Instance.GetDevices();

@@ -150,8 +150,7 @@ public class JoinController : MonoBehaviour
             joinAction.Disable();
             leaveAction.Disable();
 
-            //PlayerDataHolder.Instance.SetDevices(joinDevices.ToArray(), joinDevices.Count);
-            PlayerDataHolder.Instance.SetDevices(joinDevices);
+            JoinData.Instance.SetDevice(joinDevices);
             SceneManager.LoadScene("prot");
         }
     }

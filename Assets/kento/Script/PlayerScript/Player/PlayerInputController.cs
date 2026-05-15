@@ -4,6 +4,15 @@ using UnityEngine.InputSystem.Users;
 
 public class PlayerInputController : MonoBehaviour
 {
+    private int playerIndex;
+    private InputDevice myDevice;
+
+    public void Init(InputDevice device, int index)
+    {
+        myDevice = device;
+        playerIndex = index;
+    }
+
     /*変更点あり*/
     //Player操作反転
     private bool isInverted = false;
@@ -16,7 +25,6 @@ public class PlayerInputController : MonoBehaviour
     private MoveController move;
     private AtackController atack;
 
-    private InputDevice myDevice;
 
     private void Awake()
     {
@@ -24,15 +32,9 @@ public class PlayerInputController : MonoBehaviour
         move = GetComponent<MoveController>();
         atack = GetComponent<AtackController>();
     }
-    void Start()
-    {
-        myDevice = GetComponent<PlayerInput>().devices[0];
-    }
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        if (context.control.device != myDevice)
-            return;
         if (stateManager.State == State.Knockback)
         {
             move.SetMoveInput(Vector2.zero);
@@ -55,8 +57,6 @@ public class PlayerInputController : MonoBehaviour
 
     public void OnAtatck(InputAction.CallbackContext context)
     {
-        if (context.control.device != myDevice)
-            return;
         if (context.performed)
         {
             atack.Shot(0);

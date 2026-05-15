@@ -35,8 +35,23 @@ public class MainGameManger : MonoBehaviour
         var devices = JoinData.Instance.GetDevices();
 
         //人数分Playerの生成
+        /* foreach (var device in devices)
+         {
+             if (device != null)
+             {
+                 var obj = PlayerInput.Instantiate(
+                      prefab: playerPrefab,
+                      pairWithDevice: device
+                 );
+                 obj.transform.position = pos[i].position;
+                 obj.transform.rotation = pos[i].rotation;
+                 Debug.Log(i + "番" + device.displayName);
+                 i++;
+             }
+         }*/
         foreach (var device in devices)
         {
+<<<<<<< HEAD
             if (device != null)
             {
                 var obj = PlayerInput.Instantiate(
@@ -49,6 +64,21 @@ public class MainGameManger : MonoBehaviour
                 Debug.Log(i + "番" + device.displayName);
                 i++;
             }
+=======
+            var obj = Instantiate(playerPrefab, pos[i].position, pos[i].rotation);
+
+            var input = obj.GetComponent<PlayerInput>();
+
+            // ★重要：完全解除
+            input.user.UnpairDevices();
+
+            // ★Join順で固定
+            InputUser.PerformPairingWithDevice(device, input.user);
+
+            Debug.Log($"P{i + 1}: {device.displayName}");
+
+            i++;
+>>>>>>> 854bb67 (Player参加)
         }
         while (i < 4)
         {

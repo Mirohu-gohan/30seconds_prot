@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections;
 
 public class ModeSetting : MonoBehaviour
 {
     public enum GameMode { Survival, Score}
-    public GameMode currentMode = 0;
+    public GameMode currentMode = GameMode.Survival;
 
     public TMP_Text modeName;
     public TMP_Text modeDescription;
@@ -20,13 +21,23 @@ public class ModeSetting : MonoBehaviour
     public void NextMode()
     {
         currentMode = (GameMode)(((int)currentMode + 1) % 2);
-        UpdateModeText();
+        ApplyChange();
     }
 
     public void PreviousMode()
     {
-        currentMode = (GameMode)(((int)currentMode + 1) % 2);
+        int totalModes = System.Enum.GetValues(typeof(GameMode)).Length;
+        currentMode = (GameMode)(((int)currentMode - 1 + totalModes) % totalModes);
+        ApplyChange();
+    }
+
+
+    private void ApplyChange()
+    {
+        GameManager_M.selectedGameMode=(currentMode == GameMode.Survival)? GameManager_M.Mode.Survival : GameManager_M.Mode.ScoreMode;
+
         UpdateModeText();
+
     }
 
     public void UpdateModeText()
@@ -34,13 +45,13 @@ public class ModeSetting : MonoBehaviour
         switch(currentMode)
         {
             case GameMode.Survival: 
-                modeName.text = "対戦";
+                modeName.text = "Survaival";
                 modeDescription.text = "対戦モードの説明";
                 
                 break;
 
             case GameMode.Score:    
-                modeName.text = "スコア";
+                modeName.text = "Score";
                 modeDescription.text = "スコアモードの説明";
 
                 break;

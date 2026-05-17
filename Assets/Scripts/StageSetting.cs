@@ -15,6 +15,8 @@ public class StageSetting : MonoBehaviour
 
     public int currentIndex = 0;
 
+    public static string SelectedSceneName;
+
 #if UNITY_EDITOR
     private void OnValidate()
     {
@@ -72,15 +74,24 @@ public class StageSetting : MonoBehaviour
 
         if (Ms.currentMode == ModeSetting.GameMode.Survival)
         {
-            stageName.text              = Survive_stages[currentIndex].stageName;
-            stagePreviewImage.sprite    = Survive_stages[currentIndex].previewSprite;
-            stageDescriptionText.text   = Survive_stages[currentIndex].description;
+            stageName.text = Survive_stages[currentIndex].stageName;
+            stagePreviewImage.sprite = Survive_stages[currentIndex].previewSprite;
+            stageDescriptionText.text = Survive_stages[currentIndex].description;
         }
-        else if(Ms.currentMode == ModeSetting.GameMode.Score)
+        else if (Ms.currentMode == ModeSetting.GameMode.Score)
         {
-            stageName.text              = Score_stages[currentIndex].stageName;
-            stagePreviewImage.sprite    = Score_stages[currentIndex].previewSprite;
-            stageDescriptionText.text   = Score_stages[currentIndex].description;
+            stageName.text = Score_stages[currentIndex].stageName;
+            stagePreviewImage.sprite = Score_stages[currentIndex].previewSprite;
+            stageDescriptionText.text = Score_stages[currentIndex].description;
+        }
+
+        if (Ms.currentMode == ModeSetting.GameMode.Survival)
+        {
+            SelectedSceneName = Survive_stages[currentIndex].sceneName;
+        }
+        else if(Ms.currentMode==ModeSetting.GameMode.Score)
+        {
+            SelectedSceneName = Score_stages[currentIndex].sceneName;
         }
     }
 }

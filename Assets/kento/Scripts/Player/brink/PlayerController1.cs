@@ -63,7 +63,6 @@ public class PlayerController1 : MonoBehaviour
 
 
     //-----PlayerID-----
-    private int playerID;
     private PlayerInput playerInput;
     [SerializeField] private Text IDtext;
 
@@ -85,10 +84,9 @@ public class PlayerController1 : MonoBehaviour
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        if (!PlayerDataHolder.Instance.IsDeviceForPlayer(
-         playerID,
-         context.control.device))
+        if (!PlayerDataHolder.Instance.devices.Contains(context.control.device))
             return;
+
 
         if (GameManager_M.Instance != null && !GameManager_M.Instance.IsGameStartedProperty){inputVer = Vector2.zero;return;}
         inputVer = context.ReadValue<Vector2>();
@@ -107,9 +105,7 @@ public class PlayerController1 : MonoBehaviour
 
     public void OnTackle(InputAction.CallbackContext context)
     {
-        if (!PlayerDataHolder.Instance.IsDeviceForPlayer(
-           playerID,
-           context.control.device))
+        if (!PlayerDataHolder.Instance.devices.Contains(context.control.device))
             return;
 
         if (GameManager_M.Instance != null && !GameManager_M.Instance.IsGameStartedProperty) return;
@@ -145,12 +141,12 @@ public class PlayerController1 : MonoBehaviour
     void Start()
     {
         playerInput = GetComponent<PlayerInput>();
-        if (playerInput != null)
+      /*  if (playerInput != null)
         {
             playerID = playerInput.playerIndex;
         }
 
-        IDtext.text += $"Player {playerID + 1}\n";
+        IDtext.text += $"Player {playerID + 1}\n";*/
 
         rb = GetComponent<Rigidbody>();
         animator = GetComponentInChildren<Animator>();

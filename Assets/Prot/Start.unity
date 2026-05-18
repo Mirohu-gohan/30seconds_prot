@@ -208,7 +208,6 @@ GameObject:
   - component: {fileID: 175202193}
   - component: {fileID: 175202192}
   - component: {fileID: 175202191}
-  - component: {fileID: 175202195}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -306,18 +305,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &175202195
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 175202190}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0645f96c8e045494e96008de73842859, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MenuManager
 --- !u!1 &200120091
 GameObject:
   m_ObjectHideFlags: 0
@@ -730,9 +717,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 348367791}
-  - component: {fileID: 348367790}
-  - component: {fileID: 348367789}
+  - component: {fileID: 348367793}
   - component: {fileID: 348367792}
+  - component: {fileID: 348367794}
   m_Layer: 0
   m_Name: JoinedManager
   m_TagString: Untagged
@@ -740,126 +727,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &348367789
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 348367788}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7df4277e620dbe4d9f2072af0a70ed2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &348367790
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 348367788}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7c11fe3241207f4fadf650dd98fb3dd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  joinAction:
-    m_Name: Join
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 60d52f68-6abc-4d35-b1d6-0c2e3de1173a
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: d7d1959d-cfd8-4e1e-937b-117bf3171e1c
-      m_Path: <Gamepad>/start
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Join
-      m_Flags: 0
-    - m_Name: 
-      m_Id: a5ba19f2-1c08-4597-ac40-8b3d55118433
-      m_Path: <Keyboard>/j
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Join
-      m_Flags: 0
-    m_Flags: 0
-  leaveAction:
-    m_Name: Leave
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 5104991c-94c8-41a1-9cd0-783500d75ea8
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: c1e1ebf2-4f1d-41d3-9aa7-69258f9a4ebe
-      m_Path: <Gamepad>/buttonEast
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Leave
-      m_Flags: 0
-    - m_Name: 
-      m_Id: 7282f217-0d35-4f6c-9c67-54dd80ef5756
-      m_Path: <Keyboard>/l
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Leave
-      m_Flags: 0
-    m_Flags: 0
-  startAction:
-    m_Name: Start
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 54112101-e3ab-48ea-84de-0130aefec668
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: One Modifier
-      m_Id: 34a3f57f-0bff-4921-892c-fceafb5b3074
-      m_Path: OneModifier
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Start
-      m_Flags: 4
-    - m_Name: modifier
-      m_Id: 2becdc92-a4ed-4daa-aa84-9a3c7dd4d731
-      m_Path: <Gamepad>/leftShoulder
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Start
-      m_Flags: 8
-    - m_Name: binding
-      m_Id: c734d0d0-c8be-4466-9cac-c5a3e05e4d81
-      m_Path: <Gamepad>/rightShoulder
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Start
-      m_Flags: 8
-    - m_Name: 
-      m_Id: 410a9a59-cdf8-46d4-b03f-045a4f03e401
-      m_Path: <Keyboard>/enter
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Start
-      m_Flags: 0
-    m_Flags: 0
-  maxPlayers: 4
-  device1text: {fileID: 1505149091}
-  device2text: {fileID: 842079463}
-  device3text: {fileID: 1517362970}
-  device4text: {fileID: 1008970074}
 --- !u!4 &348367791
 Transform:
   m_ObjectHideFlags: 0
@@ -884,53 +751,105 @@ MonoBehaviour:
   m_GameObject: {fileID: 348367788}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 621567455fd1c4ceb811cc8a00b6a1a5, type: 3}
+  m_Script: {fileID: 11500000, guid: 1eeb6c1b7b701044bbe13c8e0091f195, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
-  m_NotificationBehavior: 2
-  m_MaxPlayerCount: -1
-  m_AllowJoining: 1
-  m_JoinBehavior: 0
-  m_PlayerJoinedEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  m_PlayerLeftEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_JoinAction:
-    m_UseReference: 0
-    m_Action:
-      m_Name: 
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: 210821ce-46ef-4be8-8666-c6902e240e2e
-      m_Processors: 
+  m_EditorClassIdentifier: Assembly-CSharp::JoinData
+--- !u!114 &348367793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 348367788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef1d1e1829fc4d040982f6009a33a307, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::JoinController
+  joinAction:
+    m_Name: Join
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 2bd7ee62-14eb-4df7-bf3c-e8c55d3a0ff9
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 25cbb570-dbc5-4931-9902-03ccbe58fea9
+      m_Path: <Gamepad>/start
       m_Interactions: 
-      m_SingletonActionBindings: []
+      m_Processors: 
+      m_Groups: 
+      m_Action: Join
       m_Flags: 0
-    m_Reference: {fileID: 0}
-  m_PlayerPrefab: {fileID: 4010830591232946320, guid: 957b11552501fa14b93956334d945f33, type: 3}
-  m_SplitScreen: 0
-  m_MaintainAspectRatioInSplitScreen: 0
-  m_FixedNumberOfSplitScreens: -1
-  m_SplitScreenRect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
+    m_Flags: 0
+  leaveAction:
+    m_Name: Leave
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 7c8b8fa6-16b9-4f25-893b-f87025ee42f5
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: b3aa2fac-12ba-4454-90c2-a083467bae42
+      m_Path: <Gamepad>/buttonEast
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Leave
+      m_Flags: 0
+    m_Flags: 0
+  startAction:
+    m_Name: Start
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 809c813e-d0be-4d8f-a65e-e79ba3d4dfe5
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: One Modifier
+      m_Id: f4eb6949-5516-4efc-981c-0ce3af4df529
+      m_Path: OneModifier
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Start
+      m_Flags: 4
+    - m_Name: modifier
+      m_Id: c3035821-0b1e-4d6f-953e-819b4808f65a
+      m_Path: <Gamepad>/leftShoulder
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Start
+      m_Flags: 8
+    - m_Name: binding
+      m_Id: 554c25c3-82d0-44fd-bded-0fd6ca1d0828
+      m_Path: <Gamepad>/rightShoulder
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Start
+      m_Flags: 8
+    m_Flags: 0
+  device1text: {fileID: 1505149091}
+  device2text: {fileID: 842079463}
+  device3text: {fileID: 1517362970}
+  device4text: {fileID: 1008970074}
+  debugDevices: []
+--- !u!114 &348367794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 348367788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7df4277e620dbe4d9f2072af0a70ed2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerDataHolder
 --- !u!1 &409358307
 GameObject:
   m_ObjectHideFlags: 0
@@ -949,7 +868,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &409358308
 RectTransform:
   m_ObjectHideFlags: 0
@@ -994,7 +913,7 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_SelectedColor: {r: 0, g: 0.038576126, b: 1, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -1014,7 +933,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 175202195}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
         m_MethodName: OnClickScoreMode
         m_Mode: 1
@@ -1443,16 +1362,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 175202195}
-        m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
-        m_MethodName: LoadBattleScene
+      - m_Target: {fileID: 11500000, guid: ef1d1e1829fc4d040982f6009a33a307, type: 3}
+        m_TargetAssemblyTypeName: UnityEditor.MonoScript, UnityEditor.CoreModule
+        m_MethodName: set_name
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: prot
+          m_StringArgument: ModeSelect_ui
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &851702842
@@ -2414,7 +2333,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1595878617
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2459,7 +2378,7 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_SelectedColor: {r: 0.9433962, g: 0.06674972, b: 0.06674972, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -2479,7 +2398,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 175202195}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
         m_MethodName: OnClickSurvivalMode
         m_Mode: 1
@@ -2640,6 +2559,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 201867025634345380, guid: 2171721bbe61a49419aa9cb1ff5e2af5, type: 3}
+      propertyPath: TitelBGM
+      value: 
+      objectReference: {fileID: 8300000, guid: 2963fcdbc95cb024d8b1e2d859095794, type: 3}
     - target: {fileID: 201867025634345380, guid: 2171721bbe61a49419aa9cb1ff5e2af5, type: 3}
       propertyPath: defaultSeInterval
       value: 1

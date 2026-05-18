@@ -10,6 +10,19 @@ public class EfectController : MonoBehaviour
 
     private PlayerStateManager stateManager;
 
+    private void OnEnable()
+    {
+        stateManager = GetComponent<PlayerStateManager>();
+
+        stateManager.OnMoveStateChanged += MoveEffect;
+        stateManager.OnActionStateChanged += ChargeEffect;
+        stateManager.OnAttackPowerChanged += AttackEffect;
+
+        run.Stop();
+        chage.Stop();
+        strong.Stop();
+        weak.Stop();
+    }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {

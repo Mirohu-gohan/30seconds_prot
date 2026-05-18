@@ -1,25 +1,77 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using TMPro;
+using UnityEditor.ShaderGraph.Drawing.Inspector.PropertyDrawers;
+
 
 public class MenuManager : MonoBehaviour
 {
     // サバイバルボタンに登録
-    public void OnClickSurvivalMode()
+
+    private const float DelayTime = 0.5f;
+    private float canTransitionTime = 0f;
+
+    public TMP_Text modeNameText;
+
+    private GameManager_M.Mode[] modes =
     {
-        GameManager_M.selectedGameMode = GameManager_M.Mode.Survival;
-        Debug.Log("サバイバルモードを選択しました");
+        GameManager_M.Mode.Survival,
+        GameManager_M.Mode.ScoreMode
+    };
+
+    private int currentSelection = 0;
+
+
+
+    void Start()
+    {
+        canTransitionTime = Time.time + DelayTime;
+
+        UpdateModeDisplay();
+
     }
 
-    // スコアモードボタンに登録
-    public void OnClickScoreMode()
+    public void OnClickNextMode()
     {
-        GameManager_M.selectedGameMode = GameManager_M.Mode.ScoreMode;
-        Debug.Log("スコアモードを選択しました");
+        currentSelection = (currentSelection + 1) % modes.Length;
+        UpdateModeDisplay();
     }
 
-    // ゲーム開始ボタンに登録（引数にシーン名を入れる）
+    public void OnClickPrevMode()
+    {
+        currentSelection--;
+        if (currentSelection < 0) currentSelection = modes.Length - 1;
+        UpdateModeDisplay();
+    }
+
+
+
+   void UpdateModeDisplay()
+    {
+        GameManager_M.selectedGameMode = modes[currentSelection];
+
+        if(modeNameText != null)
+        {
+            switch (modes[currentSelection])
+            {
+                case GameManager_M.Mode.Survival:
+                    modeNameText.text = "SURVIVAL";
+                    break;
+                case GameManager_M.Mode.ScoreMode:
+                    modeNameText.text = "SCORE ATTACK";
+                    break;
+            }
+        }
+    }
+
     public void LoadBattleScene(string sceneName)
     {
+        if (Time.time < canTransitionTime) return;
+
+        // 決定時のSE
+        if (SoundManager.Instance != null) SoundManager.Instance.PlaySE(SoundManager.Instance.gameStartBtnSE);
+
         SceneManager.LoadScene(sceneName);
     }
 }

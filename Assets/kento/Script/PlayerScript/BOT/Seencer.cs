@@ -1,4 +1,6 @@
-﻿using UnityEditor.Rendering;
+﻿#if UNITY_EDITOR
+using UnityEditor.Rendering;
+#endif
 using UnityEngine;
 
 public class Seencer : MonoBehaviour

@@ -11,6 +11,8 @@ public class GameManager_M : MonoBehaviour
 {
     public static GameManager_M Instance { get; private set; }
 
+    private int[] pendingDropCounts = new int[4];
+
     // --- 静的変数 ---
     private static bool _isSuddenDeathNext = false;
     private static List<int> _qualifiedIndices = new List<int>();
@@ -87,6 +89,12 @@ public class GameManager_M : MonoBehaviour
             {
                 playerWins[i] = 0;
             }
+        }
+
+        //スコアリセット
+        for (int i = 0; i < pendingDropCounts.Length; i++)
+        {
+            pendingDropCounts[i] = 0;
         }
         AudioListener.pause = false;
         if (Instance == null) Instance = this;
@@ -285,6 +293,12 @@ public class GameManager_M : MonoBehaviour
 
         if (CurrentModeState == Mode.ScoreMode)
         {
+            // もしマイナス（減点）だったら、その分を「放出予約」に入れる
+            if (amount < 0)
+            {
+                // 絶対値（例：-3点なら3個）を予約リストに加算
+                pendingDropCounts[playerIndex] += Mathf.Abs(amount);
+            }
 
             currentScores[playerIndex] = Mathf.Max(0, currentScores[playerIndex] + amount);
 
@@ -425,13 +439,15 @@ public class GameManager_M : MonoBehaviour
     }
 
 
+
     //スコアモードの時にリスポーンする処理
     private IEnumerator RespawnPlayer(GameObject player, int playerIndex)
     {
         // --- A. 死亡時のスコアから放出数を計算 (減点される前のスコアを元にする場合) ---
         // 現在のスコアの半分を放出アイテム数にする（例：10点持ってたら5個出す）
+
         int currentTotalScore = currentScores[playerIndex];
-        int dropCount = 3;
+        int dropCount = 3; // 固定数にするか、現在のスコアに応じた計算式を入れる
 
         // 1. 非表示にする
         player.SetActive(false);
@@ -461,13 +477,17 @@ public class GameManager_M : MonoBehaviour
         player.transform.position = spawnPosition;
         player.SetActive(true);
 
-        // ★ 5. リスポーン地点でアイテムを放出！
-        var scoreHandler = player.GetComponent<PlayerScoreHandler>();
-        if (scoreHandler != null)
+        int countToDrop = pendingDropCounts[playerIndex];
+
+        if (countToDrop > 0)
         {
-            // PlayerScoreHandler側で作った関数を呼び出す
-            scoreHandler.DropItemsAtRespawn(dropCount);
+            // 予約があった時だけアイテムを生成
+            SpawnScoreItems(spawnPosition + Vector3.up * 1.5f, countToDrop);
+
+            // 出し終わったらメモをリセット（これ重要！）
+            pendingDropCounts[playerIndex] = 0;
         }
+
 
         // 6. 各種状態のリセット
         var pController = player.GetComponent<PlayerController1>();
@@ -512,6 +532,58 @@ public class GameManager_M : MonoBehaviour
 
                 // Launchメソッドを呼ぶ（ScoreItem側にも後で追加します）
                 script.Launch(randomDir, Random.Range(3f, 7f));
+            }
+        }
+    }
+
+    //スコアモードの時にアイテムを生成する処理
+
+    public void SpawnScoreItems(Vector3 position, int count)
+    {
+        StartCoroutine(SpawnItemsRoutine(position, count));
+    }
+
+    private IEnumerator SpawnItemsRoutine(Vector3 pos, int count)
+    {
+        // 落下してすぐ出すと奈落に落ちるので、少し上に補正
+        Vector3 spawnBasePos = pos;
+        spawnBasePos.y = 1.0f; // ステージの高さ程度に固定（またはSpawnPointのYを使う）
+
+        for (int i = 0; i < count; i++)
+        {
+            if (scoreItemPrefab == null) break;
+
+            GameObject item = Instantiate(scoreItemPrefab, spawnBasePos + Random.insideUnitSphere * 0.5f, Quaternion.identity);
+            ScoreItem script = item.GetComponent<ScoreItem>();
+            if (script != null)
+            {
+                // ランダムな放出方向
+                Vector3 dir = new Vector3(Random.Range(-1f, 1f), 2f, Random.Range(-1f, 1f)).normalized;
+                script.Launch(dir, 5f);
+            }
+            yield return new WaitForSeconds(0.05f); // 連続生成の負荷軽減
+        }
+    }
+
+
+    //スコアのリセット
+    public void ResetScores()
+    {
+        for (int i = 0; i < currentScores.Length; i++)
+        {
+            currentScores[i] = 0;
+        }
+
+        for (int i = 0; i < pendingDropCounts.Length; i++)
+        {
+            pendingDropCounts[i] = 0;
+        }
+
+        if (PlayerUIManager.Instance != null)
+        {
+            for (int i = 0; i < currentScores.Length; i++)
+            {
+                PlayerUIManager.Instance.UpdatePlayerScore(i, 0);
             }
         }
     }
@@ -611,7 +683,6 @@ public class GameManager_M : MonoBehaviour
             SoundManager.Instance.StopBGM();
 
             // 2. リザルト用の音を鳴らす
-            // resultBGMが短いジングルならPlaySE、長い曲ならPlayBGM
             SoundManager.Instance.PlayBGM(SoundManager.Instance.resultBGM);
         }
 

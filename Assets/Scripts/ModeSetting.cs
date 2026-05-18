@@ -1,38 +1,76 @@
-using UnityEngine;
+Ôªøusing UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+using System.Collections;
 
 public class ModeSetting : MonoBehaviour
 {
     public enum GameMode { Survival, Score}
-    public GameMode currentMode;
-    public Text modeName;
-    public Text modeDescription;
+    public GameMode currentMode = GameMode.Survival;
+
+    public static GameMode SelectMode = GameMode.Survival;
+
+    public TMP_Text modeName;
+    public TMP_Text modeDescription;
+
+    public StageSetting Ss;
+
+    public void Awake()
+    {
+        currentMode = SelectMode;
+        UpdateModeText();
+    }
 
     public void NextMode()
     {
         currentMode = (GameMode)(((int)currentMode + 1) % 2);
-        UpdateModeText();
+        ApplyChange();
     }
 
     public void PreviousMode()
     {
-        currentMode = (GameMode)(((int)currentMode + 1) % 2);
-        UpdateModeText();
+        int totalModes = System.Enum.GetValues(typeof(GameMode)).Length;
+        currentMode = (GameMode)(((int)currentMode - 1 + totalModes) % totalModes);
+        ApplyChange();
     }
 
-    void UpdateModeText()
+
+    private void ApplyChange()
+    {
+        SelectMode = currentMode;
+
+        GameManager_M.selectedGameMode=(currentMode == GameMode.Survival)? GameManager_M.Mode.Survival : GameManager_M.Mode.ScoreMode;
+
+        UpdateModeText();
+
+    }
+
+    public void UpdateModeText()
     {
         switch(currentMode)
         {
             case GameMode.Survival: 
-                modeName.text = "ëŒêÌÉÇÅ[Éh";
-                modeDescription.text = "ëŒêÌÉÇÅ[ÉhÇÃê‡ñæ";
+                modeName.text = "Survaival";
+                modeDescription.text = "ÂØæÊà¶„É¢„Éº„Éâ„ÅÆË™¨Êòé";
+                
                 break;
 
             case GameMode.Score:    
-                modeName.text = "ÉXÉRÉAÉÇÅ[Éh";
-                modeDescription.text = "ÉXÉRÉAÉÇÅ[ÉhÇÃê‡ñæ";
+                modeName.text = "Score";
+                modeDescription.text = "„Çπ„Ç≥„Ç¢„É¢„Éº„Éâ„ÅÆË™¨Êòé";
+
                 break;
         }
+
+        if (Ss != null)
+        {
+            int newLength = (currentMode == GameMode.Survival) ? Ss.Survive_stages.Length : Ss.Score_stages.Length;
+            Ss.currentIndex = Mathf.Min(Ss.currentIndex, newLength - 1);
+            Ss.UpdatePreview();
+        }
+    }
+    public void OnConfirmSettings()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Start");
     }
 }

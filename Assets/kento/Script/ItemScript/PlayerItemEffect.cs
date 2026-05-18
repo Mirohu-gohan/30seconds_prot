@@ -19,6 +19,8 @@ public class PlayerItemEffect : MonoBehaviour
     Vector3 circleSize;
     Vector3 arrawSize;
     Image paint;
+        Text text;
+
     
 
     public bool isEffectActive { get; private set; } = false;
@@ -26,6 +28,17 @@ public class PlayerItemEffect : MonoBehaviour
     AtackController ac;
     MoveController mc;
     Reception reception;
+
+    private void OnEnable()
+    {
+        GameObject obj = GameObject.Find("PaintImage");
+        paint = obj.GetComponent<Image>();
+        GameObject a = GameObject.Find("ItemTxt");
+        text = a.GetComponent<Text>();
+
+        paint.enabled = false;
+        text.enabled = false;
+    }
 
     private void Start()
     {
@@ -39,8 +52,7 @@ public class PlayerItemEffect : MonoBehaviour
         defaultStrongKnockbackForce = ac.StrongKnockbackForce;
         defaltCircleSize = circle.size;
         defaltArrawSize = arraw.transform.localScale;
-        GameObject obj = GameObject.Find("PaintImage");
-        paint = obj.GetComponent<Image>();
+       
     }
 
     public void ApplyItem(Item item)
@@ -111,6 +123,7 @@ public class PlayerItemEffect : MonoBehaviour
         isEffectActive = true;
 
         PlayerItemEffect[] players = FindObjectsByType<PlayerItemEffect>(FindObjectsSortMode.None);
+        text.enabled = true;
 
         foreach (var p in players)
         {
@@ -146,6 +159,7 @@ public class PlayerItemEffect : MonoBehaviour
                   bot.SetReverse(false);
               }*/
         }
+        text.enabled = false;
         isEffectActive = false;
     }
     IEnumerator PaintEfect(Item item)

@@ -2571,7 +2571,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 876351193}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1926648008}
+        m_TargetAssemblyTypeName: SceneChanger, Assembly-CSharp
+        m_MethodName: QuitGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &876351193
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4949,6 +4961,7 @@ GameObject:
   - component: {fileID: 1926648002}
   - component: {fileID: 1926648006}
   - component: {fileID: 1926648007}
+  - component: {fileID: 1926648008}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -5096,6 +5109,18 @@ MonoBehaviour:
     parameterName: IsCredit
     isModal: 1
   closeAnimationDuration: 0
+--- !u!114 &1926648008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1926648001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96ec7ede1dbe3af43a357cb1b3c40869, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SceneChanger
 --- !u!1 &2084200894
 GameObject:
   m_ObjectHideFlags: 0

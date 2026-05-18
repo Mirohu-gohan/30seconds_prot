@@ -51,15 +51,22 @@ public class MoveController : MonoBehaviour
 
     public void Move()
     {
+        //サドンデスにて速度10倍に
+        float suddenDeathMultiplier = 1.0f;
+        if(GameManager_M.Instance !=null&&GameManager_M.Instance.CurrentModeState==GameManager_M.Mode.SuddenDeath)
+        {
+            suddenDeathMultiplier = 10.0f;
+        }
+
         if (ac.isRigid) { return; }
         if(stateManager.State == State.Knockback) { return; }
 
-        curentSpeed = Speed;
+        curentSpeed = Speed*suddenDeathMultiplier;
         curentRotSpeed = rotSpeed;
 
         if (stateManager.ActionState == ActionState.Charge)
         {
-            curentSpeed = Speed2;
+            curentSpeed = (Speed2*chargingmoveSpeedRate)*suddenDeathMultiplier;
             curentRotSpeed = rotSpeed2;
         }
 

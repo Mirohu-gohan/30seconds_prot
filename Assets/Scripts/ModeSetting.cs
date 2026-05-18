@@ -8,6 +8,8 @@ public class ModeSetting : MonoBehaviour
     public enum GameMode { Survival, Score}
     public GameMode currentMode = GameMode.Survival;
 
+    public static GameMode SelectMode = GameMode.Survival;
+
     public TMP_Text modeName;
     public TMP_Text modeDescription;
 
@@ -15,6 +17,7 @@ public class ModeSetting : MonoBehaviour
 
     public void Awake()
     {
+        currentMode = SelectMode;
         UpdateModeText();
     }
 
@@ -34,6 +37,8 @@ public class ModeSetting : MonoBehaviour
 
     private void ApplyChange()
     {
+        SelectMode = currentMode;
+
         GameManager_M.selectedGameMode=(currentMode == GameMode.Survival)? GameManager_M.Mode.Survival : GameManager_M.Mode.ScoreMode;
 
         UpdateModeText();

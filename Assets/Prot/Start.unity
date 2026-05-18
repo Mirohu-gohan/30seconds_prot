@@ -208,7 +208,6 @@ GameObject:
   - component: {fileID: 175202193}
   - component: {fileID: 175202192}
   - component: {fileID: 175202191}
-  - component: {fileID: 175202195}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -306,19 +305,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &175202195
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 175202190}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0645f96c8e045494e96008de73842859, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MenuManager
-  modeNameText: {fileID: 0}
 --- !u!1 &200120091
 GameObject:
   m_ObjectHideFlags: 0
@@ -733,6 +719,7 @@ GameObject:
   - component: {fileID: 348367791}
   - component: {fileID: 348367793}
   - component: {fileID: 348367792}
+  - component: {fileID: 348367794}
   m_Layer: 0
   m_Name: JoinedManager
   m_TagString: Untagged
@@ -851,6 +838,18 @@ MonoBehaviour:
   device3text: {fileID: 1517362970}
   device4text: {fileID: 1008970074}
   debugDevices: []
+--- !u!114 &348367794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 348367788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7df4277e620dbe4d9f2072af0a70ed2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerDataHolder
 --- !u!1 &409358307
 GameObject:
   m_ObjectHideFlags: 0
@@ -934,7 +933,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 175202195}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
         m_MethodName: OnClickScoreMode
         m_Mode: 1
@@ -1363,16 +1362,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 175202195}
-        m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
-        m_MethodName: LoadBattleScene
+      - m_Target: {fileID: 11500000, guid: ef1d1e1829fc4d040982f6009a33a307, type: 3}
+        m_TargetAssemblyTypeName: UnityEditor.MonoScript, UnityEditor.CoreModule
+        m_MethodName: set_name
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: prot
+          m_StringArgument: ModeSelect_ui
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &851702842
@@ -2399,7 +2398,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 175202195}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
         m_MethodName: OnClickSurvivalMode
         m_Mode: 1

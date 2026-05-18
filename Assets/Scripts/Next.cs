@@ -1,4 +1,4 @@
-using UnityEditor;
+Ôªøusing UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -29,14 +29,14 @@ public class Next : MonoBehaviour
     {
         if (Ms.currentMode == ModeSetting.GameMode.Survival)
         {
-            Scene = Ss.Survive_stages[Ss.currentIndex].sceneName;
+            StageSetting.SelectedSceneName = Ss.Survive_stages[Ss.currentIndex].sceneName;
         }
         else if (Ms.currentMode == ModeSetting.GameMode.Score)
         {
-            Scene = Ss.Score_stages[Ss.currentIndex].sceneName;
+            StageSetting.SelectedSceneName = Ss.Score_stages[Ss.currentIndex].sceneName;
         }
 
-        Debug.Log(Scene + "ÇÉçÅ[ÉhíÜ");
-        SceneManager.LoadScene(Scene);
+        Debug.Log(Scene + "„Çí„É≠„Éº„Éâ‰∏≠");
+        SceneManager.LoadScene("Start");
     }
 }

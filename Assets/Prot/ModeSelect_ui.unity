@@ -2200,8 +2200,8 @@ MonoBehaviour:
   - stageName: "\u30B9\u30C6\u30FC\u30B8\uFF11"
     description: "\u30B5\u30D0\u30A4\u30D0\u30EB\u30E2\u30FC\u30C9\u30FB\u30B9\u30C6\u30FC\u30B8\uFF11\u306E\u8AAC\u660E\u3002"
     previewSprite: {fileID: 0}
-    sceneAsset: {fileID: 102900000, guid: 54edd9f991cfa6643a26cd9342874ee1, type: 3}
-    sceneName: Meteor_ver2
+    sceneAsset: {fileID: 102900000, guid: f644dfcbfe27ff9439c1928912b70e94, type: 3}
+    sceneName: prot
   - stageName: "\u30B9\u30C6\u30FC\u30B8\uFF12"
     description: "\u30B5\u30D0\u30A4\u30D0\u30EB\u30E2\u30FC\u30C9\u30FB\u30B9\u30C6\u30FC\u30B8\uFF12\u306E\u8AAC\u660E\u3002"
     previewSprite: {fileID: 21300000, guid: 3d286d9d568f37149a6548650b3c67fa, type: 3}
@@ -2446,7 +2446,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.EventSystems.EventSystem
-  m_FirstSelected: {fileID: 0}
+  m_FirstSelected: {fileID: 489857546}
   m_sendNavigationEvents: 1
   m_DragThreshold: 10
 --- !u!4 &1794447345

@@ -142,9 +142,11 @@ public class JoinController : MonoBehaviour
     //StartButtonが押されたときのScene移行
     public void OnGameStarte(InputAction.CallbackContext context)
     {
+        if(!context.performed) return;
+
         string currentSceneName = SceneManager.GetActiveScene().name;
 
-        if (currentSceneName == "Title" || currentSceneName == "Start")
+        if (currentSceneName == "Title" || currentSceneName == "Start"||currentSceneName =="ModeSelect_ui")
         {
             startAction.Disable();
             joinAction.Disable();
@@ -152,7 +154,12 @@ public class JoinController : MonoBehaviour
 
             //PlayerDataHolder.Instance.SetDevices(joinDevices.ToArray(), joinDevices.Count);
             PlayerDataHolder.Instance.SetDevices(joinDevices);
-            SceneManager.LoadScene("prot");
+            string targetScene = StageSetting.SelectedSceneName;
+            if (string.IsNullOrEmpty(targetScene))
+            {
+                targetScene = "prot";
+            }
+            SceneManager.LoadScene(targetScene);
         }
     }
     private void Start()

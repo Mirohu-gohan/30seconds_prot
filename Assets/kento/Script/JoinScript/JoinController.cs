@@ -146,7 +146,7 @@ public class JoinController : MonoBehaviour
 
         string currentSceneName = SceneManager.GetActiveScene().name;
 
-        if (currentSceneName == "Title" || currentSceneName == "Start"||currentSceneName =="ModeSelect_ui")
+        if (currentSceneName == "Title" || currentSceneName == "Start")
         {
             startAction.Disable();
             joinAction.Disable();

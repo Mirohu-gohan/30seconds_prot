@@ -69,4 +69,8 @@ public class ModeSetting : MonoBehaviour
             Ss.UpdatePreview();
         }
     }
+    public void OnConfirmSettings()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Start");
+    }
 }

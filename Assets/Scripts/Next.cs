@@ -37,6 +37,6 @@ public class Next : MonoBehaviour
         }
 
         Debug.Log(Scene + "をロード中");
-        SceneManager.LoadScene("Start");
+        SceneManager.LoadScene("prot");
     }
 }

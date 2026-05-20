@@ -1,16 +1,17 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AdaptivePerformance;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class JoineManager : MonoBehaviour
+public class JoinController : MonoBehaviour
 {
-    [SerializeField] private InputAction joinAction = default;  //参加するときの入力
-    [SerializeField] private InputAction leaveAction = default;  //参加するときの入力
+    [SerializeField] private InputAction joinAction = default;
+    [SerializeField] private InputAction leaveAction = default;
     [SerializeField] private InputAction startAction = default;
 
-    private int maxPlayers = 4;        //参加上限
+    private int maxPlayers = 4;
 
     //----------
     [SerializeField] private Text device1text;         //1デバイス名Text
@@ -18,87 +19,109 @@ public class JoineManager : MonoBehaviour
     [SerializeField] private Text device3text;         //3デバイス名Text
     [SerializeField] private Text device4text;         //4デバイス名Text
 
-    private Dictionary<int, int> playerMap = new();
-    private List<InputDevice> joinDevices = new List<InputDevice>();             //参加中のデバイス
+    private Dictionary<InputDevice, int> playerMap = new();
+    [SerializeField] private List<InputDevice> joinDevices = new();
+    [SerializeField] private List<string> debugDevices = new();
+    public IReadOnlyList<InputDevice> joinDeviceList => joinDevices;
 
+    /// <summary>
+    /// 参加,退出のAction有効化
+    /// </summary>
     private void Awake()
     {
-        //最大参加可能数で配列を初期化
+        //初期化
         joinDevices = new List<InputDevice>(maxPlayers);
-        playerMap = new Dictionary<int, int>(maxPlayers);
-        // InputActionを有効化し、コールバックを設定
+        //参加InputAction有効化
         joinAction.Enable();
         joinAction.performed += OnJoin;
-
+        //退出InputAction有効化
         leaveAction.Enable();
         leaveAction.performed += OnLeave;
-
+        //開始InputAction有効化
         startAction.Enable();
         startAction.performed += OnGameStarte;
-
         //-----Text非表示-----
         device1text.enabled = false;
         device2text.enabled = false;
         device3text.enabled = false;
         device4text.enabled = false;
     }
-
-
+    //Scene変更後にAction無効化
     private void OnDestroy()
     {
         joinAction.performed -= OnJoin;
+        joinAction.Disable();
+
         leaveAction.performed -= OnLeave;
-        startAction.RemoveAllBindingOverrides();
+        leaveAction.Disable();
+
+        startAction.performed -= OnGameStarte;
+        startAction.Disable();
     }
 
-
-    //-----参加-----
-    private void OnJoin(InputAction.CallbackContext context)
+    /// <summary>
+    /// 参加処理
+    /// </summary>
+    /// <param name="context"></param>
+    void OnJoin(InputAction.CallbackContext context)
     {
-        InputDevice device = context.control.device;
+        //入力デバイス取得
+        var device = context.control.device;
 
+        if (playerMap.ContainsKey(device)) return;
+        //参加人数がMaxならreturn
+        if (joinDevices.Count >= maxPlayers) { return; }
+        //重複防止
         if (joinDevices.Contains(device)) { return; }
-        if (joinDevices.Count >= maxPlayers) return;
 
+        int playerIndex = joinDevices.Count;
+
+        //List追加
         joinDevices.Add(device);
-        int playerIndex = joinDevices.Count - 1;
+        playerMap[device] = playerIndex;
 
-        // deviceId → playerIndex
-        playerMap[device.deviceId] = playerIndex;
-        Debug.Log($"Join : DeviceID {device.deviceId} → Player{playerIndex}");
+        //UIの更新
         UpdateDeviceTexts();
     }
-
-    //-----退出-----
+    /// <summary>
+    /// 退出処理
+    /// </summary>
+    /// <param name="context"></param>
     void OnLeave(InputAction.CallbackContext context)
     {
-        InputDevice device = context.control.device;
+        var device = context.control.device;
         if (!joinDevices.Contains(device)) { return; }
+        if (!playerMap.ContainsKey(device)) return;
+
+        int index = playerMap[device];
 
         joinDevices.Remove(device);
+        playerMap.Remove(device);
 
-        if (playerMap.ContainsKey(device.deviceId))
-        {
-            playerMap.Remove(device.deviceId);
-        }
-
+        // ★インデックス再計算（ここが重要）
         RebuildMap();
+        //UIの更新
         UpdateDeviceTexts();
     }
+
     private void RebuildMap()
     {
         playerMap.Clear();
 
         for (int i = 0; i < joinDevices.Count; i++)
         {
-            playerMap[joinDevices[i].deviceId] = i;
+            playerMap[joinDevices[i]] = i;
         }
     }
 
-    //-----UIの更新-----
+    /// <summary>
+    /// UIの更新
+    /// </summary>
     void UpdateDeviceTexts()
     {
         Text[] texts = { device1text, device2text, device3text, device4text };
+
+        debugDevices.Clear();
 
         for (int i = 0; i < texts.Length; i++)
         {
@@ -110,23 +133,38 @@ public class JoineManager : MonoBehaviour
         {
             texts[i].enabled = true;
             texts[i].text = $"{joinDevices[i].displayName}\n参加中";
-        }
-    }
 
+            debugDevices.Add(joinDevices[i].displayName);
+        }
+
+    }
 
     //StartButtonが押されたときのScene移行
     public void OnGameStarte(InputAction.CallbackContext context)
     {
+        if(!context.performed) return;
+
         string currentSceneName = SceneManager.GetActiveScene().name;
 
         if (currentSceneName == "Title" || currentSceneName == "Start")
         {
-            /*            startAction.Disable();
-                        joinAction.Disable();
-                        leaveAction.Disable();*/
+            startAction.Disable();
+            joinAction.Disable();
+            leaveAction.Disable();
 
-            PlayerDataHolder.Instance.SetData(joinDevices, playerMap);
+<<<<<<< HEAD
+            //PlayerDataHolder.Instance.SetDevices(joinDevices.ToArray(), joinDevices.Count);
+            PlayerDataHolder.Instance.SetDevices(joinDevices);
+            string targetScene = StageSetting.SelectedSceneName;
+            if (string.IsNullOrEmpty(targetScene))
+            {
+                targetScene = "prot";
+            }
+            SceneManager.LoadScene(targetScene);
+=======
+            JoinData.Instance.SetDevice(joinDevices);
             SceneManager.LoadScene("prot");
+>>>>>>> origin/kento2
         }
     }
     private void Start()
@@ -139,4 +177,5 @@ public class JoineManager : MonoBehaviour
             leaveAction.Enable();
         }
     }
+
 }

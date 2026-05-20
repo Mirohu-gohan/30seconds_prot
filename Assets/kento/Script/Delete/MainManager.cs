@@ -1,11 +1,11 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+using Unity.Entities.UniversalDelegates;
+using Unity.VisualScripting.Dependencies.NCalc;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Users;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
+
+
 
 public class MainManager : MonoBehaviour
 {
@@ -14,9 +14,8 @@ public class MainManager : MonoBehaviour
     [SerializeField] private Transform[] pos = default;         //生成位置
     [SerializeField] private GameObject timeUpPanel;
 
-    //private GameObject joinobj;
-
-    [SerializeField] private string[] connectedDevices;
+    private GameObject joinobj;
+    int i = 0;
 
     IEnumerator Start()
     {
@@ -26,92 +25,50 @@ public class MainManager : MonoBehaviour
 
     void Awake()
     {
-        Debug.Log("MainManager Awake");
-
-        //joinobj = GameObject.Find("JoinedManager");
+        joinobj = GameObject.Find("JoinedManager");
         //インスタンスがない場合はreturn
         if (PlayerDataHolder.Instance == null) { return; }
 
         //インスタンスで保持しているデバイス情報と人数を取得
-        //var devices = PlayerDataHolder.Instance.GetDevices();
-        int count = PlayerDataHolder.Instance.GetPlayerCount();
+        var devices = PlayerDataHolder.Instance.devices;
+        var map = PlayerDataHolder.Instance.playerMap;
 
-        /*connectedDevices = new string[devices.Count()];
-
-        for (int i = 0; i < devices.Count(); i++)
+        foreach (var device in devices)
         {
-            if (devices[i] != null)
-            {
-                connectedDevices[i] = $"[{i}] {devices[i].displayName} ({devices[i].layout})";
-            }
-            else
-            {
-                connectedDevices[i] = $"[{i}] None";
-            }
-        }*/
-        //------------
+            if (device == null) return;
+            int playerIndex = map[device.deviceId];
 
-        var device = PlayerDataHolder.Instance.devices;
+            var obj = PlayerInput.Instantiate(
+                prefab: playerPrefab,
+                playerIndex: playerIndex,
+                pairWithDevice: device
+            );
+            obj.transform.position = pos[i].position;
+            obj.transform.rotation = pos[i].rotation;
 
-        for (int i = 0; i < pos.Length; i++)
-        {
-            if (i < device.Count && device[i] != null)
-            {
-                var obj = Instantiate(playerPrefab, pos[i].position, pos[i].rotation);
-
-                var input = obj.GetComponent<PlayerInput>();
-
-                input.user.UnpairDevices();
-                InputUser.PerformPairingWithDevice(device[i], input.user);
-            }
-            else
-            {
-                // --- ここから書き換え ---
-                // 1. Botを生成して、変数「botObj」に入れる
-                GameObject botObj = Instantiate(botPrefab, pos[i].position, pos[i].rotation);
-
-                // 2. 生成したBotから PlayerHealth スクリプトを探す
-                PlayerHealth health = botObj.GetComponent<PlayerHealth>();
-                if (health != null)
-                {
-                    // 3. Botに「お前は i 番目（0, 1, 2, 3...）だよ」と教え込む
-                    health.playerIndex = i;
-                }
-                // --- ここまで --- 
-            }
+            i++;
         }
-
-        //人数分Playerの生成,PlayerID
-        /*for (int i = 0; i < pos.Length; i++)
+        while (i < 4)
         {
-            if (i < count && devices[i] != null)
-            {
-                // 指定デバイスで PlayerInput を持つプレイヤーを生成
-                var obj = PlayerInput.Instantiate(
-                    prefab: playerPrefab,
-                    playerIndex: i,
-                    pairWithDevice: devices[i]
-                 );
-                //生成後この位置にセット
-                obj.transform.position = pos[i].position;
-                obj.transform.rotation = pos[i].rotation;
+            // --- ここから書き換え ---
+            // 1. Botを生成して、変数「botObj」に入れる
+            GameObject botObj = Instantiate(botPrefab, pos[i].position, pos[i].rotation);
 
-            }
-            else
+            // 2. 生成したBotから PlayerHealth スクリプトを探す
+            PlayerHealth health = botObj.GetComponent<PlayerHealth>();
+            if (health != null)
             {
-                // --- ここから書き換え ---
-                // 1. Botを生成して、変数「botObj」に入れる
-                GameObject botObj = Instantiate(botPrefab, pos[i].position, pos[i].rotation);
-
-                // 2. 生成したBotから PlayerHealth スクリプトを探す
-                PlayerHealth health = botObj.GetComponent<PlayerHealth>();
-                if (health != null)
-                {
-                    // 3. Botに「お前は i 番目（0, 1, 2, 3...）だよ」と教え込む
-                    health.playerIndex = i;
-                }
-                // --- ここまで --- 
+                // 3. Botに「お前は i 番目（0, 1, 2, 3...）だよ」と教え込む
+                health.playerIndex = i;
             }
-        }*/
+            // --- ここまで --- 
+            i++;
+        }
+    }
+
+    public void OnReset()
+    {
+        SceneManager.LoadScene("Start");
+        Destroy(joinobj);
     }
 }

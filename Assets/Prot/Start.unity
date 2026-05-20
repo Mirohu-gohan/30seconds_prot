@@ -770,12 +770,12 @@ MonoBehaviour:
     m_Name: Join
     m_Type: 0
     m_ExpectedControlType: 
-    m_Id: 2bd7ee62-14eb-4df7-bf3c-e8c55d3a0ff9
+    m_Id: 0119780f-a47b-4eb8-bafb-4aa84e4b00d9
     m_Processors: 
     m_Interactions: 
     m_SingletonActionBindings:
     - m_Name: 
-      m_Id: 25cbb570-dbc5-4931-9902-03ccbe58fea9
+      m_Id: f38e19b3-1459-48fd-9d29-ac4491044de2
       m_Path: <Gamepad>/start
       m_Interactions: 
       m_Processors: 
@@ -787,13 +787,13 @@ MonoBehaviour:
     m_Name: Leave
     m_Type: 0
     m_ExpectedControlType: 
-    m_Id: 7c8b8fa6-16b9-4f25-893b-f87025ee42f5
+    m_Id: c10b6e1b-98e7-4799-9c40-84d0aa3e2875
     m_Processors: 
     m_Interactions: 
     m_SingletonActionBindings:
     - m_Name: 
-      m_Id: b3aa2fac-12ba-4454-90c2-a083467bae42
-      m_Path: <Gamepad>/buttonEast
+      m_Id: 0aa42f2f-9f42-4c78-ba52-24323a118c3c
+      m_Path: <Gamepad>/buttonSouth
       m_Interactions: 
       m_Processors: 
       m_Groups: 
@@ -804,12 +804,12 @@ MonoBehaviour:
     m_Name: Start
     m_Type: 0
     m_ExpectedControlType: 
-    m_Id: 809c813e-d0be-4d8f-a65e-e79ba3d4dfe5
+    m_Id: e0abc933-e982-49ec-8bb8-b3802b5eb561
     m_Processors: 
     m_Interactions: 
     m_SingletonActionBindings:
     - m_Name: One Modifier
-      m_Id: f4eb6949-5516-4efc-981c-0ce3af4df529
+      m_Id: c55b7bf8-3aa5-4793-b23a-07d29c885b38
       m_Path: OneModifier
       m_Interactions: 
       m_Processors: 
@@ -817,16 +817,16 @@ MonoBehaviour:
       m_Action: Start
       m_Flags: 4
     - m_Name: modifier
-      m_Id: c3035821-0b1e-4d6f-953e-819b4808f65a
-      m_Path: <Gamepad>/leftShoulder
+      m_Id: e42d6aba-318b-4cec-a5df-8ce8aaea7526
+      m_Path: <Gamepad>/leftStickPress
       m_Interactions: 
       m_Processors: 
       m_Groups: 
       m_Action: Start
       m_Flags: 8
     - m_Name: binding
-      m_Id: 554c25c3-82d0-44fd-bded-0fd6ca1d0828
-      m_Path: <Gamepad>/rightShoulder
+      m_Id: 1ffc6703-b510-4e03-9ea0-e9c4b53742ac
+      m_Path: <Gamepad>/leftStickPress
       m_Interactions: 
       m_Processors: 
       m_Groups: 
@@ -834,7 +834,7 @@ MonoBehaviour:
       m_Flags: 8
     m_Flags: 0
   device1text: {fileID: 1505149091}
-  device2text: {fileID: 842079463}
+  device2text: {fileID: 1505149091}
   device3text: {fileID: 1517362970}
   device4text: {fileID: 1008970074}
   debugDevices: []

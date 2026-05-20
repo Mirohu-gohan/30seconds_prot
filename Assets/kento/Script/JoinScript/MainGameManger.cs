@@ -2,7 +2,6 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Users;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
@@ -29,31 +28,36 @@ public class MainGameManger : MonoBehaviour
     {
         joinObj = GameObject.Find("JoinedManager");
         //インスタンスがない場合はreturn
-        if (PlayerDataHolder.Instance == null) { return; }
+        if (JoinData.Instance == null) { return; }
 
         //インスタンスで保持しているデバイス情報を取得
         var devices = JoinData.Instance.GetDevices();
 
         //人数分Playerの生成
-        foreach (var device in devices)
+        for (i = 0; i < pos.Length; i++)
         {
-            if (device != null)
+            if (i < devices.Count && devices[i] != null)
             {
                 var obj = PlayerInput.Instantiate(
                      prefab: playerPrefab,
-                     pairWithDevice: device
+                     playerIndex: i,
+                     pairWithDevice: devices[i]
                 );
                 obj.transform.position = pos[i].position;
                 obj.transform.rotation = pos[i].rotation;
-                Debug.Log(i + "番" + device.displayName);
-                i++;
+
+                var controller = obj.GetComponent<PlayerInputController>();
+                if (controller != null) controller.Init(devices[i], i);
+
+                Debug.Log($"Player{i + 1}: index={obj.playerIndex}, device={devices[i].displayName}");
             }
-        }
-        while (i < 4)
-        {
-            Instantiate(botPrefab, pos[i].position, pos[i].rotation);
-            Debug.Log(i + "番");
-            i++;
+            else
+            {
+                var bot = Instantiate(botPrefab, pos[i].position, pos[i].rotation);
+                var health = bot.GetComponent<PlayerHealth>();
+                if (health != null) health.playerIndex = i;
+                Debug.Log($"Bot{i + 1}: index={i}");
+            }
         }
     }
 

@@ -4,12 +4,12 @@ using System.Collections;
 
 public class KOEffect : MonoBehaviour
 {
-    [Header("ƒGƒtƒFƒNƒg")]
+    [Header("ã‚¨ãƒ•ã‚§ã‚¯ãƒˆ")]
     public GameObject koEffect;
 
-    [Header("ƒGƒtƒFƒNƒg’²®")]
-    public float efsize = 10f;
-    public float efOffset = 10f; //“à‘¤‚É‚¸‚ç‚·‹——£
+    [Header("ã‚¨ãƒ•ã‚§ã‚¯ãƒˆèª¿æ•´")]
+    public float efsize = 75f;
+    public float efOffset = 10f; //å†…å´ã«ãšã‚‰ã™è·é›¢
 
     [Header("HitStop")]
     public float freezeDuration = 0.08f;
@@ -73,13 +73,13 @@ public class KOEffect : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
     }
 
-    // ‰æ–Ê’[‚ÌÀ•W‚ğæ“¾
+    // ç”»é¢ç«¯ã®åº§æ¨™ã‚’å–å¾—
     Vector3 GetScreenEdgePosition(Vector3 flyDirection)
     {
-        // ƒLƒƒƒ‰‚ª‰æ–ÊŠO‚Éo‚é’¼‘O‚ÌViewportÀ•W‚ğƒ[ƒ‹ƒhÀ•W‚É•ÏŠ·
+        // ã‚­ãƒ£ãƒ©ãŒç”»é¢å¤–ã«å‡ºã‚‹ç›´å‰ã®Viewportåº§æ¨™ã‚’ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ã«å¤‰æ›
         Vector3 screenPos = Camera.main.WorldToViewportPoint(transform.position);
 
-        // ‰æ–Ê’[‚ÉƒNƒ‰ƒ“ƒv
+        // ç”»é¢ç«¯ã«ã‚¯ãƒ©ãƒ³ãƒ—
         screenPos.x = Mathf.Clamp(screenPos.x, 0.05f, 0.95f);
         screenPos.y = Mathf.Clamp(screenPos.y, 0.05f, 0.95f);
 
@@ -90,7 +90,7 @@ public class KOEffect : MonoBehaviour
     {
         if (koEffect != null)
         {
-            //ƒvƒŒƒCƒ„[‚ÌˆÊ’u‚©‚ç‚Á”ò‚Ñ•ûŒü‚Æ‹t‚É­‚µ‚¸‚ç‚·
+            //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ä½ç½®ã‹ã‚‰å¹ã£é£›ã³æ–¹å‘ã¨é€†ã«å°‘ã—ãšã‚‰ã™
             Vector3 spawnPos = transform.position - flyDirection * efOffset;
 
             GameObject fx = Instantiate(koEffect, spawnPos, Quaternion.identity);
@@ -118,7 +118,7 @@ public class KOEffect : MonoBehaviour
 
             Debug.Log($"flyDirection: {flyDirection}");
             Debug.Log($"spawnPos: {spawnPos}");
-            Debug.Log($"ƒLƒƒƒ‰‚ÌŒ»İˆÊ’u: {transform.position}");
+            Debug.Log($"ã‚­ãƒ£ãƒ©ã®ç¾åœ¨ä½ç½®: {transform.position}");
 
             Destroy(fx, 3f);
         }

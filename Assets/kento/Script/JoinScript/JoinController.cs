@@ -39,7 +39,7 @@ public class JoinController : MonoBehaviour
         leaveAction.performed += OnLeave;
         //開始InputAction有効化
         startAction.Enable();
-        startAction.performed += ctx => OnGameStarte(ctx);
+        startAction.performed += OnGameStarte;
         //-----Text非表示-----
         device1text.enabled = false;
         device2text.enabled = false;
@@ -55,7 +55,7 @@ public class JoinController : MonoBehaviour
         leaveAction.performed -= OnLeave;
         leaveAction.Disable();
 
-        startAction.RemoveAllBindingOverrides();
+        startAction.performed -= OnGameStarte;
         startAction.Disable();
     }
 

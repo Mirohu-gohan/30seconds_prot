@@ -10,7 +10,7 @@ public class JoineManager : MonoBehaviour
     [SerializeField] private InputAction leaveAction = default;  //参加するときの入力
     [SerializeField] private InputAction startAction = default;
 
-    [SerializeField] private int maxPlayers = 4;        //参加上限
+    private int maxPlayers = 4;        //参加上限
 
     //----------
     [SerializeField] private Text device1text;         //1デバイス名Text
@@ -18,13 +18,14 @@ public class JoineManager : MonoBehaviour
     [SerializeField] private Text device3text;         //3デバイス名Text
     [SerializeField] private Text device4text;         //4デバイス名Text
 
-    private Dictionary<InputDevice, int> playerMap = new();
+    private Dictionary<int, int> playerMap = new();
     private List<InputDevice> joinDevices = new List<InputDevice>();             //参加中のデバイス
 
     private void Awake()
     {
         //最大参加可能数で配列を初期化
         joinDevices = new List<InputDevice>(maxPlayers);
+        playerMap = new Dictionary<int, int>(maxPlayers);
         // InputActionを有効化し、コールバックを設定
         joinAction.Enable();
         joinAction.performed += OnJoin;
@@ -33,7 +34,7 @@ public class JoineManager : MonoBehaviour
         leaveAction.performed += OnLeave;
 
         startAction.Enable();
-        startAction.performed += ctx => OnGameStarte(ctx);
+        startAction.performed += OnGameStarte;
 
         //-----Text非表示-----
         device1text.enabled = false;
@@ -46,89 +47,43 @@ public class JoineManager : MonoBehaviour
     private void OnDestroy()
     {
         joinAction.performed -= OnJoin;
-        joinAction.Disable();
-
         leaveAction.performed -= OnLeave;
-        leaveAction.Disable();
-
         startAction.RemoveAllBindingOverrides();
-        startAction.Disable();
     }
 
 
     //-----参加-----
     private void OnJoin(InputAction.CallbackContext context)
     {
-        var device = context.control.device;
+        InputDevice device = context.control.device;
 
-        if (playerMap.ContainsKey(device)) return;
+        if (joinDevices.Contains(device)) { return; }
         if (joinDevices.Count >= maxPlayers) return;
 
-        int playerIndex = joinDevices.Count;
-
         joinDevices.Add(device);
-        playerMap[device] = playerIndex;
+        int playerIndex = joinDevices.Count - 1;
 
-        PlayerDataHolder.Instance.SetDevices(joinDevices);
-
+        // deviceId → playerIndex
+        playerMap[device.deviceId] = playerIndex;
+        Debug.Log($"Join : DeviceID {device.deviceId} → Player{playerIndex}");
         UpdateDeviceTexts();
-
-        /* //現在の参加数がＭａｘならreturn
-         if (joinDevices.Count >= maxPlayers) { return; }
-
-         //押されたデバイスを取得
-         var device = context.control.device;
-         //重複参加防止
-         if (joinDevices.Contains(device)) { return; }
-
-         //参加中の数
-         int i = joinDevices.Count;
-
-         //リストにデバイスの追加
-         joinDevices.Add(device);
-         PlayerDataHolder.Instance.devices = new List<InputDevice>(joinDevices);
-         //PlayerDataHolder.Instance.SetDevices(joinDevices.ToArray(), joinDevices.Count);
-
-         //UIの更新
-         UpdateDeviceTexts();*/
     }
 
     //-----退出-----
     void OnLeave(InputAction.CallbackContext context)
     {
-        var device = context.control.device;
-
-        if (!playerMap.ContainsKey(device)) return;
-
-        int index = playerMap[device];
+        InputDevice device = context.control.device;
+        if (!joinDevices.Contains(device)) { return; }
 
         joinDevices.Remove(device);
-        playerMap.Remove(device);
 
-        // ★インデックス再計算（ここが重要）
+        if (playerMap.ContainsKey(device.deviceId))
+        {
+            playerMap.Remove(device.deviceId);
+        }
+
         RebuildMap();
-
-        PlayerDataHolder.Instance.SetDevices(joinDevices);
-
         UpdateDeviceTexts();
-        /*//入力したデバイスの取得
-        var device = context.control.device;
-        //Index取得
-        int index = joinDevices.IndexOf(device);
-        //参加していない場合はreturn
-        if (context.control.device != device) return;
-        if (index == -1) return;
-
-        //デバイス,カーソルの削除
-        *//* joinDevices.RemoveAt(index);
-         Destroy(playerCursors[index]);
-         //List,PlayerDataの更新
-         playerCursors.RemoveAt(index);
-         PlayerDataHolder.Instance.SetDevices(joinDevices.ToArray(), joinDevices.Count);*//*
-
-        joinDevices.Clear();
-        //UIの更新
-        UpdateDeviceTexts();*/
     }
     private void RebuildMap()
     {
@@ -136,7 +91,7 @@ public class JoineManager : MonoBehaviour
 
         for (int i = 0; i < joinDevices.Count; i++)
         {
-            playerMap[joinDevices[i]] = i;
+            playerMap[joinDevices[i].deviceId] = i;
         }
     }
 
@@ -166,12 +121,11 @@ public class JoineManager : MonoBehaviour
 
         if (currentSceneName == "Title" || currentSceneName == "Start")
         {
-            startAction.Disable();
-            joinAction.Disable();
-            leaveAction.Disable();
+            /*            startAction.Disable();
+                        joinAction.Disable();
+                        leaveAction.Disable();*/
 
-            //PlayerDataHolder.Instance.SetDevices(joinDevices.ToArray(), joinDevices.Count);
-            PlayerDataHolder.Instance.SetDevices(joinDevices);
+            PlayerDataHolder.Instance.SetData(joinDevices, playerMap);
             SceneManager.LoadScene("prot");
         }
     }

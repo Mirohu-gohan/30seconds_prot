@@ -17,15 +17,24 @@ public class PanelData
     [Header("制限設定")]
     [Tooltip("チェックを入れると、このパネルが開いている間は他のパネルを開けなくなります")]
     public bool isModal;
+
+    [Header("コントローラー初期フォーカスボタン")]
+    public GameObject firstSelectedButton;
 }
 
 public class OptionUIManager : MonoBehaviour
 {
+    [Header("ゲーム起動時に最初に選択させたいメインボタン")]
+    [SerializeField] private GameObject mainFirstSelectedButton;
+
     [Header("複数UIパネルの設定")]
     [SerializeField] private List<PanelData> panels = new List<PanelData>();
 
     [Tooltip("閉じるアニメーションの秒数")]
     [SerializeField] private float closeAnimationDuration = 0.5f;
+
+    [Header("ゲーム起動時に自動で開くパネルの番号（開かない場合は -1）")]
+    [SerializeField] private int defaultOpenPanelIndex = -1;
 
     private Coroutine currentCoroutine = null;
 
@@ -45,39 +54,28 @@ public class OptionUIManager : MonoBehaviour
             }
         }
 
-        // --- 追加：無理やりフォーカスを当てる ---
-        StartCoroutine(ForceFocusByNameRoutine());
+        if (mainFirstSelectedButton != null)
+        {
+            StartCoroutine(FocusMainButtonRoutine());
+        }
+
+        if (defaultOpenPanelIndex >= 0 && defaultOpenPanelIndex < panels.Count)
+        {
+            ToggleOptionPanel(defaultOpenPanelIndex);
+        }
     }
 
 
-    private IEnumerator ForceFocusByNameRoutine()
+    private IEnumerator FocusMainButtonRoutine()
     {
-        // 1. シーン遷移とパネル初期化が完全に終わるまで少し長めに待つ
-        yield return new WaitForSecondsRealtime(0.2f);
+        // 起動直後のEventSystemのバタつきを避けるため、ほんの少し（0.05秒）だけ待つ
+        yield return new WaitForSecondsRealtime(0.05f);
 
-        if (EventSystem.current != null)
+        if (EventSystem.current != null && mainFirstSelectedButton != null)
         {
-            // ★ヒエラルキーで実際に動いているボタンの名前に書き換えてください
-            // "Option_BT" なのか "StartButton" なのか、今一度確認！
-            string buttonName = "StartButton";
-            GameObject target = GameObject.Find(buttonName);
-
-            if (target != null)
-            {
-                // 2. ボタンを見つけたら、そのボタンが「押せる状態」か強制的にチェック
-                EventSystem.current.SetSelectedGameObject(null);
-                EventSystem.current.SetSelectedGameObject(target);
-                Debug.Log($"<color=cyan>[UI Manager]</color> {buttonName} にフォーカスを強制セットしました！");
-            }
-            else
-            {
-                // ここでログが出たら、名前が間違っているか、オブジェクトが非表示です
-                Debug.LogWarning($"<color=red>[UI Manager]</color> '{buttonName}' が見つかりませんでした！名前を確認してください。");
-            }
-        }
-        else
-        {
-            Debug.LogError("[UI Manager] EventSystemが見つかりません！");
+            EventSystem.current.SetSelectedGameObject(null); // 一旦クリア
+            EventSystem.current.SetSelectedGameObject(mainFirstSelectedButton);
+            Debug.Log($"<color=green>[UI Manager]</color> メインボタン '{mainFirstSelectedButton.name}' に初期フォーカスを完了しました！");
         }
     }
 
@@ -131,6 +129,12 @@ public class OptionUIManager : MonoBehaviour
             {
                 targetData.animator.SetBool(targetData.parameterName, true);
             }
+
+            if (targetData.firstSelectedButton != null && EventSystem.current != null)
+            {
+                EventSystem.current.SetSelectedGameObject(null); // 一旦クリア
+                EventSystem.current.SetSelectedGameObject(targetData.firstSelectedButton);
+            }
         }
         else
         {
@@ -140,6 +144,12 @@ public class OptionUIManager : MonoBehaviour
                 yield return new WaitForSecondsRealtime(closeAnimationDuration);
             }
             targetData.panel.SetActive(false);
+
+            if (mainFirstSelectedButton != null && EventSystem.current != null)
+            {
+                EventSystem.current.SetSelectedGameObject(null);
+                EventSystem.current.SetSelectedGameObject(mainFirstSelectedButton);
+            }
         }
 
         currentCoroutine = null;

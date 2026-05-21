@@ -272,7 +272,7 @@ RectTransform:
   m_Father: {fileID: 1519800469}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0.1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -610,8 +610,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1720589360}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMin: {x: 0.1, y: 0}
+  m_AnchorMax: {x: 0.1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 26, y: 78}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -3236,7 +3236,7 @@ RectTransform:
   m_Father: {fileID: 322828644}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0.1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -3942,7 +3942,7 @@ MonoBehaviour:
   m_ScrollWheelAction: {fileID: 6240969308177333660, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
   m_TrackedDevicePositionAction: {fileID: 6564999863303420839, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
   m_TrackedDeviceOrientationAction: {fileID: 7970375526676320489, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_DeselectOnBackgroundClick: 1
+  m_DeselectOnBackgroundClick: 0
   m_PointerBehavior: 0
   m_CursorLockBehavior: 0
   m_ScrollDeltaPerTick: 6
@@ -4277,8 +4277,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 584690929}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMin: {x: 0.1, y: 0}
+  m_AnchorMax: {x: 0.1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 26, y: 78}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -4669,7 +4669,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1872790758
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4850,23 +4850,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d2eeb8e581261b4fa006f80c47e42df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OptionUIManager
+  mainFirstSelectedButton: {fileID: 876351190}
   panels:
   - panelName: Opiton
     panel: {fileID: 1486814931}
     animator: {fileID: 1926648006}
     parameterName: IsOptionOpen
     isModal: 0
+    firstSelectedButton: {fileID: 1620346393}
   - panelName: Exit
     panel: {fileID: 777019978}
     animator: {fileID: 1926648006}
     parameterName: IsExitOpen
     isModal: 1
+    firstSelectedButton: {fileID: 386632113}
   - panelName: Credit
     panel: {fileID: 1872790757}
     animator: {fileID: 1926648006}
     parameterName: IsCredit
     isModal: 1
+    firstSelectedButton: {fileID: 233905651}
   closeAnimationDuration: 0
+  defaultOpenPanelIndex: -1
 --- !u!114 &1926648008
 MonoBehaviour:
   m_ObjectHideFlags: 0

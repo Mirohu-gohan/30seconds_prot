@@ -113,6 +113,10 @@ public class GameManager_M : MonoBehaviour
         if (timerTextUI != null) timerTextUI.gameObject.SetActive(true);
 
         UpdateRoundDisplay();
+// ★ ここが重要！ ★
+        // タイトルで選んだ「staticな値」を、現在の動的な状態（CurrentModeState）に反映させる
+        CurrentModeState = selectedGameMode;
+
 
         // BGM再生
         if (SoundManager.Instance != null)
@@ -123,9 +127,7 @@ public class GameManager_M : MonoBehaviour
                 SoundManager.Instance.PlayBGM(SoundManager.Instance.normalBattleBGM);
         }
 
-        // ★ ここが重要！ ★
-        // タイトルで選んだ「staticな値」を、現在の動的な状態（CurrentModeState）に反映させる
-        CurrentModeState = selectedGameMode;
+        
 
         if (_isSuddenDeathNext)
         {
@@ -329,17 +331,15 @@ public class GameManager_M : MonoBehaviour
                 roundTextUI.gameObject.SetActive(false);
                 return;
             }
+
+
+            if (CurrentModeState == Mode.SuddenDeath)
+            {
+                roundTextUI.text="Round"+CurrentRound;
+            }
             else
             {
-                if (CurrentModeState == Mode.SuddenDeath)
-                {
-                    roundTextUI.gameObject.SetActive(true);
-                }
-                else
-                {
-                    roundTextUI.text = "Round " + CurrentRound;
-                    // roundTextUI.color = Color.white; 
-                }
+                    roundTextUI.text ="ラウンド"+CurrentRound;
             }
             roundTextUI.gameObject.SetActive(true);
         }
@@ -815,7 +815,20 @@ public class GameManager_M : MonoBehaviour
         resultRibbon.anchoredPosition = endPos;
     }
 
-    public void RestartGame() => SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    //シーンのリスタート処理
+    public void RestartGame()
+    {
+        // 1. ラウンド数を 1 に巻き戻す
+        CurrentRound = 1;
+        _isSuddenDeathNext = false;
+        _qualifiedIndices.Clear();
+
+        // 2. スコアもここで確実にリセットする
+        ResetScores();
+
+        // 3. すべてを綺麗にした状態でシーンをロードする
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
 
     public void BackToJoinScene(string s)
     {

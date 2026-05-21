@@ -795,6 +795,14 @@ MonoBehaviour:
       m_Groups: 
       m_Action: Join
       m_Flags: 0
+    - m_Name: 
+      m_Id: ff9785b2-f0ca-4f99-9fbf-368e3d3a9504
+      m_Path: <Keyboard>/j
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Join
+      m_Flags: 0
     m_Flags: 0
   leaveAction:
     m_Name: Leave
@@ -807,6 +815,14 @@ MonoBehaviour:
     - m_Name: 
       m_Id: 0aa42f2f-9f42-4c78-ba52-24323a118c3c
       m_Path: <Gamepad>/buttonSouth
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Leave
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 90684385-830f-4aef-a5a8-c162e016a6cc
+      m_Path: <Keyboard>/l
       m_Interactions: 
       m_Processors: 
       m_Groups: 
@@ -845,9 +861,17 @@ MonoBehaviour:
       m_Groups: 
       m_Action: Start
       m_Flags: 8
+    - m_Name: 
+      m_Id: c1c186dc-d199-43e4-a1ea-c2e916fad1ba
+      m_Path: <Keyboard>/enter
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Start
+      m_Flags: 0
     m_Flags: 0
   device1text: {fileID: 1505149091}
-  device2text: {fileID: 1505149091}
+  device2text: {fileID: 842079463}
   device3text: {fileID: 1517362970}
   device4text: {fileID: 1008970074}
   debugDevices: []

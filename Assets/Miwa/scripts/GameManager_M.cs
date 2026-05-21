@@ -333,7 +333,7 @@ public class GameManager_M : MonoBehaviour
             {
                 if (CurrentModeState == Mode.SuddenDeath)
                 {
-                    roundTextUI.gameObject.SetActive(false);
+                    roundTextUI.gameObject.SetActive(true);
                 }
                 else
                 {

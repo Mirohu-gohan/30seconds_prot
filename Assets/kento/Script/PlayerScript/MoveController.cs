@@ -55,7 +55,7 @@ public class MoveController : MonoBehaviour
         float suddenDeathMultiplier = 1.0f;
         if(GameManager_M.Instance !=null&&GameManager_M.Instance.CurrentModeState==GameManager_M.Mode.SuddenDeath)
         {
-            suddenDeathMultiplier = 10.0f;
+            suddenDeathMultiplier = GameManager_M.Instance.suddenDeathSpeedMultiplier;
         }
 
         if (ac.isRigid) { return; }
@@ -66,7 +66,7 @@ public class MoveController : MonoBehaviour
 
         if (stateManager.ActionState == ActionState.Charge)
         {
-            curentSpeed = (Speed2*chargingmoveSpeedRate)*suddenDeathMultiplier;
+            curentSpeed = (Speed*chargingmoveSpeedRate)*suddenDeathMultiplier;
             curentRotSpeed = rotSpeed2;
         }
 

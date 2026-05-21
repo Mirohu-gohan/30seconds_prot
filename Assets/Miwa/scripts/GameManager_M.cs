@@ -73,6 +73,7 @@ public class GameManager_M : MonoBehaviour
 
     public float suddenDeathKnockbackMultiplier = 2.0f;
     public float currentKnockbackMultiplier = 1.0f;
+    public float suddenDeathSpeedMultiplier = 10.0f;
 
     private List<int> _lastActiveIndices = new List<int>();//同時にデスした時のため直前に生きていたPlayerを格納
 
@@ -80,6 +81,7 @@ public class GameManager_M : MonoBehaviour
 
     private bool isGameStarted = false;//ゲーム開始フラグ
     public bool IsGameStartedProperty => isGameStarted;
+
 
     void Awake()
     {

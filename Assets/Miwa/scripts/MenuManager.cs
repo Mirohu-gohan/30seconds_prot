@@ -2,8 +2,9 @@
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
+#if UNITY_EDITOR
 using UnityEditor.ShaderGraph.Drawing.Inspector.PropertyDrawers;
-
+#endif
 
 public class MenuManager : MonoBehaviour
 {
@@ -22,10 +23,12 @@ public class MenuManager : MonoBehaviour
 
     private int currentSelection = 0;
 
-
+    private GameObject joinObj;
 
     void Start()
     {
+        joinObj = GameObject.Find("JoinedManager");
+
         canTransitionTime = Time.time + DelayTime;
 
         UpdateModeDisplay();
@@ -73,5 +76,6 @@ public class MenuManager : MonoBehaviour
         if (SoundManager.Instance != null) SoundManager.Instance.PlaySE(SoundManager.Instance.gameStartBtnSE);
 
         SceneManager.LoadScene(sceneName);
+        Destroy(joinObj);
     }
 }

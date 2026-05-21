@@ -151,7 +151,7 @@ public class JoinController : MonoBehaviour
             leaveAction.Disable();
 
             JoinData.Instance.SetDevice(joinDevices);
-            SceneManager.LoadScene("prot");
+            SceneManager.LoadScene("ModeSelect_ui");
         }
     }
     private void Start()

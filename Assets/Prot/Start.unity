@@ -719,7 +719,6 @@ GameObject:
   - component: {fileID: 348367791}
   - component: {fileID: 348367793}
   - component: {fileID: 348367792}
-  - component: {fileID: 348367794}
   m_Layer: 0
   m_Name: JoinedManager
   m_TagString: Untagged
@@ -809,7 +808,7 @@ MonoBehaviour:
     m_Interactions: 
     m_SingletonActionBindings:
     - m_Name: One Modifier
-      m_Id: c55b7bf8-3aa5-4793-b23a-07d29c885b38
+      m_Id: b55b3579-c797-4958-af60-d58e8088808b
       m_Path: OneModifier
       m_Interactions: 
       m_Processors: 
@@ -817,16 +816,16 @@ MonoBehaviour:
       m_Action: Start
       m_Flags: 4
     - m_Name: modifier
-      m_Id: e42d6aba-318b-4cec-a5df-8ce8aaea7526
-      m_Path: <Gamepad>/leftStickPress
+      m_Id: 51289b1a-ce03-4b92-9904-5515083df8d6
+      m_Path: <Gamepad>/leftShoulder
       m_Interactions: 
       m_Processors: 
       m_Groups: 
       m_Action: Start
       m_Flags: 8
     - m_Name: binding
-      m_Id: 1ffc6703-b510-4e03-9ea0-e9c4b53742ac
-      m_Path: <Gamepad>/leftStickPress
+      m_Id: 253b7093-8211-4b6b-9d64-6c1538f9b8b6
+      m_Path: <Gamepad>/rightShoulder
       m_Interactions: 
       m_Processors: 
       m_Groups: 
@@ -834,22 +833,10 @@ MonoBehaviour:
       m_Flags: 8
     m_Flags: 0
   device1text: {fileID: 1505149091}
-  device2text: {fileID: 1505149091}
+  device2text: {fileID: 842079463}
   device3text: {fileID: 1517362970}
   device4text: {fileID: 1008970074}
   debugDevices: []
---- !u!114 &348367794
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 348367788}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7df4277e620dbe4d9f2072af0a70ed2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerDataHolder
 --- !u!1 &409358307
 GameObject:
   m_ObjectHideFlags: 0

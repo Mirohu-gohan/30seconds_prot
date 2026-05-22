@@ -91,7 +91,7 @@ public class KOEffect : MonoBehaviour
         if (koEffect != null)
         {
             //プレイヤーの位置から吹っ飛び方向と逆に少しずらす
-            Vector3 spawnPos = transform.position - flyDirection * efOffset;
+            Vector3 spawnPos = spwanPos - flyDirection * efOffset;
 
             GameObject fx = Instantiate(koEffect, spawnPos, Quaternion.identity);
             fx.transform.localScale = new Vector3(efsize, efsize, efsize);
@@ -100,19 +100,23 @@ public class KOEffect : MonoBehaviour
 
             if (Pos.x < -0.1f)
             {
+                fx.transform.position = new Vector3(8.0f, 1.0f, 0f);
                 fx.transform.rotation = Quaternion.Euler(4f, 0f, angle + 180f);
             }
             else if(Pos.x > 1.1f)
             {
+                fx.transform.position = new Vector3(-8.0f, 1.0f, 0f);
                 fx.transform.rotation = Quaternion.Euler(4f, 0f, angle);
             }
 
             if (Pos.y  > 1.1f)
             {
+                fx.transform.position = new Vector3(0f, 1.0f, 0f);
                 fx.transform.rotation = Quaternion.Euler(4f, 0f, 90f);
             }
             else if(Pos.y < -0.1f)
             {
+                fx.transform.position = new Vector3(0f, 15.0f, 0f);
                 fx.transform.rotation = Quaternion.Euler(4f, 0f, 270f);
             }
 

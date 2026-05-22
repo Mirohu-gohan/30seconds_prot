@@ -506,7 +506,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2856268099704792221, guid: 3484d8bad4c706f40ae4ede871850c1f, type: 3}
       propertyPath: efsize
-      value: 75
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 2856268099704792221, guid: 3484d8bad4c706f40ae4ede871850c1f, type: 3}
       propertyPath: efOffset

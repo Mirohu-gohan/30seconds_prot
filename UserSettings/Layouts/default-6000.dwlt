@@ -654,10 +654,10 @@ MonoBehaviour:
       serializedVersion: 2
       x: 0
       y: 21
-      width: 772
-      height: 547
-    m_Scale: {x: 0.70364577, y: 0.70364577}
-    m_Translation: {x: 386, y: 273.5}
+      width: 587.7143
+      height: 441.57144
+    m_Scale: {x: 0.5356771, y: 0.5356771}
+    m_Translation: {x: 293.85715, y: 220.78572}
     m_MarginLeft: 0
     m_MarginRight: 0
     m_MarginTop: 0
@@ -665,12 +665,12 @@ MonoBehaviour:
     m_LastShownAreaInsideMargins:
       serializedVersion: 2
       x: -548.5715
-      y: -388.6899
+      y: -412.162
       width: 1097.143
-      height: 777.3798
+      height: 824.324
     m_MinimalGUI: 1
-  m_defaultScale: 0.70364577
-  m_LastWindowPixelSize: {x: 772, y: 568}
+  m_defaultScale: 0.5356771
+  m_LastWindowPixelSize: {x: 587.7143, y: 462.57144}
   m_ClearInEditMode: 1
   m_NoCameraWarning: 1
   m_LowResolutionForAspectRatios: 01000000000000000000
@@ -1427,7 +1427,7 @@ MonoBehaviour:
   m_Position:
     m_Target: {x: -0.1056118, y: 2.4047432, z: -6.0700245}
     speed: 2
-    m_Value: {x: 1.631701, y: 1.4894612, z: 2.4433959}
+    m_Value: {x: -0.1056118, y: 2.4047432, z: -6.0700245}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -1475,11 +1475,11 @@ MonoBehaviour:
   m_Rotation:
     m_Target: {x: 0.12566663, y: 0.04728333, z: -0.005969256, w: 0.9909603}
     speed: 2
-    m_Value: {x: -0.23128879, y: -0.029501915, z: 0.0069696493, w: -0.9724688}
+    m_Value: {x: -0.12566665, y: -0.047283333, z: 0.0059692566, w: -0.99096036}
   m_Size:
     m_Target: 12.124355
     speed: 2
-    m_Value: 18.09393
+    m_Value: 12.124355
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -1680,9 +1680,7 @@ MonoBehaviour:
     - m_Data: 69708
     m_LastClickedID:
       m_Data: 69708
-    m_ExpandedIDs:
-    - m_Data: 0
-    - m_Data: 48786
+    m_ExpandedIDs: []
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1713,9 +1711,7 @@ MonoBehaviour:
     m_SelectedIDs: []
     m_LastClickedID:
       m_Data: 0
-    m_ExpandedIDs:
-    - m_Data: 0
-    - m_Data: 48786
+    m_ExpandedIDs: []
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 

@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class Durability : MonoBehaviour
 {
+    damageMat damage;
+
     [SerializeField]
     private int durability;
 
@@ -10,7 +12,7 @@ public class Durability : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        damage = GetComponent<damageMat>();
     }
 
     // Update is called once per frame
@@ -26,6 +28,8 @@ public class Durability : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Meteor"))
         {
+            damage.NextMaterial();
+
             count++;
             Debug.Log(this.gameObject.name + " の耐久値の減少 : " + (durability - count) + " / " + durability);
 

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Unity.Entities.UniversalDelegates;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -18,13 +19,20 @@ public class JoineManager : MonoBehaviour
     [SerializeField] private Text device3text;         //3デバイス名Text
     [SerializeField] private Text device4text;         //4デバイス名Text
 
+    //----------
+    [SerializeField] private GameObject playerPrefab = default; //Player
+    private Dictionary<int,GameObject> playerObjects = new (); //生成したPlayerオブジェクトのリスト
+
     private Dictionary<int, int> playerMap = new();
     private List<InputDevice> joinDevices = new List<InputDevice>();             //参加中のデバイス
 
     private void Awake()
     {
         //最大参加可能数で配列を初期化
-        joinDevices = new List<InputDevice>(maxPlayers);
+        for (int i = 0; i < maxPlayers; i++)
+        {
+            joinDevices.Add(null);
+        }
         playerMap = new Dictionary<int, int>(maxPlayers);
         // InputActionを有効化し、コールバックを設定
         joinAction.Enable();
@@ -56,17 +64,32 @@ public class JoineManager : MonoBehaviour
     private void OnJoin(InputAction.CallbackContext context)
     {
         InputDevice device = context.control.device;
+        for (int i = 0; i < joinDevices.Count; i++)
+        {
+            if (joinDevices[i] == device)
+            {
+                return;
+            }
+        }
+        int playerIndex = -1;
+        for (int i = 0; i < joinDevices.Count; i++)
+        {
+            if (joinDevices[i] == null)
+            {
+                joinDevices[i] = device;
 
-        if (joinDevices.Contains(device)) { return; }
-        if (joinDevices.Count >= maxPlayers) return;
+                playerIndex = i;
+                Debug.Log($"{i + 1}P参加");
 
-        joinDevices.Add(device);
-        int playerIndex = joinDevices.Count - 1;
+                break;
+            }
+        }
 
         // deviceId → playerIndex
         playerMap[device.deviceId] = playerIndex;
         Debug.Log($"Join : DeviceID {device.deviceId} → Player{playerIndex}");
         UpdateDeviceTexts();
+        CreatePlayer(device);
     }
 
     //-----退出-----
@@ -75,23 +98,37 @@ public class JoineManager : MonoBehaviour
         InputDevice device = context.control.device;
         if (!joinDevices.Contains(device)) { return; }
 
-        joinDevices.Remove(device);
+        for (int i = 0; i < joinDevices.Count; i++)
+        {
+            if (joinDevices[i] == device)
+            {
+                joinDevices[i] = null;
+
+                Debug.Log($"{i + 1}P退出");
+
+                break;
+            }
+        }
 
         if (playerMap.ContainsKey(device.deviceId))
         {
             playerMap.Remove(device.deviceId);
         }
 
-        RebuildMap();
         UpdateDeviceTexts();
-    }
-    private void RebuildMap()
-    {
-        playerMap.Clear();
 
-        for (int i = 0; i < joinDevices.Count; i++)
+        if (playerObjects.TryGetValue(device.deviceId,out GameObject obj))
         {
-            playerMap[joinDevices[i].deviceId] = i;
+            PlayerDataHolder.Instance.RemoveData(obj);
+            var input = obj.GetComponent<PlayerInput>();
+
+            if(input != null)
+            {
+                input.user.UnpairDevicesAndRemoveUser();
+            }
+            Destroy(obj);
+
+            playerObjects.Remove(device.deviceId);
         }
     }
 
@@ -102,14 +139,18 @@ public class JoineManager : MonoBehaviour
 
         for (int i = 0; i < texts.Length; i++)
         {
-            texts[i].enabled = false;
-            texts[i].text = "";
-        }
+            if (joinDevices[i] != null)
+            {
+                texts[i].enabled = true;
 
-        for (int i = 0; i < joinDevices.Count; i++)
-        {
-            texts[i].enabled = true;
-            texts[i].text = $"{joinDevices[i].displayName}\n参加中";
+                texts[i].text =
+                    $"{joinDevices[i].displayName}\n参加中";
+            }
+            else
+            {
+                texts[i].enabled = false;
+                texts[i].text = "";
+            }
         }
     }
 
@@ -125,7 +166,6 @@ public class JoineManager : MonoBehaviour
                         joinAction.Disable();
                         leaveAction.Disable();*/
 
-            PlayerDataHolder.Instance.SetData(joinDevices, playerMap);
             SceneManager.LoadScene("prot");
         }
     }
@@ -138,5 +178,21 @@ public class JoineManager : MonoBehaviour
             joinAction.Enable();
             leaveAction.Enable();
         }
+    }
+
+    void CreatePlayer(InputDevice device){
+        if(device == null) return;
+        //保持しているデバイス情報と人数を取得
+        int playerIndex = playerMap[device.deviceId];
+
+        var obj = PlayerInput.Instantiate(
+               prefab: playerPrefab,
+               playerIndex: playerIndex,
+               pairWithDevice: device
+           );
+        //obj.transform.position = transform.position;
+        PlayerDataHolder.Instance.SetData(obj.gameObject);
+        DontDestroyOnLoad(obj);
+        playerObjects[device.deviceId] = obj.gameObject;
     }
 }

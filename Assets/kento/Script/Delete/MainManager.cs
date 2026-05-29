@@ -9,8 +9,8 @@ using UnityEngine.SceneManagement;
 
 public class MainManager : MonoBehaviour
 {
-    [SerializeField] private GameObject playerPrefab = default; //Player
     [SerializeField] private GameObject botPrefab = default;
+
     [SerializeField] private Transform[] pos = default;         //生成位置
     [SerializeField] private GameObject timeUpPanel;
 
@@ -25,43 +25,33 @@ public class MainManager : MonoBehaviour
 
     void Awake()
     {
+        // プレイヤー生成のロジックをここに記述
         joinobj = GameObject.Find("JoinedManager");
-        //インスタンスがない場合はreturn
-        if (PlayerDataHolder.Instance == null) { return; }
+        /*        if(PlayerDataHolder.Instance == null) { return; }
+                foreach (var player in PlayerDataHolder.Instance.players)
+                {
+                    if (player != null)
+                    {
+                        Instantiate(player, pos[i].position, pos[i].rotation);
+                        i++;
+                    }
+                }*/
+        //var players = FindObjectsByType<PlayerInput>(FindObjectsSortMode.None); 
+        var players = PlayerDataHolder.Instance.players;
 
-        //インスタンスで保持しているデバイス情報と人数を取得
-        var devices = PlayerDataHolder.Instance.devices;
-        var map = PlayerDataHolder.Instance.playerMap;
-
-        foreach (var device in devices)
+        for (i = 0; i < players.Count; i++)
         {
-            if (device == null) return;
-            int playerIndex = map[device.deviceId];
-
-            var obj = PlayerInput.Instantiate(
-                prefab: playerPrefab,
-                playerIndex: playerIndex,
-                pairWithDevice: device
-            );
-            obj.transform.position = pos[i].position;
-            obj.transform.rotation = pos[i].rotation;
-
-            i++;
+            players[i].transform.position =
+                pos[i].position;
+            players[i].transform.rotation =
+                pos[i].rotation;
         }
-        while (i < 4)
+        while (i < pos.Length)
         {
-            // --- ここから書き換え ---
-            // 1. Botを生成して、変数「botObj」に入れる
-            GameObject botObj = Instantiate(botPrefab, pos[i].position, pos[i].rotation);
-
-            // 2. 生成したBotから PlayerHealth スクリプトを探す
-            PlayerHealth health = botObj.GetComponent<PlayerHealth>();
-            if (health != null)
-            {
-                // 3. Botに「お前は i 番目（0, 1, 2, 3...）だよ」と教え込む
-                health.playerIndex = i;
-            }
-            // --- ここまで --- 
+            var bot = Instantiate(botPrefab, pos[i].position, pos[i].rotation);
+            var health = bot.GetComponent<PlayerHealth>();
+            if (health != null) health.playerIndex = i;
+            Debug.Log($"Bot{i + 1}: index={i}");
             i++;
         }
     }

@@ -40,7 +40,7 @@ public class AtackController : MonoBehaviour
     Rigidbody rb;
     PlayerStateManager stateManager;
     AnimatorController animeCon;
-     
+
     public void SetCharge(float value)
     {
         t = value;
@@ -57,18 +57,22 @@ public class AtackController : MonoBehaviour
 
     void Update()
     {
+        if (stateManager.ActionState != ActionState.Attack)
+        {
+            searchArea.enabled = false;
+        }
         if (stateManager.ActionState == ActionState.Charge)
         {
             if (t < chargeMax)
             {
-                t += Time.deltaTime; 
+                t += Time.deltaTime;
             }
-            if(t >= chargeMax)
+            if (t >= chargeMax)
             {
                 isMax = true;
             }
         }
-        if(stateManager.State == State.Knockback)
+        if (stateManager.State == State.Knockback)
         {
             SetCharge(0);
             animeCon.isStart = false;
@@ -83,11 +87,11 @@ public class AtackController : MonoBehaviour
         }*/
         if (isRigid)
         {
-            if(curentRecoveryTime > 0f)
+            if (curentRecoveryTime > 0f)
             {
                 curentRecoveryTime -= Time.deltaTime;
             }
-            if(curentRecoveryTime <= 0f)
+            if (curentRecoveryTime <= 0f)
             {
                 isRigid = false;
                 curentRecoveryTime = StrongRecoveryTime;
@@ -99,23 +103,24 @@ public class AtackController : MonoBehaviour
     {
         if (x == 0)
         {
-            if(lisCooldown) { return; }
-            if (stateManager.ActionState == ActionState.Charge) {return; }
+            if (lisCooldown) { return; }
+            if (stateManager.ActionState == ActionState.Charge) { return; }
             isRigid = false;
-            
+
             //チャージ開始,ステート変更
             stateManager.SetActionState(ActionState.Charge);
             animeCon.isStart = true;
         }
         if (x == 1)
         {
-            if(lisCooldown) { return; }
+            if (lisCooldown) { return; }
             if (isRigid) { return; }
             animeCon.isStart = false;
             if (stateManager.ActionState == ActionState.Charge)
             {
                 //チャージを止め攻撃,ステート変更
                 stateManager.SetActionState(ActionState.Attack);
+                searchArea.enabled = true;
                 //? = true , : = false
                 //curentknockbackForce = isMax ? StrongKnockbackForce : WeakKnockbackForce;
 
@@ -146,9 +151,9 @@ public class AtackController : MonoBehaviour
                 rb.AddForce(transform.forward * curentForce, ForceMode.Impulse);
 
                 Invoke("EndAttack", duration);
-            } 
-          
-        }  
+            }
+
+        }
     }
 
     void EndAttack()
@@ -156,14 +161,14 @@ public class AtackController : MonoBehaviour
         rb.linearVelocity = Vector3.zero;
         //ステートをNoneに
         stateManager.SetActionState(ActionState.None);
-        
+
         hasHit = false;
 
         if (isMax)
         {
             isRigid = true;
         }
-    
+
         isMax = false;
         animeCon.isAttack1 = false;
         animeCon.isAttack2 = false;
@@ -183,9 +188,9 @@ public class AtackController : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         if (hasHit) { return; }
-        if(stateManager == null || rb == null) { return; }
+        if (stateManager == null || rb == null) { return; }
 
-        if(stateManager.ActionState != ActionState.Attack) { return; }
+        if (stateManager.ActionState != ActionState.Attack) { return; }
         if (other.gameObject.CompareTag("Player"))
         {
             Vector3 posDir = other.transform.position - this.transform.position;
@@ -195,7 +200,7 @@ public class AtackController : MonoBehaviour
 
             if (target_angle > angle) { return; }
             float radius = searchArea.radius * transform.localScale.x;
-            if (target_angle <= angle && Vector3.Distance(transform.position,other.transform.position) <= radius)
+            if (target_angle <= angle && Vector3.Distance(transform.position, other.transform.position) <= radius)
             {
                 hasHit = true;
 

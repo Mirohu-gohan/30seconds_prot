@@ -5,9 +5,7 @@ using UnityEngine.InputSystem;
 public class PlayerDataHolder : MonoBehaviour
 {
     public static PlayerDataHolder Instance { get; private set; } //Playerの接続データインスタンス
-    public List<InputDevice> devices = new();
-
-    public Dictionary<int, int> playerMap = new();
+    public List<GameObject> players = new();
 
     private void Awake()
     {
@@ -22,9 +20,12 @@ public class PlayerDataHolder : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    public void SetData(List<InputDevice> newDevices, Dictionary<int, int> newMap)
+    public void SetData(GameObject player)
     {
-        devices = new List<InputDevice>(newDevices);
-        playerMap = new Dictionary<int, int>(newMap);
+        players.Add(player);
+    }
+    public void RemoveData(GameObject player)
+    {
+        players.Remove(player);
     }
 }

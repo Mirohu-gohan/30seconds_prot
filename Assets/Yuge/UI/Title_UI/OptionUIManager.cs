@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
+using UnityEngine.UI; // ★Buttonコンポーネントを使用
 
 [System.Serializable]
 public class PanelData
@@ -13,7 +15,6 @@ public class PanelData
     [Header("このパネル用のアニメーターパラメータ名")]
     public string parameterName;
 
-    // ★追加：インスペクターでチェックを入れられるようにする
     [Header("制限設定")]
     [Tooltip("チェックを入れると、このパネルが開いている間は他のパネルを開けなくなります")]
     public bool isModal;
@@ -26,6 +27,10 @@ public class OptionUIManager : MonoBehaviour
 {
     [Header("ゲーム起動時に最初に選択させたいメインボタン")]
     [SerializeField] private GameObject mainFirstSelectedButton;
+
+    [Header("【アタッチ用】各ボタンの本体")]
+    [SerializeField] private Button actualStartButton;   // Aボタンで実行したいStartButton
+    [SerializeField] private Button actualOptionButton;  // OPTIONSボタンで実行したいOption_BT ★追加
 
     [Header("複数UIパネルの設定")]
     [SerializeField] private List<PanelData> panels = new List<PanelData>();
@@ -42,6 +47,7 @@ public class OptionUIManager : MonoBehaviour
     {
         Time.timeScale = 1f;
 
+        // 全パネルの初期化（非表示にする）
         foreach (var data in panels)
         {
             if (data.panel != null) data.panel.SetActive(false);
@@ -54,56 +60,120 @@ public class OptionUIManager : MonoBehaviour
             }
         }
 
+        // メインボタンへの初期フォーカス
         if (mainFirstSelectedButton != null)
         {
             StartCoroutine(FocusMainButtonRoutine());
         }
 
+        // 初期表示パネルがあれば開く
         if (defaultOpenPanelIndex >= 0 && defaultOpenPanelIndex < panels.Count)
         {
             ToggleOptionPanel(defaultOpenPanelIndex);
         }
     }
 
+    private void Update()
+    {
+        var gamepad = Gamepad.current;
+        var keyboard = Keyboard.current;
 
+        // ----------------------------------------------------
+        // ① OPTIONSボタン（ゲームパッドのMenu / キーボードのEsc）
+        // ----------------------------------------------------
+        bool optionsPressed = false;
+        if (gamepad != null && gamepad.startButton.wasPressedThisFrame) optionsPressed = true;
+        if (keyboard != null && keyboard.escapeKey.wasPressedThisFrame) optionsPressed = true;
+
+        if (optionsPressed)
+        {
+            // ★超重要：すでにオプション画面（Option_conなど）が開いているなら
+            // OPTIONSボタンの入力は「1ミリも受け付けず、完全に無視」する
+            if (IsAnyPanelActive())
+            {
+                Debug.Log("【OPTIONSボタン】ガード：オプション画面が開いているため、入力を完全にブロックしました。×ボタンで閉じてください。");
+                return;
+            }
+
+            // パネルが閉じていて、かつOption_BTがインスペクターに設定されている場合のみ実行
+            if (actualOptionButton != null)
+            {
+                Debug.Log("【OPTIONSボタン】オプション画面を開きます。");
+
+                // 選択状態の重複バグを防ぐため、一旦EventSystemの選択をリセット
+                if (EventSystem.current != null) EventSystem.current.SetSelectedGameObject(null);
+
+                actualOptionButton.onClick.Invoke();
+            }
+        }
+
+        // ----------------------------------------------------
+        // ② Aボタン（ゲームパッドのAボタン / キーボードのSpace）
+        // ----------------------------------------------------
+        bool aButtonPressed = false;
+        if (gamepad != null && gamepad.buttonSouth.wasPressedThisFrame) aButtonPressed = true;
+        if (keyboard != null && keyboard.spaceKey.wasPressedThisFrame) aButtonPressed = true;
+
+        if (aButtonPressed)
+        {
+            // オプション画面が開いている間は、メイン画面のStartButton暴発を絶対に防ぐ
+            if (!IsAnyPanelActive())
+            {
+                if (EventSystem.current != null)
+                {
+                    GameObject currentSelected = EventSystem.current.currentSelectedGameObject;
+                    if (currentSelected != null)
+                    {
+                        Debug.Log($"現在の選択UI: {currentSelected.name} / 通常の決定処理を行います。");
+                    }
+                    else
+                    {
+                        // 完全にフォーカスが外れている時だけの救済スタート
+                        if (actualStartButton != null)
+                        {
+                            Debug.Log("【救済措置】フォーカス迷子のため、AボタンでStartButtonを実行。");
+                            actualStartButton.onClick.Invoke();
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // 安全にフォーカスを当てるコルーチン
     private IEnumerator FocusMainButtonRoutine()
     {
-        // 起動直後のEventSystemのバタつきを避けるため、ほんの少し（0.05秒）だけ待つ
         yield return new WaitForSecondsRealtime(0.05f);
 
         if (EventSystem.current != null && mainFirstSelectedButton != null)
         {
-            EventSystem.current.SetSelectedGameObject(null); // 一旦クリア
+            EventSystem.current.SetSelectedGameObject(null);
             EventSystem.current.SetSelectedGameObject(mainFirstSelectedButton);
-            Debug.Log($"<color=green>[UI Manager]</color> メインボタン '{mainFirstSelectedButton.name}' に初期フォーカスを完了しました！");
         }
     }
 
+    // パネルの開閉処理（トグル）
     public void ToggleOptionPanel(int panelIndex)
     {
         if (panelIndex < 0 || panelIndex >= panels.Count) return;
         if (currentCoroutine != null) return;
 
-        // ★追加：ブロック機能（モーダルチェック）
-        // 現在開いているパネルの中に「isModal = true」のパネルがあるか確認する
+        // モーダルブロックチェック
         for (int i = 0; i < panels.Count; i++)
         {
-            // 「isModalがON」かつ「現在アクティブ(表示中)」かつ「押したボタンがそのパネル自身ではない」場合
             if (panels[i].isModal && panels[i].panel.activeSelf && i != panelIndex)
             {
-                // 処理をここで終了し、ボタン入力を完全に無視する
                 Debug.Log($"{panels[i].panelName} が開いているため、別のパネルは開けません！");
                 return;
             }
         }
 
-        // ブロックされていなければ、通常通りアニメーション処理を開始
         currentCoroutine = StartCoroutine(SwitchPanelSequence(panelIndex));
     }
 
     private IEnumerator SwitchPanelSequence(int targetIndex)
     {
-        // --- ① 古いパネルを閉じる ---
+        // --- 古いパネルを閉じる ---
         for (int i = 0; i < panels.Count; i++)
         {
             if (i != targetIndex && panels[i].panel.activeSelf)
@@ -118,7 +188,7 @@ public class OptionUIManager : MonoBehaviour
             }
         }
 
-        // --- ② 新しいパネルを開く（または閉じる） ---
+        // --- 新しいパネルを開く（または閉じる） ---
         PanelData targetData = panels[targetIndex];
         bool isCurrentlyActive = targetData.panel.activeSelf;
 
@@ -130,9 +200,10 @@ public class OptionUIManager : MonoBehaviour
                 targetData.animator.SetBool(targetData.parameterName, true);
             }
 
+            // パネルが開いたら、その中の初期ボタンにフォーカス
             if (targetData.firstSelectedButton != null && EventSystem.current != null)
             {
-                EventSystem.current.SetSelectedGameObject(null); // 一旦クリア
+                EventSystem.current.SetSelectedGameObject(null);
                 EventSystem.current.SetSelectedGameObject(targetData.firstSelectedButton);
             }
         }
@@ -145,6 +216,7 @@ public class OptionUIManager : MonoBehaviour
             }
             targetData.panel.SetActive(false);
 
+            // パネルが閉じたら、メイン画面のStartButtonにフォーカスを戻す
             if (mainFirstSelectedButton != null && EventSystem.current != null)
             {
                 EventSystem.current.SetSelectedGameObject(null);
@@ -153,5 +225,15 @@ public class OptionUIManager : MonoBehaviour
         }
 
         currentCoroutine = null;
+    }
+
+    // いずれかのサブパネルが開いているか確認
+    private bool IsAnyPanelActive()
+    {
+        foreach (var data in panels)
+        {
+            if (data.panel != null && data.panel.activeSelf) return true;
+        }
+        return false;
     }
 }

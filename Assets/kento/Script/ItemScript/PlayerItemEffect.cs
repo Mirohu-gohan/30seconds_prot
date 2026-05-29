@@ -35,6 +35,16 @@ public class PlayerItemEffect : MonoBehaviour
         paint = obj.GetComponent<Image>();
         GameObject a = GameObject.Find("ItemTxt");
         text = a.GetComponent<Text>();
+        PlayerItemEffect[] players = FindObjectsByType<PlayerItemEffect>(FindObjectsSortMode.None);
+        foreach (var p in players)
+        {
+            if (p == this) continue;
+            var playerInput = p.GetComponent<PlayerInputController>();
+            if (playerInput != null)
+            {
+                playerInput.SetReverse(false);
+            }
+        }
 
         paint.enabled = false;
         text.enabled = false;

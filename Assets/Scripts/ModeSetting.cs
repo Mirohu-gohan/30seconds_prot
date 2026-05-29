@@ -51,13 +51,13 @@ public class ModeSetting : MonoBehaviour
         {
             case GameMode.Survival: 
                 modeName.text = "Survaival";
-                modeDescription.text = "対戦モードの説明";
+                modeDescription.text = "最後まで3回生き残れば勝ち。時間内に終わらなかったらサドンデスでワンパンでぶっ飛ばせるぞ！！";
                 
                 break;
 
             case GameMode.Score:    
                 modeName.text = "Score";
-                modeDescription.text = "スコアモードの説明";
+                modeDescription.text = "落ちてくる球を拾って一番ポイントを稼いだ人の勝ち。何度でも復活できるぞ！！";
 
                 break;
         }

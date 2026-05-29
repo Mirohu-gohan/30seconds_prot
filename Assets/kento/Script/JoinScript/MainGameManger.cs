@@ -26,7 +26,8 @@ public class MainGameManger : MonoBehaviour
 
     private void Awake()
     {
-        joinObj = GameObject.Find("JoinedManager");
+        joinObj = GameObject.Find("JoinedManager"); // オブジェクト名
+        
         //インスタンスがない場合はreturn
         if (JoinData.Instance == null) { return; }
 
@@ -45,11 +46,14 @@ public class MainGameManger : MonoBehaviour
                 );
                 obj.transform.position = pos[i].position;
                 obj.transform.rotation = pos[i].rotation;
+                obj.neverAutoSwitchControlSchemes = true;
 
                 var controller = obj.GetComponent<PlayerInputController>();
                 if (controller != null) controller.Init(devices[i], i);
+                var health = obj.GetComponent<PlayerHealth>();
+                if (health != null) health.playerIndex = i;
 
-                Debug.Log($"Player{i + 1}: index={obj.playerIndex}, device={devices[i].displayName}");
+                Debug.Log($"Player{i + 1}: inputIndex={obj.playerIndex}, healthIndex={i}, device={devices[i].displayName}");
             }
             else
             {

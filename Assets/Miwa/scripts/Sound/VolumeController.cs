@@ -4,6 +4,9 @@ using UnityEngine.UI;
 
 public class VolumeController : MonoBehaviour
 {
+
+    
+
     public Slider bgmSlider;
     public Slider seSlider;
 
@@ -14,6 +17,10 @@ public class VolumeController : MonoBehaviour
     {
         if (SoundManager.Instance != null)
         {
+            // ★超安全対策：もしSoundManagerの初期値が0になってしまっていたら、コード上の初期値を強制注入する
+            if (SoundManager.Instance.bgmVolume == 0f) SoundManager.Instance.SetBGMVolume(0.1f);
+            if (SoundManager.Instance.seVolume == 0f) SoundManager.Instance.SetSEVolume(0.4f);
+
             // 最初に現在の音量をスライダーとテキストに反映
             bgmSlider.value = SoundManager.Instance.bgmVolume;
             seSlider.value = SoundManager.Instance.seVolume;
@@ -21,17 +28,17 @@ public class VolumeController : MonoBehaviour
             UpdateBgmtext(bgmSlider.value);
             UpdateSetext(seSlider.value);
 
-            // スライダーを動かした時の処理を登録
-            bgmSlider.onValueChanged.AddListener(val => 
+            // スライダーを動かした時の処理を登録（ここからは手動操作のみ受け付ける）
+            bgmSlider.onValueChanged.AddListener(val =>
             {
-                SoundManager.Instance.SEtBGMVolume(val); // 音量を変える
-                UpdateBgmtext(val);                     // テキストを変える（←ここが抜けていました）
+                SoundManager.Instance.SetBGMVolume(val);
+                UpdateBgmtext(val);
             });
 
-            seSlider.onValueChanged.AddListener(val => 
+            seSlider.onValueChanged.AddListener(val =>
             {
-                SoundManager.Instance.SetSEVolume(val);  // 音量を変える
-                UpdateSetext(val);                      // テキストを変える（←ここが抜けていました）
+                SoundManager.Instance.SetSEVolume(val);
+                UpdateSetext(val);
             });
         }
     }

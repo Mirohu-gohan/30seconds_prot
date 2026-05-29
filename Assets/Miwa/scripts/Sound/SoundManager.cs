@@ -41,7 +41,7 @@ public class SoundManager : MonoBehaviour
     public AudioClip decideSE;       // 決定13
 
     [Header("■ タイトル画面")]
-    public AudioClip TitelBGM;
+    public AudioClip MainBGM;
 
     [Header("SE重なり防止設定")]
     [SerializeField] private float defaultSeInterval = 0.1f;
@@ -108,7 +108,7 @@ public class SoundManager : MonoBehaviour
         lastPlayTimes[clip] = Time.time;
     }
 
-    public void SEtBGMVolume(float volume)
+    public void SetBGMVolume(float volume)
     {
         bgmVolume = volume;
         if(bgmSource !=null)bgmSource.volume =bgmVolume;

@@ -167,7 +167,7 @@ GameObject:
   - component: {fileID: 4991484727143772983}
   - component: {fileID: 4239522957607921771}
   m_Layer: 5
-  m_Name: StageSelect
+  m_Name: StageSelect_Demo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

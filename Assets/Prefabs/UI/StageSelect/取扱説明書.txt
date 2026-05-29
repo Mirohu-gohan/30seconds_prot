@@ -1,0 +1,22 @@
+重要な注意点
+EventSystem の設定変更が必要
+Unity6 + Input Systemでは、デフォルトの StandaloneInputModule だと競合します。
+EventSystem の Inspector
+  └── StandaloneInputModule を削除
+  └── InputSystemUIInputModule を追加
+        └── Move アクション → 「None」に設定（←重要！）
+MoveをNoneにしないと、2P以降のスティックでもフォーカスが動いてしまいます。
+-------------------------------------------------------------
+[GamepadCursorController]
+  Cursor Rect Transform → GamepadCursor (Image)
+  Canvas               → Canvas
+  Cursor Speed         → 1000
+  Player1 Gamepad Index → 0
+-------------------------------------------------------------
+セットアップ手順
+
+Canvas に EventSystem があることを確認
+Canvas子要素に Image（カーソル用） を追加 → GamepadCursorと命名
+GamepadCursorController.cs を空のGameObjectにアタッチ
+Inspector で Cursor Rect Transform と Canvas を割り当て
+ボタンには通常通り OnClick() を設定するだけでOK

@@ -3,21 +3,25 @@ using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
+using UnityEditor;
 
 public class GamePadCursorController : MonoBehaviour
 {
-    [Header("ÉJÅ[É\Éãê›íË")]
+    [Header("„Ç´„Éº„ÇΩ„É´Ë®≠ÂÆö")]
     [SerializeField] private RectTransform cursorRectTransform;
     [SerializeField] private Canvas canvas;
     [SerializeField] private float cursorSpeed = 100.0f;
 
     [Header("1P DeviceSettings")]
-    [Tooltip("0 = ç≈èâÇ…ê⁄ë±Ç≥ÇÍÇΩÉQÅ[ÉÄÉpÉbÉh(1P)")]
+    [Tooltip("0 = ÊúÄÂàù„Å´Êé•Á∂ö„Åï„Çå„Åü„Ç≤„Éº„É†„Éë„ÉÉ„Éâ(1P)")]
     [SerializeField] private int player1GamepadIndex = 0;
 
     private RectTransform canvasRect;
     private GameObject currentHovered;
     private Gamepad player1Gamepad;
+
+    private enum InputMode { Gamepad, MouseKeyboard }
+    private InputMode currentInputMode = InputMode.Gamepad;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -25,7 +29,7 @@ public class GamePadCursorController : MonoBehaviour
         canvasRect = canvas.GetComponent<RectTransform>();
         RefreshPlayer1Gamepad();
 
-        //ÉRÉìÉgÉçÅ[ÉâÅ[ÇÃî≤Ç´ç∑ÇµëŒçÙ
+        //„Ç≥„É≥„Éà„É≠„Éº„É©„Éº„ÅÆÊäú„ÅçÂ∑Æ„ÅóÂØæÁ≠ñ
         InputSystem.onDeviceChange += OnDeviceChange;
     }
 
@@ -36,7 +40,7 @@ public class GamePadCursorController : MonoBehaviour
 
     void OnDeviceChange(InputDevice device, InputDeviceChange change)
     {
-        //ê⁄ë±orêÿífÇ™Ç†ÇÍÇŒ1PÉfÉoÉCÉXÇçXêV
+        //Êé•Á∂öorÂàáÊñ≠„Åå„ÅÇ„Çå„Å∞1P„Éá„Éê„Ç§„Çπ„ÇíÊõ¥Êñ∞
         if (device is Gamepad) RefreshPlayer1Gamepad();
     }
 
@@ -51,9 +55,41 @@ public class GamePadCursorController : MonoBehaviour
     {
         if (player1Gamepad == null) return;
 
+        DetectInputMode();
+
+        if (currentInputMode ==InputMode.MouseKeyboard)
+        {
+            if (currentHovered != null)
+            {
+                Debug.Log($"„Éû„Ç¶„Çπ„É¢„Éº„ÉâÁßªË°åÊôÇ„É™„Çª„ÉÉ„Éà: {currentHovered.name}"); // ‚Üê ËøΩÂä†
+                PointerEventData pData = new PointerEventData(EventSystem.current);
+                ExecuteEvents.ExecuteHierarchy(currentHovered, pData, ExecuteEvents.pointerExitHandler);
+                currentHovered = null;
+            }
+        }
+
         MoveCursor();
         HandleHover();
         HandleClick();
+    }
+
+    void DetectInputMode()
+    {
+        //PCmode„Å´Â§âÊõ¥
+        if (Mouse.current != null && (Mouse.current.delta.ReadValue().magnitude > 0f || Mouse.current.leftButton.wasPressedThisFrame))
+        {
+            Cursor.visible = true;
+            currentInputMode = InputMode.MouseKeyboard;
+            cursorRectTransform.gameObject.SetActive(false);
+        }
+
+        //Change to CSmode
+        if (player1Gamepad != null && (player1Gamepad.leftStick.ReadValue().magnitude > 0.2f || player1Gamepad.buttonSouth.wasPressedThisFrame))
+        {
+            Cursor.visible = false;
+            currentInputMode = InputMode.Gamepad;
+            cursorRectTransform.gameObject.SetActive(true);
+        }
     }
 
     void MoveCursor()
@@ -65,7 +101,7 @@ public class GamePadCursorController : MonoBehaviour
 
         Vector2 newPos = cursorRectTransform.anchoredPosition + input * cursorSpeed * Time.deltaTime;
 
-        //Canvasì‡Ç…ÉNÉâÉìÉv
+        //CanvasÂÜÖ„Å´„ÇØ„É©„É≥„Éó
         Vector2 half = canvasRect.sizeDelta * 0.5f;
         newPos.x = Mathf.Clamp(newPos.x, -half.x, half.x);
         newPos.y = Mathf.Clamp(newPos.y, -half.y, half.y);
@@ -88,19 +124,27 @@ public class GamePadCursorController : MonoBehaviour
         if (newHovered != currentHovered)
         {
             if (currentHovered != null)
-            {
-                ExecuteEvents.Execute(currentHovered, pData, ExecuteEvents.pointerExitHandler);
+                ExecuteEvents.ExecuteHierarchy(currentHovered, pData, ExecuteEvents.pointerExitHandler);
 
-                if (newHovered != null) ExecuteEvents.Execute(newHovered, pData, ExecuteEvents.pointerEnterHandler);
+            if (newHovered != null) ExecuteEvents.ExecuteHierarchy(newHovered, pData, ExecuteEvents.pointerEnterHandler);
 
-                currentHovered = newHovered;
-            }
+            currentHovered = newHovered;
         }
     }
 
     void HandleClick()
     {
-        if (!player1Gamepad.buttonSouth.wasPressedThisFrame) return;
+        if (!player1Gamepad.buttonSouth.wasPressedThisFrame)
+        {
+            return;
+        }
+        else
+        {
+            Debug.Log("Abutton");
+        }
+
+        Debug.Log($"currentHovered: {currentHovered?.name ?? "null"}"); // ‚Üê ËøΩÂä†
+
         if (currentHovered == null) return;
 
         PointerEventData pData = new PointerEventData(EventSystem.current)
@@ -108,15 +152,15 @@ public class GamePadCursorController : MonoBehaviour
             position = GetCursorScreenPosition()
         };
 
-        ExecuteEvents.Execute(currentHovered, pData, ExecuteEvents.pointerClickHandler);
+        ExecuteEvents.ExecuteHierarchy(currentHovered, pData, ExecuteEvents.pointerClickHandler);
     }
 
     Vector2 GetCursorScreenPosition()
     {
         Vector3[] corners = new Vector3[4];
         canvasRect.GetWorldCorners(corners);
-        //corners[0] = ç∂â∫
-        //corners[2] = âEè„
+        //corners[0] = Â∑¶‰∏ã
+        //corners[2] = Âè≥‰∏ä
 
         float tx = (cursorRectTransform.anchoredPosition.x + canvasRect.sizeDelta.x * 0.5f) / canvasRect.sizeDelta.x;
 

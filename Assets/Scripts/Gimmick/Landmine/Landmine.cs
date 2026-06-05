@@ -3,7 +3,6 @@ using UnityEngine.Audio;
 
 public class Landmine : MonoBehaviour
 {
-
     public float explosionForce = 10.0f;
     public float explosionRadius = 3.0f;
 
@@ -44,6 +43,7 @@ public class Landmine : MonoBehaviour
         {
             if (hit.CompareTag("Player"))
             {
+                if (CameraShaker.Instance != null) CameraShaker.Instance.Shake();
                 Rigidbody rb = hit.GetComponent<Rigidbody>();
                 if (rb != null)
                 {

@@ -33,6 +33,8 @@ public class Meteor_ver2 : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Stage"))
         {
+            if (CameraShaker.Instance != null) CameraShaker.Instance.Shake();
+
             // 煙エフェクトを生成
             Vector3 contactPoint = collision.contacts[0].point;
             if (Smoke != null)

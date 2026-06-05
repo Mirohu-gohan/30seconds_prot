@@ -131,6 +131,7 @@ Transform:
 --- !u!1 &7544933142302262366
 GameObject:
   m_ObjectHideFlags: 0
+<<<<<<< HEAD:Assets/Prot/Prefabs/Stage_Island_prot.prefab
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -145,11 +146,99 @@ GameObject:
   m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &1849224445937342789
+=======
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 406515689165290849}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      propertyPath: m_Name
+      value: stage
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      propertyPath: m_TagString
+      value: Stage
+      objectReference: {fileID: 0}
+    - target: {fileID: 5745556916277085906, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5745556916277085906, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      propertyPath: m_TagString
+      value: Stage
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects:
+    - {fileID: -7612500599777965640, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+    - {fileID: 7930437464689409330, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+    - {fileID: 6121219416777617171, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+    - {fileID: -4134476519970051958, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+    - {fileID: 6167696076890655526, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5745556916277085906, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6465209391250192469}
+    - targetCorrespondingSourceObject: {fileID: 5745556916277085906, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1059828386183998043}
+    - targetCorrespondingSourceObject: {fileID: 5745556916277085906, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6011502471559144408}
+  m_SourcePrefab: {fileID: 100100000, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+--- !u!4 &258189327984419934 stripped
+>>>>>>> Kawabata_Meteor:Assets/Prefabs/Stage_Island_prot.prefab
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< HEAD:Assets/Prot/Prefabs/Stage_Island_prot.prefab
   m_GameObject: {fileID: 7544933142302262366}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -182,11 +271,148 @@ GameObject:
   m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &2754954434735137207
+=======
+  m_GameObject: {fileID: 5450390451059131751}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -603319238942655155, guid: 77dcc2b656b064248a4e72facf4c35db, type: 3}
+--- !u!114 &1059828386183998043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5450390451059131751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2f56568314cd754c8bcad424296dab9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  durability: 4
+--- !u!114 &6011502471559144408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5450390451059131751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 640633446040c0c4191f6297bca9a047, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::damageMat
+  materials:
+  - {fileID: 2100000, guid: da11f1d1057185847ad8d3fc5550d090, type: 2}
+  - {fileID: 2100000, guid: c167f1a65f8d09e40abb2916a3a7bc2e, type: 2}
+  - {fileID: 2100000, guid: b150a97fda32e5b4fb8cd79c85bae6a6, type: 2}
+  - {fileID: 2100000, guid: eff5a64ed1e5ee144ae643043444d0bd, type: 2}
+--- !u!1001 &1066122664912470826
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 5390730502528835683}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      propertyPath: m_Name
+      value: stage
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      propertyPath: m_TagString
+      value: Stage
+      objectReference: {fileID: 0}
+    - target: {fileID: 7930437464689409330, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7930437464689409330, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      propertyPath: m_TagString
+      value: Stage
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects:
+    - {fileID: -7612500599777965640, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+    - {fileID: 6121219416777617171, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+    - {fileID: -4134476519970051958, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+    - {fileID: 5745556916277085906, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+    - {fileID: 6167696076890655526, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7930437464689409330, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2780735086348743582}
+    - targetCorrespondingSourceObject: {fileID: 7930437464689409330, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2007604638338076410}
+    - targetCorrespondingSourceObject: {fileID: 7930437464689409330, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2913682654495232236}
+  m_SourcePrefab: {fileID: 100100000, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+--- !u!4 &666842357091837121 stripped
+>>>>>>> Kawabata_Meteor:Assets/Prefabs/Stage_Island_prot.prefab
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< HEAD:Assets/Prot/Prefabs/Stage_Island_prot.prefab
   m_GameObject: {fileID: 7613841326682472120}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -198,11 +424,156 @@ Transform:
   m_Father: {fileID: 1849224445937342789}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7685261053436032779
+=======
+  m_GameObject: {fileID: 6973034784446168600}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -7223334657668252580, guid: 77dcc2b656b064248a4e72facf4c35db, type: 3}
+--- !u!114 &2007604638338076410
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6973034784446168600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2f56568314cd754c8bcad424296dab9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  durability: 4
+--- !u!114 &2913682654495232236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6973034784446168600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 640633446040c0c4191f6297bca9a047, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::damageMat
+  materials:
+  - {fileID: 2100000, guid: da11f1d1057185847ad8d3fc5550d090, type: 2}
+  - {fileID: 2100000, guid: c167f1a65f8d09e40abb2916a3a7bc2e, type: 2}
+  - {fileID: 2100000, guid: b150a97fda32e5b4fb8cd79c85bae6a6, type: 2}
+  - {fileID: 2100000, guid: eff5a64ed1e5ee144ae643043444d0bd, type: 2}
+--- !u!1001 &6306502956677889989
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 4806012953555773121}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      propertyPath: m_Name
+      value: stage
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      propertyPath: m_TagString
+      value: Stage
+      objectReference: {fileID: 0}
+    - target: {fileID: 4972235463064429755, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6167696076890655526, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6167696076890655526, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      propertyPath: m_TagString
+      value: Stage
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects:
+    - {fileID: -7612500599777965640, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+    - {fileID: 7930437464689409330, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+    - {fileID: 6121219416777617171, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+    - {fileID: -4134476519970051958, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+    - {fileID: 5745556916277085906, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6167696076890655526, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7424254384757785250}
+    - targetCorrespondingSourceObject: {fileID: 6167696076890655526, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8315740343384524350}
+    - targetCorrespondingSourceObject: {fileID: 6167696076890655526, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7323734163399972559}
+  m_SourcePrefab: {fileID: 100100000, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+--- !u!1 &152346002905314531 stripped
+>>>>>>> Kawabata_Meteor:Assets/Prefabs/Stage_Island_prot.prefab
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< HEAD:Assets/Prot/Prefabs/Stage_Island_prot.prefab
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2163381099144910371}
@@ -214,6 +585,55 @@ GameObject:
   m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &2163381099144910371
+=======
+  m_GameObject: {fileID: 152346002905314531}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -8909774088296986173, guid: 77dcc2b656b064248a4e72facf4c35db, type: 3}
+--- !u!114 &8315740343384524350
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 152346002905314531}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2f56568314cd754c8bcad424296dab9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  durability: 4
+--- !u!114 &7323734163399972559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 152346002905314531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 640633446040c0c4191f6297bca9a047, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::damageMat
+  materials:
+  - {fileID: 2100000, guid: da11f1d1057185847ad8d3fc5550d090, type: 2}
+  - {fileID: 2100000, guid: c167f1a65f8d09e40abb2916a3a7bc2e, type: 2}
+  - {fileID: 2100000, guid: b150a97fda32e5b4fb8cd79c85bae6a6, type: 2}
+  - {fileID: 2100000, guid: eff5a64ed1e5ee144ae643043444d0bd, type: 2}
+--- !u!4 &5768981912412559406 stripped
+>>>>>>> Kawabata_Meteor:Assets/Prefabs/Stage_Island_prot.prefab
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -315,12 +735,24 @@ PrefabInstance:
       addedObject: {fileID: 8292302046186955705}
     - targetCorrespondingSourceObject: {fileID: 6121219416777617171, guid: 77dcc2b656b064248a4e72facf4c35db, type: 3}
       insertIndex: -1
+<<<<<<< HEAD:Assets/Prot/Prefabs/Stage_Island_prot.prefab
       addedObject: {fileID: 5938497499136133850}
   m_SourcePrefab: {fileID: 100100000, guid: 77dcc2b656b064248a4e72facf4c35db, type: 3}
 --- !u!4 &3738717328004607779 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 77dcc2b656b064248a4e72facf4c35db, type: 3}
   m_PrefabInstance: {fileID: 3776319846853281992}
+=======
+      addedObject: {fileID: 5881620099630952265}
+    - targetCorrespondingSourceObject: {fileID: 6121219416777617171, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1955421510218608592}
+  m_SourcePrefab: {fileID: 100100000, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+--- !u!1 &4384539118668665905 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6121219416777617171, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+  m_PrefabInstance: {fileID: 7506361183617432354}
+>>>>>>> Kawabata_Meteor:Assets/Prefabs/Stage_Island_prot.prefab
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &6961120559114643419 stripped
 GameObject:
@@ -362,7 +794,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   durability: 4
+<<<<<<< HEAD:Assets/Prot/Prefabs/Stage_Island_prot.prefab
 --- !u!1001 &4893741127970212666
+=======
+--- !u!114 &1955421510218608592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4384539118668665905}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 640633446040c0c4191f6297bca9a047, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::damageMat
+  materials:
+  - {fileID: 2100000, guid: da11f1d1057185847ad8d3fc5550d090, type: 2}
+  - {fileID: 2100000, guid: c167f1a65f8d09e40abb2916a3a7bc2e, type: 2}
+  - {fileID: 2100000, guid: b150a97fda32e5b4fb8cd79c85bae6a6, type: 2}
+  - {fileID: 2100000, guid: eff5a64ed1e5ee144ae643043444d0bd, type: 2}
+--- !u!4 &8043792617817857225 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+  m_PrefabInstance: {fileID: 7506361183617432354}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &7750869841512925166
+>>>>>>> Kawabata_Meteor:Assets/Prefabs/Stage_Island_prot.prefab
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -448,9 +906,18 @@ PrefabInstance:
       addedObject: {fileID: 2155503090735620949}
     - targetCorrespondingSourceObject: {fileID: 5745556916277085906, guid: 77dcc2b656b064248a4e72facf4c35db, type: 3}
       insertIndex: -1
+<<<<<<< HEAD:Assets/Prot/Prefabs/Stage_Island_prot.prefab
       addedObject: {fileID: 8178608293298800422}
   m_SourcePrefab: {fileID: 100100000, guid: 77dcc2b656b064248a4e72facf4c35db, type: 3}
 --- !u!1 &889001546436464104 stripped
+=======
+      addedObject: {fileID: 8310731349243915426}
+    - targetCorrespondingSourceObject: {fileID: -4134476519970051958, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6711084760441930319}
+  m_SourcePrefab: {fileID: 100100000, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+--- !u!1 &3247091537759661924 stripped
+>>>>>>> Kawabata_Meteor:Assets/Prefabs/Stage_Island_prot.prefab
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5745556916277085906, guid: 77dcc2b656b064248a4e72facf4c35db, type: 3}
   m_PrefabInstance: {fileID: 4893741127970212666}
@@ -490,7 +957,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   durability: 4
+<<<<<<< HEAD:Assets/Prot/Prefabs/Stage_Island_prot.prefab
 --- !u!4 &4927139056101305553 stripped
+=======
+--- !u!114 &6711084760441930319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3247091537759661924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 640633446040c0c4191f6297bca9a047, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::damageMat
+  materials:
+  - {fileID: 2100000, guid: da11f1d1057185847ad8d3fc5550d090, type: 2}
+  - {fileID: 2100000, guid: c167f1a65f8d09e40abb2916a3a7bc2e, type: 2}
+  - {fileID: 2100000, guid: b150a97fda32e5b4fb8cd79c85bae6a6, type: 2}
+  - {fileID: 2100000, guid: eff5a64ed1e5ee144ae643043444d0bd, type: 2}
+--- !u!4 &7789580782684069893 stripped
+>>>>>>> Kawabata_Meteor:Assets/Prefabs/Stage_Island_prot.prefab
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 77dcc2b656b064248a4e72facf4c35db, type: 3}
   m_PrefabInstance: {fileID: 4893741127970212666}
@@ -581,12 +1069,24 @@ PrefabInstance:
       addedObject: {fileID: 4566275180519039684}
     - targetCorrespondingSourceObject: {fileID: -7612500599777965640, guid: 77dcc2b656b064248a4e72facf4c35db, type: 3}
       insertIndex: -1
+<<<<<<< HEAD:Assets/Prot/Prefabs/Stage_Island_prot.prefab
       addedObject: {fileID: 4354709268971039955}
   m_SourcePrefab: {fileID: 100100000, guid: 77dcc2b656b064248a4e72facf4c35db, type: 3}
 --- !u!4 &4756531482921542153 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 77dcc2b656b064248a4e72facf4c35db, type: 3}
   m_PrefabInstance: {fileID: 5010291229108028898}
+=======
+      addedObject: {fileID: 8276961016016355978}
+    - targetCorrespondingSourceObject: {fileID: -7612500599777965640, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6514917371329170954}
+  m_SourcePrefab: {fileID: 100100000, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+--- !u!1 &7548789999819603945 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -7612500599777965640, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+  m_PrefabInstance: {fileID: 9122119711835682385}
+>>>>>>> Kawabata_Meteor:Assets/Prefabs/Stage_Island_prot.prefab
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &6040125733600496730 stripped
 GameObject:
@@ -628,6 +1128,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   durability: 4
+<<<<<<< HEAD:Assets/Prot/Prefabs/Stage_Island_prot.prefab
 --- !u!1001 &5715817132764770634
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -869,11 +1370,15 @@ MeshCollider:
   m_CookingOptions: 30
   m_Mesh: {fileID: 604459132154523733, guid: 77dcc2b656b064248a4e72facf4c35db, type: 3}
 --- !u!114 &1073297650625853980
+=======
+--- !u!114 &6514917371329170954
+>>>>>>> Kawabata_Meteor:Assets/Prefabs/Stage_Island_prot.prefab
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< HEAD:Assets/Prot/Prefabs/Stage_Island_prot.prefab
   m_GameObject: {fileID: 3404367462531160636}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -1018,4 +1523,21 @@ MonoBehaviour:
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 77dcc2b656b064248a4e72facf4c35db, type: 3}
   m_PrefabInstance: {fileID: 8275719778344248997}
+=======
+  m_GameObject: {fileID: 7548789999819603945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 640633446040c0c4191f6297bca9a047, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::damageMat
+  materials:
+  - {fileID: 2100000, guid: da11f1d1057185847ad8d3fc5550d090, type: 2}
+  - {fileID: 2100000, guid: c167f1a65f8d09e40abb2916a3a7bc2e, type: 2}
+  - {fileID: 2100000, guid: b150a97fda32e5b4fb8cd79c85bae6a6, type: 2}
+  - {fileID: 2100000, guid: eff5a64ed1e5ee144ae643043444d0bd, type: 2}
+--- !u!4 &8724315762836148666 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: ad6c123eb4732f4459a50619db7c65cd, type: 3}
+  m_PrefabInstance: {fileID: 9122119711835682385}
+>>>>>>> Kawabata_Meteor:Assets/Prefabs/Stage_Island_prot.prefab
   m_PrefabAsset: {fileID: 0}

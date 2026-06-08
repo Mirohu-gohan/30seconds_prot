@@ -16,8 +16,8 @@ using Unity.Cinemachine;
 ///   ・Collider の IsTrigger = OFF（通常衝突）を確認
 ///   ・プレイヤーのタグを Inspector の PlayerTag に合わせる
 /// </summary>
-[RequireComponent(typeof(Collider))]
-[RequireComponent(typeof(CinemachineSplineCart))]
+//[RequireComponent(typeof(Collider))]
+//[RequireComponent(typeof(CinemachineSplineCart))]
 public class SplineCartHitter : MonoBehaviour
 {
     // ── Inspector ──────────────────────────────────────────
